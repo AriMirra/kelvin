@@ -27,7 +27,9 @@
               "src/scss/style.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["./node_modules"]
+              "includePaths": [
+                "./node_modules"
+              ]
             },
             "scripts": [
               "node_modules/chart.js/dist/Chart.min.js"
@@ -87,7 +89,9 @@
               "src/scss/style.scss"
             ],
             "stylePreprocessorOptions": {
-              "includePaths": ["./node_modules"]
+              "includePaths": [
+                "./node_modules"
+              ]
             },
             "assets": [
               "src/assets",
