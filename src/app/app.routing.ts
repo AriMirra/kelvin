@@ -1,19 +1,60 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {Routes, RouterModule} from '@angular/router';
 
 // Import Containers
-import { DefaultLayoutComponent } from './containers';
+import {DefaultLayoutComponent} from './containers';
 
-import { P404Component } from './views/error/404.component';
-import { P500Component } from './views/error/500.component';
-import { LoginComponent } from './views/login/login.component';
-import { RegisterComponent } from './views/register/register.component';
+import {P404Component} from './views/error/404.component';
+import {P500Component} from './views/error/500.component';
+import {LoginComponent} from './views/login/login.component';
+import {RegisterComponent} from './views/register/register.component';
 
 export const routes: Routes = [
+  // {
+  //   path: 'admin',
+  //   component: AdminComponent,
+  //   data: {
+  //     title: 'Login Page'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'register',
+  //       component: AdminRegisterComponent
+  //     },
+  //     {
+  //       path: 'login',
+  //       component: AdminLoginComponent
+  //     },
+  //     {
+  //       path: 'dashboard',
+  //       component: AdminRegisterComponent
+  //     }
+  //   ]
+  // },
+  // {
+  //   path: 'client',
+  //   component: ClientComponent,
+  //   data: {
+  //     title: 'Login Page'
+  //   },
+  //   children: [
+  //     {
+  //       path: 'register',
+  //       component: ClientRegisterComponent
+  //     },
+  //     {
+  //       path: 'login',
+  //       component: ClientLoginComponent
+  //     },
+  //     {
+  //       path: 'dashboard',
+  //       component: ClientRegisterComponent
+  //     }
+  //   ]
+  // },
   {
     path: '',
-    redirectTo: 'dashboard',
-    pathMatch: 'full',
+    component: LoginComponent
   },
   {
     path: '404',
@@ -27,20 +68,6 @@ export const routes: Routes = [
     component: P500Component,
     data: {
       title: 'Page 500'
-    }
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    data: {
-      title: 'Login Page'
-    }
-  },
-  {
-    path: 'register',
-    component: RegisterComponent,
-    data: {
-      title: 'Register Page'
     }
   },
   {
@@ -87,7 +114,8 @@ export const routes: Routes = [
 ];
 
 @NgModule({
-  imports: [ RouterModule.forRoot(routes) ],
-  exports: [ RouterModule ]
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule {
+}
