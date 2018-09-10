@@ -1,12 +1,12 @@
 export const navItems = [
   {
     name: 'Dashboard',
-    url: '/dashboard',
+    url: '/client',
     icon: 'icon-graph',
   },
   {
     title: true,
-    name: 'Admin'
+    name: 'Client'
   },
   {
     name: 'Recorridos',
