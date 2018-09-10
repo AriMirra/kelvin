@@ -52,10 +52,10 @@ export const routes: Routes = [
   //     }
   //   ]
   // },
-  {
-    path: '',
-    component: LoginComponent
-  },
+  // {
+  //   path: '',
+  //   component: LoginComponent
+  // },
   {
     path: '404',
     component: P404Component,
