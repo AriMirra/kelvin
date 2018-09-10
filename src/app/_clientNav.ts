@@ -2,21 +2,26 @@ export const navItems = [
   {
     name: 'Dashboard',
     url: '/dashboard',
-    icon: 'icon-speedometer',
+    icon: 'icon-graph',
   },
   {
     title: true,
-    name: 'Theme'
+    name: 'Admin'
   },
   {
-    name: 'Colors',
-    url: '/theme/colors',
+    name: 'Recorridos',
+    url: '',
     icon: 'icon-drop'
   },
   {
-    name: 'Typography',
-    url: '/theme/typography',
-    icon: 'icon-pencil'
+    name: 'Vehículos',
+    url: '',
+    icon: 'icon-speedometer'
+  },
+  {
+    name: 'Dispositivos',
+    url: '',
+    icon: 'icon-screen-smartphone'
   },
   {
     title: true,
