@@ -1,16 +1,20 @@
-import { Component, Input } from '@angular/core';
-import { navItems } from '../../_adminNav';
+import {Component, Input, OnInit} from '@angular/core';
+import {adminItems} from '../../_adminNav';
+import {clientItems} from '../../_clientNav';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './default-layout.component.html'
 })
-export class DefaultLayoutComponent {
-  public navItems = navItems;
+export class DefaultLayoutComponent implements OnInit {
+  public navItems;
   public sidebarMinimized = true;
   private changes: MutationObserver;
   public element: HTMLElement = document.body;
-  constructor() {
+  private userType: UserType;
+
+  constructor(private cookieService: CookieService) {
 
     this.changes = new MutationObserver((mutations) => {
       this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
@@ -20,4 +24,23 @@ export class DefaultLayoutComponent {
       attributes: true
     });
   }
+
+  ngOnInit(): void {
+    this.cookieService.set('UserType', 'admin');
+    if (this.cookieService.check('UserType')) {
+      this.userType = (this.cookieService.get('UserType') === 'admin') ? UserType.ADMIN : UserType.CLIENT;
+    } else {
+      throw Error('cookie UserType not found');
+    }
+    this.displayNavBar();
+  }
+
+  private displayNavBar() {
+    this.navItems = this.userType === UserType.ADMIN ? adminItems : clientItems;
+  }
+}
+
+export enum UserType {
+  ADMIN,
+  CLIENT
 }

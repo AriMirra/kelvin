@@ -1,4 +1,4 @@
-export const navItems = [
+export const adminItems = [
     {
         name: 'Dashboard',
         url: '/admin',

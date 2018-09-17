@@ -1,4 +1,4 @@
-export const navItems = [
+export const clientItems = [
   {
     name: 'Dashboard',
     url: '/client',
