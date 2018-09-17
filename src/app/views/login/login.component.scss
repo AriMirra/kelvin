@@ -1,0 +1,28 @@
+@import "../../../scss/main";
+
+.gradient-bg {
+  //background: linear-gradient(to bottom, rgba($primary_color, 0.76), rgba($secondary_color, 0.76)) no-repeat fixed center !important;
+  background: linear-gradient(to bottom, rgba(72,168,228, 0.76), rgba(214,49,134, 0.76)) no-repeat fixed center !important;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+.button {
+  @include animate-1;
+  @include shadow-1;
+  background-color: $primary_color;
+  border: none;
+  width: 100%;
+  font-size: 1em;
+  padding: 10px 0;
+  color: $white;
+  font-weight: bold;
+  margin-top: 15px;
+}
+.button:hover {
+  @include shadow-2;
+  background-color: $primary_color_focus;
+}
+.button:focus {
+  outline: 0;
+}

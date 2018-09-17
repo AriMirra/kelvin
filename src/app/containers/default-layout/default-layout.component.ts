@@ -1,38 +1,46 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {adminNavItems} from '../../_adminNav';
 import {clientNavItems} from '../../_clientNav';
+import {CookieService} from 'ngx-cookie-service';
 
 @Component({
     selector: 'app-dashboard',
     templateUrl: './default-layout.component.html'
 })
-export class DefaultLayoutComponent {
-    public navItems;
-    public loggedUserType;
-    public sidebarMinimized = true;
-    private changes: MutationObserver;
-    public element: HTMLElement = document.body;
+export class DefaultLayoutComponent implements OnInit {
+  public navItems;
+  public sidebarMinimized = true;
+  private changes: MutationObserver;
+  public element: HTMLElement = document.body;
+  private userType: UserType;
 
-    /**
-     * Constructor that modifies nav content depending on user type.
-     */
-    constructor() {
-        if (this.loggedUserType) {
-            if (this.loggedUserType === 'ADMIN') {
-                this.navItems = adminNavItems;
-            } else if (this.loggedUserType === 'CLIENT') {
-                this.navItems = clientNavItems;
-            }
-        } else {
-            this.navItems = adminNavItems;
-        }
+  constructor(private cookieService: CookieService) {
 
         this.changes = new MutationObserver((mutations) => {
             this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
         });
 
-        this.changes.observe(<Element>this.element, {
-            attributes: true
-        });
+    this.changes.observe(<Element>this.element, {
+      attributes: true
+    });
+  }
+
+  ngOnInit(): void {
+    this.cookieService.set('UserType', 'admin');
+    if (this.cookieService.check('UserType')) {
+      this.userType = (this.cookieService.get('UserType') === 'admin') ? UserType.ADMIN : UserType.CLIENT;
+    } else {
+      throw Error('cookie UserType not found');
     }
+    this.displayNavBar();
+  }
+
+  private displayNavBar() {
+    this.navItems = this.userType === UserType.ADMIN ? adminItems : clientItems;
+  }
+}
+
+export enum UserType {
+  ADMIN,
+  CLIENT
 }
