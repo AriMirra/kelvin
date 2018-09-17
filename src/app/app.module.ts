@@ -41,37 +41,45 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {CookieService} from 'ngx-cookie-service';
 import {AdminMapComponent} from './views/admin/map/map.component';
+import { RoutesComponent } from './views/admin/routes/routes.component';
+import { ClientsComponent } from './views/admin/clients/clients.component';
+import { VehiclesComponent } from './views/admin/vehicles/vehicles.component';
+import { DevicesComponent } from './views/admin/devices/devices.component';
 
 @NgModule({
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        AppAsideModule,
-        AppBreadcrumbModule.forRoot(),
-        AppFooterModule,
-        AppHeaderModule,
-        AppSidebarModule,
-        PerfectScrollbarModule,
-        BsDropdownModule.forRoot(),
-        TabsModule.forRoot(),
-        ChartsModule
-    ],
-    declarations: [
-        AppComponent,
-        ...APP_CONTAINERS,
-        P404Component,
-        P500Component,
-        LoginComponent,
-        RegisterComponent,
-        AdminMapComponent
-    ],
-    providers: [
-        {
-            provide: LocationStrategy,
-            useClass: HashLocationStrategy
-        },
-        CookieService],
-    bootstrap: [AppComponent]
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    AppAsideModule,
+    AppBreadcrumbModule.forRoot(),
+    AppFooterModule,
+    AppHeaderModule,
+    AppSidebarModule,
+    PerfectScrollbarModule,
+    BsDropdownModule.forRoot(),
+    TabsModule.forRoot(),
+    ChartsModule
+  ],
+  declarations: [
+    AppComponent,
+    ...APP_CONTAINERS,
+    P404Component,
+    P500Component,
+    LoginComponent,
+    RegisterComponent,
+    RoutesComponent,
+    ClientsComponent,
+    VehiclesComponent,
+    DevicesComponent,
+    AdminMapComponent
+  ],
+  providers: [
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    },
+    CookieService],
+  bootstrap: [ AppComponent ]
 })
 export class AppModule {
 }

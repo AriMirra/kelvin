@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {adminNavItems} from '../../_adminNav';
 import {clientNavItems} from '../../_clientNav';
 import {CookieService} from 'ngx-cookie-service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-dashboard',
@@ -14,7 +15,7 @@ export class DefaultLayoutComponent implements OnInit {
     public element: HTMLElement = document.body;
     private userType: UserType;
 
-    constructor(private cookieService: CookieService) {
+  constructor(private cookieService: CookieService, private router: Router) {
 
         this.changes = new MutationObserver((mutations) => {
             this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
@@ -35,9 +36,9 @@ export class DefaultLayoutComponent implements OnInit {
         this.displayNavBar();
     }
 
-    private displayNavBar() {
-        this.navItems = this.userType === UserType.ADMIN ? adminNavItems : clientNavItems;
-    }
+  private displayNavBar() {
+    this.navItems = this.userType === UserType.ADMIN ? adminNavItems : clientNavItems;
+  }
 }
 
 export enum UserType {
