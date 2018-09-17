@@ -6,6 +6,7 @@ import {DefaultLayoutComponent} from './containers';
 import {P404Component} from './views/error/404.component';
 import {P500Component} from './views/error/500.component';
 import {LoginComponent} from './views/login/login.component';
+import {AdminMapComponent} from './views/admin/map/map.component';
 
 export const routes: Routes = [
     /*
@@ -65,27 +66,27 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                loadChildren: './views/admin/dashboard/dashboard.module#DashboardModule'
             },
             {
                 path: 'map',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                component: AdminMapComponent
             },
             {
                 path: 'routes',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                loadChildren: './views/admin/dashboard/dashboard.module#DashboardModule'
             },
             {
                 path: 'clients',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                loadChildren: './views/admin/dashboard/dashboard.module#DashboardModule'
             },
             {
                 path: 'vehicles',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                loadChildren: './views/admin/dashboard/dashboard.module#DashboardModule'
             },
             {
                 path: 'devices',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                loadChildren: './views/admin/dashboard/dashboard.module#DashboardModule'
             }
             /*
             {
@@ -128,23 +129,23 @@ export const routes: Routes = [
         children: [
             {
                 path: '',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
             },
             {
                 path: 'map',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
             },
             {
                 path: 'routes',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
             },
             {
                 path: 'vehicles',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
             },
             {
                 path: 'products',
-                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+                loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
             }
             /*
             {
