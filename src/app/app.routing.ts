@@ -8,48 +8,50 @@ import {P500Component} from './views/error/500.component';
 import {LoginComponent} from './views/login/login.component';
 
 export const routes: Routes = [
-    // {
-    //   path: 'admin',
-    //   component: AdminComponent,
-    //   data: {
-    //     title: 'Login Page'
-    //   },
-    //   children: [
-    //     {
-    //       path: 'register',
-    //       component: AdminRegisterComponent
-    //     },
-    //     {
-    //       path: 'login',
-    //       component: AdminLoginComponent
-    //     },
-    //     {
-    //       path: 'dashboard',
-    //       component: AdminRegisterComponent
-    //     }
-    //   ]
-    // },
-    // {
-    //   path: 'client',
-    //   component: ClientComponent,
-    //   data: {
-    //     title: 'Login Page'
-    //   },
-    //   children: [
-    //     {
-    //       path: 'register',
-    //       component: ClientRegisterComponent
-    //     },
-    //     {
-    //       path: 'login',
-    //       component: ClientLoginComponent
-    //     },
-    //     {
-    //       path: 'dashboard',
-    //       component: ClientRegisterComponent
-    //     }
-    //   ]
-    // },
+    /*
+    {
+      path: 'admin',
+      component: AdminComponent,
+      data: {
+        title: 'Login Page'
+      },
+      children: [
+        {
+          path: 'register',
+          component: AdminRegisterComponent
+        },
+        {
+          path: 'login',
+          component: AdminLoginComponent
+        },
+        {
+          path: 'dashboard',
+          component: AdminRegisterComponent
+        }
+      ]
+    },
+    {
+      path: 'client',
+      component: ClientComponent,
+      data: {
+        title: 'Login Page'
+      },
+      children: [
+        {
+          path: 'register',
+          component: ClientRegisterComponent
+        },
+        {
+          path: 'login',
+          component: ClientLoginComponent
+        },
+        {
+          path: 'dashboard',
+          component: ClientRegisterComponent
+        }
+      ]
+    },
+    */
     {
         path: '',
         component: LoginComponent
@@ -67,8 +69,25 @@ export const routes: Routes = [
             },
             {
                 path: 'map',
-                loadChildren: './views/base/base.module#BaseModule'
+                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
             },
+            {
+                path: 'routes',
+                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+            },
+            {
+                path: 'clients',
+                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+            },
+            {
+                path: 'vehicles',
+                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+            },
+            {
+                path: 'devices',
+                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+            }
+            /*
             {
                 path: 'base',
                 loadChildren: './views/base/base.module#BaseModule'
@@ -97,6 +116,7 @@ export const routes: Routes = [
                 path: 'widgets',
                 loadChildren: './views/widgets/widgets.module#WidgetsModule'
             }
+            */
         ]
     },
     {
@@ -107,9 +127,26 @@ export const routes: Routes = [
         },
         children: [
             {
-                path: 'dashboard',
+                path: '',
                 loadChildren: './views/dashboard/dashboard.module#DashboardModule'
             },
+            {
+                path: 'map',
+                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+            },
+            {
+                path: 'routes',
+                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+            },
+            {
+                path: 'vehicles',
+                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+            },
+            {
+                path: 'products',
+                loadChildren: './views/dashboard/dashboard.module#DashboardModule'
+            }
+            /*
             {
                 path: 'base',
                 loadChildren: './views/base/base.module#BaseModule'
@@ -138,6 +175,7 @@ export const routes: Routes = [
                 path: 'widgets',
                 loadChildren: './views/widgets/widgets.module#WidgetsModule'
             }
+            */
         ]
     },
     {

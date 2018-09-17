@@ -1,33 +1,43 @@
-export const navItems = [
+export const adminNavItems = [
     {
         name: 'Dashboard',
         url: '/admin',
-        icon: 'icon-graph',
+        icon: 'icon-speedometer',
     },
     {
         title: true,
-        name: 'Admin'
+        name: 'Gestión de Recorridos'
     },
     {
         name: 'Mapa',
         url: '/admin/map',
-        icon: 'icon-drop'
+        icon: 'icon-location-pin'
     },
     {
         name: 'Recorridos',
-        url: '',
-        icon: 'icon-drop'
+        url: '/admin/routes',
+        icon: 'icon-graph'
+    },
+    {
+        title: true,
+        name: 'Gestión de Clientes'
+    },
+    {
+        name: 'Clientes',
+        url: '/admin/clients',
+        icon: 'icon-user'
     },
     {
         name: 'Vehículos',
-        url: '',
-        icon: 'icon-speedometer'
+        url: '/admin/vehicles',
+        icon: 'icon-cursor'
     },
     {
-        name: 'Productos',
-        url: '',
-        icon: 'icon-location-pin'
+        name: 'Dispositivos',
+        url: '/admin/devices',
+        icon: 'icon-puzzle'
     },
+    /*
     {
         title: true,
         name: 'Components'
@@ -221,4 +231,5 @@ export const navItems = [
             }
         ]
     }
+    */
 ];
