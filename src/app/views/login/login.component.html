@@ -12,13 +12,17 @@
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="icon-user"></i></span>
                   </div>
-                  <input type="text" class="form-control" placeholder="Usuario">
+                  <input type="text" class="form-control"
+                         placeholder="Usuario" name="username"
+                         [(ngModel)]="credentials.username">
                 </div>
                 <div class="input-group mb-4">
                   <div class="input-group-prepend">
                     <span class="input-group-text"><i class="icon-lock"></i></span>
                   </div>
-                  <input type="password" class="form-control" placeholder="Contraseña">
+                  <input type="password" class="form-control"
+                         placeholder="Contraseña" name="password"
+                         [(ngModel)]="credentials.password">
                 </div>
                 <div class="row">
                   <div class="col-6">

@@ -1,6 +1,6 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
-import {LocationStrategy, HashLocationStrategy} from '@angular/common';
+import {LocationStrategy, HashLocationStrategy, CommonModule} from '@angular/common';
 
 import {PerfectScrollbarModule} from 'ngx-perfect-scrollbar';
 import {PERFECT_SCROLLBAR_CONFIG} from 'ngx-perfect-scrollbar';
@@ -45,6 +45,9 @@ import { RoutesComponent } from './views/admin/routes/routes.component';
 import { ClientsComponent } from './views/admin/clients/clients.component';
 import { VehiclesComponent } from './views/admin/vehicles/vehicles.component';
 import { DevicesComponent } from './views/admin/devices/devices.component';
+import {FormsModule} from '@angular/forms';
+import {UserService} from './user.service';
+import {HttpClient, HttpClientModule} from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -58,7 +61,9 @@ import { DevicesComponent } from './views/admin/devices/devices.component';
     PerfectScrollbarModule,
     BsDropdownModule.forRoot(),
     TabsModule.forRoot(),
-    ChartsModule
+    ChartsModule,
+    FormsModule,
+    HttpClientModule
   ],
   declarations: [
     AppComponent,
@@ -78,7 +83,9 @@ import { DevicesComponent } from './views/admin/devices/devices.component';
       provide: LocationStrategy,
       useClass: HashLocationStrategy
     },
-    CookieService],
+    CookieService,
+    UserService,
+  ],
   bootstrap: [ AppComponent ]
 })
 export class AppModule {

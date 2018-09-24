@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ClientCredentials} from '../../../shared/ClientCredentials';
 import { Router } from '@angular/router';
+import {CookieService} from 'ngx-cookie-service';
+import {UserService} from '../../user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -9,16 +11,18 @@ import { Router } from '@angular/router';
 })
 export class LoginComponent implements OnInit {
   public credentials: ClientCredentials;
+  private token: string;
 
-  // TODO: authService
-  public constructor(private router: Router) { }
+  public constructor(private cookieService: CookieService,
+                     private router: Router,
+                     private userService: UserService) { }
 
   ngOnInit(): void {
     this.credentials = ClientCredentials.empty();
   }
 
   login() {
-    this.router.navigate(['admin']);
+    this.userService.login(this.credentials).subscribe();
   }
 
   recover() {

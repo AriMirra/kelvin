@@ -14,7 +14,7 @@ export class ClientCredentials {
 
   public asJson() {
     return {
-      email: this._username,
+      username: this._username,
       password: this._password,
     };
   }
