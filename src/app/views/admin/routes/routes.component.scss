@@ -6,8 +6,6 @@
   -webkit-box-shadow: 0 0 1px 0 rgba(0, 0, 0, .08);
   -moz-box-shadow: 0 0 1px 0 rgba(0, 0, 0, .08);
   box-shadow: 0 0 1px 0 rgba(0, 0, 0, .08);
-  min-height: calc(100vh - 177px);
-  overflow-y: scroll;
   -webkit-transition: all .4s;
   -moz-transition: all .4s;
   -ms-transition: all .4s;
@@ -31,6 +29,8 @@
   }
 
   .card-body {
+    min-height: calc(100vh - 236px);
+    overflow-y: scroll;
     table.table {
       margin-bottom: 40px;
       tbody tr {
@@ -38,7 +38,7 @@
         border-top: solid 1px #f9f9f9;
         td {
           border: none;
-          .badge-danger, .badge-error:hover {
+          .badge, .badge:hover {
             color: white;
           }
         }

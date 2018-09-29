@@ -1,8 +1,169 @@
 <div class="row">
-  <div class="col-sm-12 col-md-6">
-
-  </div>
-  <div class="col-sm-12 col-md-6">
-
-  </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header rounded-corners">
+                <form>
+                    <div class="form-group row">
+                        <label class="col-8 col-form-label">
+                            <strong>Agregar nuevo vehículo |</strong>
+                            <small> escriba las patentes en las formas "AA-000-AA" o "AAA-000"</small>
+                        </label>
+                        <div class="col-4">
+                            <div class="form-group row">
+                                <div class="col-8">
+                                    <input type="text" id="new-license-plate" name="new-license-plate"
+                                           class="form-control" placeholder="Patente del vehículo">
+                                </div>
+                                <div class="col-4">
+                                    <button type="submit" class="btn btn-primary"><i class="mr-2 fa fa-plus"></i>
+                                        <strong>Agregar</strong></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <form>
+                    <div class="form-group row">
+                        <label class="col-8 col-form-label">
+                            <strong>Todos los vehículos</strong>
+                        </label>
+                        <div class="col-4">
+                            <input type="text" id="search-route" name="search-route" class="form-control"
+                                   placeholder="Buscar recorrido">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <!--
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Date registered</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    -->
+                    <tbody>
+                    <tr>
+                        <td>Patente</td>
+                        <td>Fecha de Creación</td>
+                        <td>Alias de Dispositivo</td>
+                        <td>
+                            <a class="badge badge-success">Con Dispositivo</a>
+                        </td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Patente</td>
+                        <td>Fecha de Creación</td>
+                        <td>---</td>
+                        <td>
+                            <a class="badge badge-warning">Sin Dispositivo</a>
+                        </td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Patente</td>
+                        <td>Fecha de Creación</td>
+                        <td>Alias de Dispositivo</td>
+                        <td>
+                            <a class="badge badge-success">Con Dispositivo</a>
+                        </td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Patente</td>
+                        <td>Fecha de Creación</td>
+                        <td>---</td>
+                        <td>
+                            <a class="badge badge-warning">Sin Dispositivo</a>
+                        </td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Patente</td>
+                        <td>Fecha de Creación</td>
+                        <td>Alias de Dispositivo</td>
+                        <td>
+                            <a class="badge badge-success">Con Dispositivo</a>
+                        </td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Patente</td>
+                        <td>Fecha de Creación</td>
+                        <td>---</td>
+                        <td>
+                            <a class="badge badge-warning">Sin Dispositivo</a>
+                        </td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div bsModal #largeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Modal title</h4>
+                <button type="button" class="close" (click)="largeModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>One fine body&hellip;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="largeModal.hide()">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminar vehículo</h4>
+                <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo vehículo.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Regresar</button>
+                <button type="button" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
