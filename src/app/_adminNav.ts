@@ -20,13 +20,15 @@ export const adminNavItems = [
     },
     {
         title: true,
-        name: 'Gestión de Clientes'
+        name: 'Gestión de Vehículos'
     },
+    /*
     {
         name: 'Clientes',
         url: '/admin/clients',
         icon: 'icon-user'
     },
+    */
     {
         name: 'Vehículos',
         url: '/admin/vehicles',

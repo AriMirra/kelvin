@@ -1,8 +1,107 @@
 <div class="row">
-  <div class="col-sm-12 col-md-6">
+    <div class="col-12">
 
-  </div>
-  <div class="col-sm-12 col-md-6">
-
-  </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <form>
+                    <div class="form-group row">
+                        <label class="col-8 col-form-label">
+                            <strong>Todos los recorridos |</strong>
+                            <small> para agregar recorridos, genere uno en el mapa</small>
+                        </label>
+                        <div class="col-4">
+                            <input type="text" id="search-route" name="search-route" class="form-control"
+                                   placeholder="Buscar recorrido">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <!--
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Date registered</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    -->
+                    <tbody>
+                    <tr>
+                        <td>Alias de Recorrido</td>
+                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
+                        <td>X Productos</td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Alias de Recorrido</td>
+                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
+                        <td>X Productos</td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Alias de Recorrido</td>
+                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
+                        <td>X Productos</td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Alias de Recorrido</td>
+                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
+                        <td>X Productos</td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Alias de Recorrido</td>
+                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
+                        <td>X Productos</td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Alias de Recorrido</td>
+                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
+                        <td>X Productos</td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminar recorrido</h4>
+                <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo recorrido.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Regresar</button>
+                <button type="button" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
