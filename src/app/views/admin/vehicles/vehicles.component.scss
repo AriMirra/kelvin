@@ -13,15 +13,11 @@
   transition: all .4s;
 
   .card-header {
-    -webkit-border-radius: 6px 6px 0 0;
-    -moz-border-radius: 6px 6px 0 0;
-    border-radius: 6px 6px 0 0;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
     border: none;
-    &.rounded-corners {
-      -webkit-border-radius: 6px;
-      -moz-border-radius: 6px;
-      border-radius: 6px;
-    }
+    margin: 1px;
     .form-group {
       margin-bottom: 0;
       input.form-control {
@@ -29,13 +25,39 @@
         -moz-border-radius: 6px;
         border-radius: 6px;
       }
+      .btn {
+        .fa {
+          -webkit-transition: all .2s;
+          -moz-transition: all .2s;
+          -ms-transition: all .2s;
+          -o-transition: all .2s;
+          transition: all .2s;
+        }
+        &.btn-danger .fa {
+          -webkit-transform: rotate(45deg);
+          -moz-transform: rotate(45deg);
+          -ms-transform: rotate(45deg);
+          -o-transform: rotate(45deg);
+          transform: rotate(45deg);
+        }
+      }
     }
-
+    &:hover, &:hover label {
+      cursor: pointer;
+    }
+    &:hover.not-clickable, &:hover.not-clickable label {
+      cursor: default;
+    }
   }
 
   .card-body {
-    min-height: calc(100vh - 319px);
+    height: calc(100vh - 319px);
     overflow-y: scroll;
+    -webkit-transition: height .2s;
+    -moz-transition: height .2s;
+    -ms-transition: height .2s;
+    -o-transition: height .2s;
+    transition: height .2s;
     table.table {
       margin-bottom: 40px;
       tbody tr {
@@ -55,6 +77,10 @@
     }
     ul {
       margin-bottom: 0;
+    }
+    &.h-0 {
+      height: 0;
+      padding: 0;
     }
   }
 

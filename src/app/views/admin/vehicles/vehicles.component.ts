@@ -1,15 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-vehicles',
-  templateUrl: './vehicles.component.html',
-  styleUrls: ['./vehicles.component.scss']
+    selector: 'app-vehicles',
+    templateUrl: './vehicles.component.html',
+    styleUrls: ['./vehicles.component.scss']
 })
 export class VehiclesComponent implements OnInit {
 
-  constructor() { }
+    addingVehicle: boolean;
+    vehicleWithoutDevice: boolean;
+    vehicleWithoutClient: boolean;
 
-  ngOnInit() {
-  }
+    constructor() {
+        this.addingVehicle = false;
+        this.vehicleWithoutDevice = true; // TODO boolean depends on the list of vehicles.
+        this.vehicleWithoutClient = true; // TODO boolean depends on the list of vehicles.
+    }
+
+    ngOnInit() {
+    }
+    toggleAddingVehicle() {
+        this.addingVehicle = !this.addingVehicle;
+    }
 
 }

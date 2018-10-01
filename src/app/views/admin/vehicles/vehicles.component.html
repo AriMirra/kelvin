@@ -1,46 +1,137 @@
 <div class="row">
     <div class="col-12">
         <div class="card">
-            <div class="card-header rounded-corners">
+            <div class="card-header" (click)="toggleAddingVehicle()">
                 <form>
                     <div class="form-group row">
-                        <label class="col-8 col-form-label">
-                            <strong>Agregar nuevo vehículo |</strong>
-                            <small> escriba las patentes en las formas "AA-000-AA" o "AAA-000"</small>
+                        <label class="col-10 col-form-label">
+                            <strong>Agregar nuevo vehículo</strong>
+                            <!--
+                            <small> escriba la patente en las formas "AA-000-AA" o "AAA-000"</small>
+                            -->
                         </label>
-                        <div class="col-4">
-                            <div class="form-group row">
-                                <div class="col-8">
-                                    <input type="text" id="new-license-plate" name="new-license-plate"
-                                           class="form-control" placeholder="Patente del vehículo">
-                                </div>
-                                <div class="col-4">
-                                    <button type="submit" class="btn btn-primary"><i class="mr-2 fa fa-plus"></i>
-                                        <strong>Agregar</strong></button>
-                                </div>
-                            </div>
+                        <div class="col-2">
+                            <button type="submit"
+                                    class="btn w-100"
+                                    [ngClass]="{'btn-primary': !addingVehicle, 'btn-danger': addingVehicle}"
+                            >
+                                <i class="fa fa-plus"></i>
+                            </button>
                         </div>
                     </div>
                 </form>
+            </div>
+            <div class="card-body" [ngClass]="{'h-0': !addingVehicle}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="new-vehicle-license-plate">Patente del Vehículo</label>
+                                    <div class="col-md-9">
+                                        <input type="text"
+                                               id="new-vehicle-license-plate"
+                                               name="new-vehicle-license-plate"
+                                               class="form-control"
+                                               placeholder="Ejemplo: DSL-190 o AB-918-DX"
+                                        >
+                                        <span class="help-block">
+                                            <small>
+                                                <i class="ml-2 mr-1 fa fa-info-circle"></i>
+                                                escriba la patente en las formas "AA-000-AA" o "AAA-000"
+                                            </small>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="new-vehicle-brand">Marca</label>
+                                    <div class="col-md-9">
+                                        <input type="text"
+                                               id="new-vehicle-brand"
+                                               name="new-vehicle-brand"
+                                               class="form-control"
+                                               placeholder="Ejemplo: Peugeot"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="new-vehicle-model">Modelo</label>
+                                    <div class="col-md-9">
+                                        <input type="text"
+                                               id="new-vehicle-model"
+                                               name="new-vehicle-model"
+                                               class="form-control"
+                                               placeholder="Ejemplo: Partner"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="new-vehicle-client">Cliente</label>
+                                    <div class="col-md-9">
+                                        <select id="new-vehicle-client"
+                                                name="new-vehicle-client"
+                                                class="form-control"
+                                        >
+                                            <option value="0">Seleccione cliente</option>
+                                            <option value="1">Option #1</option>
+                                            <option value="2">Option #2</option>
+                                            <option value="3">Option #3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="new-vehicle-device">Dispositivo</label>
+                                    <div class="col-md-9">
+                                        <select id="new-vehicle-device"
+                                                name="new-vehicle-device"
+                                                class="form-control"
+                                        >
+                                            <option value="0">Seleccione dispositivo</option>
+                                            <option value="1">Option #1</option>
+                                            <option value="2">Option #2</option>
+                                            <option value="3">Option #3</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
     <div class="col-12">
         <div class="card">
-            <div class="card-header">
+            <div class="card-header not-clickable">
                 <form>
                     <div class="form-group row">
-                        <label class="col-8 col-form-label">
-                            <strong>Todos los vehículos</strong>
+                        <label class="col-6 col-form-label">
+                            <strong>Todos los vehículos |</strong>
+                            <small *ngIf="vehicleWithoutDevice && vehicleWithoutClient">
+                                <i class="ml-2 mr-1 fa fa-warning"></i>
+                                tiene vehículos sin dispositivos y clientes asignados
+                            </small>
+                            <small *ngIf="vehicleWithoutDevice && !vehicleWithoutClient">
+                                <i class="ml-2 mr-1 fa fa-warning"></i>
+                                tiene vehículos sin dispositivos asignados
+                            </small>
+                            <small *ngIf="!vehicleWithoutDevice && vehicleWithoutClient">
+                                <i class="ml-2 mr-1 fa fa-warning"></i>
+                                tiene vehículos sin clientes asignados
+                            </small>
                         </label>
-                        <div class="col-4">
-                            <input type="text" id="search-route" name="search-route" class="form-control"
-                                   placeholder="Buscar recorrido">
+                        <div class="col-6">
+                            <input type="text"
+                                   id="search-vehicle"
+                                   name="search-vehicle"
+                                   class="form-control"
+                                   placeholder="Buscar vehículo"
+                            >
                         </div>
                     </div>
                 </form>
             </div>
-            <div class="card-body">
+            <div class="card-body" [ngClass]="{'h-0': addingVehicle}">
                 <table class="table">
                     <!--
                     <thead>
@@ -55,10 +146,12 @@
                     <tbody>
                     <tr>
                         <td>Patente</td>
-                        <td>Fecha de Creación</td>
+                        <td>Marca</td>
+                        <td>Modelo</td>
+                        <td>Nombre de Cliente</td>
                         <td>Alias de Dispositivo</td>
                         <td>
-                            <a class="badge badge-success">Con Dispositivo</a>
+                            <a class="badge badge-primary" data-toggle="modal" (click)="largeModal.show()">Editar</a>
                         </td>
                         <td>
                             <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
@@ -66,21 +159,29 @@
                     </tr>
                     <tr>
                         <td>Patente</td>
-                        <td>Fecha de Creación</td>
-                        <td>---</td>
+                        <td>Marca</td>
+                        <td>Modelo</td>
+                        <td>Nombre de Cliente</td>
                         <td>
                             <a class="badge badge-warning">Sin Dispositivo</a>
                         </td>
                         <td>
+                            <a class="badge badge-primary" data-toggle="modal" (click)="largeModal.show()">Editar</a>
+                        </td>
+                        <td>
                             <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
                         </td>
                     </tr>
                     <tr>
                         <td>Patente</td>
-                        <td>Fecha de Creación</td>
+                        <td>Marca</td>
+                        <td>Modelo</td>
+                        <td>
+                            <a class="badge badge-warning">Sin Cliente Asociado</a>
+                        </td>
                         <td>Alias de Dispositivo</td>
                         <td>
-                            <a class="badge badge-success">Con Dispositivo</a>
+                            <a class="badge badge-primary" data-toggle="modal" (click)="largeModal.show()">Editar</a>
                         </td>
                         <td>
                             <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
@@ -88,32 +189,16 @@
                     </tr>
                     <tr>
                         <td>Patente</td>
-                        <td>Fecha de Creación</td>
-                        <td>---</td>
+                        <td>Marca</td>
+                        <td>Modelo</td>
+                        <td>
+                            <a class="badge badge-warning">Sin Cliente Asociado</a>
+                        </td>
                         <td>
                             <a class="badge badge-warning">Sin Dispositivo</a>
                         </td>
                         <td>
-                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Patente</td>
-                        <td>Fecha de Creación</td>
-                        <td>Alias de Dispositivo</td>
-                        <td>
-                            <a class="badge badge-success">Con Dispositivo</a>
-                        </td>
-                        <td>
-                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Patente</td>
-                        <td>Fecha de Creación</td>
-                        <td>---</td>
-                        <td>
-                            <a class="badge badge-warning">Sin Dispositivo</a>
+                            <a class="badge badge-primary" data-toggle="modal" (click)="largeModal.show()">Editar</a>
                         </td>
                         <td>
                             <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
@@ -141,7 +226,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="largeModal.hide()">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" class="btn btn-primary">Guardar Cambios</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
