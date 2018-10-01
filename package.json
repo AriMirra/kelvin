@@ -53,6 +53,7 @@
     "ngx-bootstrap": "^3.0.1",
     "ngx-cookie-service": "^1.0.10",
     "ngx-perfect-scrollbar": "^6.3.0",
+    "popper": "^1.0.1",
     "rxjs": "^6.2.2",
     "rxjs-compat": "^6.2.2",
     "simple-line-icons": "^2.4.1",
