@@ -11,7 +11,7 @@ import 'rxjs-compat/add/observable/of';
   providedIn: 'root'
 })
 export class UserService {
-  url = 'localhost:8080';
+  url = 'http://localhost:8080';
   constructor(private http: HttpClient,
               private router: Router,
               private cookieService: CookieService) {
@@ -25,8 +25,10 @@ export class UserService {
         this.cookieService.set('token', response.token);
         return true;
       }),
-      catchError(err => Observable.of(false))
+      catchError(err => {
+        console.log(err);
+        return Observable.of(false);
+      })
       );
   }
-
 }

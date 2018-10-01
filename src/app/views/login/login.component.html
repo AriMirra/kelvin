@@ -32,6 +32,13 @@
                     <button type="button" class="btn btn-link px-0" (click)="recover()">Has olvidado la contraseña?</button>
                   </div>
                 </div>
+                <div class="row pt-3 pb-0" *ngIf="errorOnLogin">
+                  <div class="col-11 alert alert-danger">
+                    <p>
+                      Los datos ingresados no coinciden con ningún usuario!
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
