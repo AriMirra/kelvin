@@ -29,7 +29,7 @@
   }
 
   .card-body {
-    min-height: calc(100vh - 236px);
+    height: calc(100vh - 236px);
     overflow-y: scroll;
     table.table {
       margin-bottom: 40px;

@@ -4,11 +4,11 @@
             <div class="card-header">
                 <form>
                     <div class="form-group row">
-                        <label class="col-8 col-form-label">
+                        <label class="col-6 col-form-label">
                             <strong>Todos los recorridos |</strong>
-                            <small> para agregar recorridos, genere uno en el mapa</small>
+                            <small> <i class="ml-2 mr-1 fa fa-info-circle"></i> para agregar recorridos, genere uno en el mapa</small>
                         </label>
-                        <div class="col-4">
+                        <div class="col-6">
                             <input type="text" id="search-route" name="search-route" class="form-control"
                                    placeholder="Buscar recorrido">
                         </div>
@@ -17,61 +17,43 @@
             </div>
             <div class="card-body">
                 <table class="table">
-                    <!--
-                    <thead>
-                    <tr>
-                        <th>Username</th>
-                        <th>Date registered</th>
-                        <th>Role</th>
-                        <th>Status</th>
-                    </tr>
-                    </thead>
-                    -->
                     <tbody>
                     <tr>
                         <td>Alias de Recorrido</td>
-                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
+                        <td>Patente del Vehículo</td>
                         <td>X Productos</td>
+                        <td>Rango de Temperatura</td>
+                        <td>Rango de Humedad</td>
                         <td>
                             <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
                         </td>
                     </tr>
                     <tr>
                         <td>Alias de Recorrido</td>
-                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
+                        <td>Patente del Vehículo</td>
                         <td>X Productos</td>
+                        <td>Rango de Temperatura</td>
+                        <td>Rango de Humedad</td>
                         <td>
                             <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
                         </td>
                     </tr>
                     <tr>
                         <td>Alias de Recorrido</td>
-                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
+                        <td>Patente del Vehículo</td>
                         <td>X Productos</td>
+                        <td>Rango de Temperatura</td>
+                        <td>Rango de Humedad</td>
                         <td>
                             <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
                         </td>
                     </tr>
                     <tr>
                         <td>Alias de Recorrido</td>
-                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
+                        <td>Patente del Vehículo</td>
                         <td>X Productos</td>
-                        <td>
-                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Alias de Recorrido</td>
-                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
-                        <td>X Productos</td>
-                        <td>
-                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Alias de Recorrido</td>
-                        <td>01/01/2012 16:40 - 01/01/2012 16:40</td>
-                        <td>X Productos</td>
+                        <td>Rango de Temperatura</td>
+                        <td>Rango de Humedad</td>
                         <td>
                             <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
                         </td>
@@ -83,7 +65,8 @@
     </div>
 </div>
 
-<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog modal-danger" role="document">
         <div class="modal-content">
             <div class="modal-header">
