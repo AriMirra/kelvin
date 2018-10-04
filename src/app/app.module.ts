@@ -46,8 +46,8 @@ import {ClientsComponent} from './views/admin/clients/clients.component';
 import {VehiclesComponent} from './views/admin/vehicles/vehicles.component';
 import {DevicesComponent} from './views/admin/devices/devices.component';
 import {FormsModule} from '@angular/forms';
-import {UserService} from './user.service';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {UserService} from './services/user.service';
+import {HttpClientModule} from '@angular/common/http';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {ModalsComponent} from './views/others/notifications/modals.component';
 

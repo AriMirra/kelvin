@@ -58,8 +58,8 @@ export class HttpService {
     return (this._http.put(this.baseUrl + url, body, {headers: this.requestOptions(options), observe: 'response'}));
   }
 
-  public delete(url: string, options: any): Observable<any> {
-    return (this._http.delete(this.baseUrl + url, options));
+  public delete(url: string, options?: any): Observable<any> {
+    return (this._http.delete(this.baseUrl + url, {headers: this.requestOptions(options), observe: 'response'}));
   }
 
   public patch(url: string, body: any, options?: any): Observable<any> {

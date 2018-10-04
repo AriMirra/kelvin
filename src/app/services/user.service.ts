@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
-import {ClientCredentials} from '../shared/ClientCredentials';
+import {ClientCredentials} from '../../shared/ClientCredentials';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import 'rxjs-compat/add/observable/of';

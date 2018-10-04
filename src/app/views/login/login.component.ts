@@ -2,8 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ClientCredentials} from '../../../shared/ClientCredentials';
 import { Router } from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
-import {UserService} from '../../user.service';
-import {timeout} from 'rxjs/operators';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'app-dashboard',

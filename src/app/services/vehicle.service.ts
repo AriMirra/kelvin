@@ -1,13 +1,12 @@
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import 'rxjs-compat/add/observable/of';
-import {Vehicle} from '../shared/Vehicle';
-import {VehicleCredentials} from '../shared/VehicleCredentials';
 import {HttpService} from './http.service';
-import {VehicleUpdate} from '../shared/VehicleUpdate';
+import {VehicleCredentials} from '../../shared/vehicles/VehicleCredentials';
+import {Vehicle} from '../../shared/vehicles/Vehicle';
+import {VehicleUpdate} from '../../shared/vehicles/VehicleUpdate';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +19,7 @@ export class VehicleService {
   }
 
   fetchVehicles(): Observable<Vehicle[]> {
-    return this.http.get('/vehicles')
+    return this.http.get('/vehicle')
       .pipe(
         map((response: any) => {
           return response.body;
@@ -34,7 +33,7 @@ export class VehicleService {
 
   addVehicle(vehicleCredentials: VehicleCredentials): Observable<boolean> {
     const json = vehicleCredentials.asJson();
-    return this.http.post('/vehicles', json)
+    return this.http.post('/vehicle', json)
       .pipe(
         map((response: any) => {
           return true;
@@ -48,7 +47,7 @@ export class VehicleService {
 
   updateVehicle(vehicleId: string, vehicleUpdate: VehicleUpdate) {
     const json = vehicleUpdate.asJson();
-    return this.http.put('/vehicles/' + vehicleId, json)
+    return this.http.put('/vehicle/' + vehicleId, json)
       .pipe(
         map((response: any) => {
           return true;
@@ -59,5 +58,32 @@ export class VehicleService {
         })
       );
   }
+
+  addDevice(vehicleId: string, deviceId: string): Observable<boolean> {
+    return this.http.post('/assign/vehicle/' + vehicleId, {deviceId: deviceId})
+      .pipe(
+        map((response: any) => {
+          return true;
+        }),
+        catchError(err => {
+          console.log(err);
+          return Observable.of(false);
+        })
+      );
+  }
+
+  removeDevice(vehicleId: string): Observable<boolean> {
+    return this.http.delete('/assign/vehicle/' + vehicleId)
+      .pipe(
+        map((response: any) => {
+          return true;
+        }),
+        catchError(err => {
+          console.log(err);
+          return Observable.of(false);
+        })
+      );
+  }
+
 }
 
