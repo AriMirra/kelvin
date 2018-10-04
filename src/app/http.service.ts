@@ -3,7 +3,9 @@ import {Observable} from 'rxjs/Observable';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {CookieService} from 'ngx-cookie-service';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class HttpService {
 
   private DEFAULT_HEADERS = {'Content-Type': 'application/json'}; // in content-type-interceptor
@@ -44,8 +46,8 @@ export class HttpService {
     return this._http;
   }
 
-  public get(url: string, options: any, ignoreBaseUrl?: boolean): Observable<any> {
-    return this._http.get((ignoreBaseUrl ? '' : this.baseUrl) + url, options);
+  public get(url: string, options?: any, ignoreBaseUrl?: boolean): Observable<any> {
+    return this._http.get((ignoreBaseUrl ? '' : this.baseUrl) + url, {headers: this.requestOptions(options), observe: 'response'});
   }
 
   public post(url: string, body: any, options?: any): Observable<any> {
@@ -80,5 +82,4 @@ export class HttpService {
       return new HttpHeaders(Object.assign(this.DEFAULT_HEADERS, authHeader));
     }
   }
-
 }

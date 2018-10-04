@@ -1,27 +1,24 @@
-export class Vehicle {
+export class VehicleUpdate {
 
-  public static empty(): Vehicle {
-    return new Vehicle('', '', '', 0, '', '', '');
+  public static empty(): VehicleUpdate {
+    return new VehicleUpdate('', '', 0, '', '');
   }
 
-  constructor(private id: string,
-              private ownerId: string,
+  constructor(private ownerId: string,
               private domain: string,
               private wheels: number,
               private brand: string,
-              private model: string,
-              private deviceId: string) {}
+              private model: string) {
+  }
 
 
   public asJson() {
     return {
-      id: this.id,
       ownerId: this.ownerId,
       domain: this.domain,
       wheels: this.wheels,
       brand: this.brand,
       model: this.model,
-      deviceId: this.deviceId
     };
   }
 

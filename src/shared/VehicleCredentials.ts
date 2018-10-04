@@ -1,17 +1,20 @@
 export class VehicleCredentials {
 
   public static empty(): VehicleCredentials {
-    return new VehicleCredentials('', 0, '', '');
+    return new VehicleCredentials('', '', 0, '', '');
   }
 
-  constructor(private domain: string,
+  constructor(private ownerId: string,
+              private domain: string,
               private wheels: number,
               private brand: string,
-              private model: string) {}
+              private model: string) {
+  }
 
 
   public asJson() {
     return {
+      ownerId: this.ownerId,
       domain: this.domain,
       wheels: this.wheels,
       brand: this.brand,

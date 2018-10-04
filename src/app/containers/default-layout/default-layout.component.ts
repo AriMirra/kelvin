@@ -15,7 +15,7 @@ export class DefaultLayoutComponent implements OnInit {
     public element: HTMLElement = document.body;
     private userType: UserType;
 
-  constructor(private cookieService: CookieService, private router: Router) {
+    constructor(private cookieService: CookieService, private router: Router) {
 
         this.changes = new MutationObserver((mutations) => {
             this.sidebarMinimized = document.body.classList.contains('sidebar-minimized');
@@ -25,7 +25,6 @@ export class DefaultLayoutComponent implements OnInit {
             attributes: true
         });
     }
-
     ngOnInit(): void {
         this.cookieService.set('UserType', 'admin');
         if (this.cookieService.check('UserType')) {
@@ -35,10 +34,14 @@ export class DefaultLayoutComponent implements OnInit {
         }
         this.displayNavBar();
     }
-
-  private displayNavBar() {
-    this.navItems = this.userType === UserType.ADMIN ? adminNavItems : clientNavItems;
-  }
+    logout() {
+        this.cookieService.delete('token');
+        this.cookieService.delete('UserType');
+        this.router.navigate(['']);
+    }
+    private displayNavBar() {
+        this.navItems = this.userType === UserType.ADMIN ? adminNavItems : clientNavItems;
+    }
 }
 
 export enum UserType {
