@@ -3,10 +3,10 @@ export class Device {
     return new Device('', '', '', false);
   }
 
-  constructor(private id: string,
-              private mac: string,
-              private alias: string,
-              private assigned: boolean) {}
+  constructor(public id: string,
+              public mac: string,
+              public alias: string,
+              public assigned: boolean) {}
 
 
   public asJson() {

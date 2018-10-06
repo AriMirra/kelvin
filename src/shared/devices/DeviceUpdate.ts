@@ -1,24 +1,23 @@
+import {Device} from './Device';
+
 export class DeviceUpdate {
 
   public static empty(): DeviceUpdate {
-    return new DeviceUpdate('', '', 0, '', '');
+    return new DeviceUpdate('', '');
   }
 
-  constructor(private ownerId: string,
-              private domain: string,
-              private wheels: number,
-              private brand: string,
-              private model: string) {
+  public static for(device: Device): DeviceUpdate {
+    return new DeviceUpdate(device.alias, device.mac);
+  }
+
+  constructor(public alias: string, public mac: string) {
   }
 
 
   public asJson() {
     return {
-      ownerId: this.ownerId,
-      domain: this.domain,
-      wheels: this.wheels,
-      brand: this.brand,
-      model: this.model,
+      alias: this.alias,
+      mac: this.mac
     };
   }
 

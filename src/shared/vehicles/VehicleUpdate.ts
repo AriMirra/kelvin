@@ -1,14 +1,20 @@
+import {Vehicle} from './Vehicle';
+
 export class VehicleUpdate {
 
   public static empty(): VehicleUpdate {
     return new VehicleUpdate('', '', 0, '', '');
   }
 
-  constructor(private ownerId: string,
-              private domain: string,
-              private wheels: number,
-              private brand: string,
-              private model: string) {
+  public static for(vehicle: Vehicle): VehicleUpdate {
+    return new VehicleUpdate(vehicle.ownerId, vehicle.domain, vehicle.wheels, vehicle.brand, vehicle.model);
+  }
+
+  constructor(public ownerId: string,
+              public domain: string,
+              public wheels: number,
+              public brand: string,
+              public model: string) {
   }
 
 

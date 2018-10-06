@@ -56,7 +56,7 @@ export class VehicleService {
       );
   }
 
-  updateVehicle(vehicleId: string, vehicleUpdate: VehicleUpdate) {
+  updateVehicle(vehicleId: string, vehicleUpdate: VehicleUpdate): Observable<boolean> {
     const json = vehicleUpdate.asJson();
     return this.http.put('/vehicle/' + vehicleId, json)
       .pipe(
@@ -70,7 +70,7 @@ export class VehicleService {
       );
   }
 
-  removeVehicle(vehicleId: string): Observable<boolean> {
+  deleteVehicle(vehicleId: string): Observable<boolean> {
     return this.http.delete('/vehicle/' + vehicleId)
       .pipe(
         map((response: any) => {
@@ -99,9 +99,7 @@ export class VehicleService {
   addDevice(vehicleId: string, deviceId: string): Observable<boolean> {
     return this.http.post('/assign/vehicle/' + vehicleId, {deviceId: deviceId})
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);
@@ -112,9 +110,7 @@ export class VehicleService {
   removeDevice(vehicleId: string): Observable<boolean> {
     return this.http.delete('/assign/vehicle/' + vehicleId)
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);

@@ -16,9 +16,7 @@ export class DeviceService {
   fetchDevices(): Observable<Device[]> {
     return this.http.get('/device')
       .pipe(
-        map((response: any) => {
-          return response.body;
-        }),
+        map(response => response.body),
         catchError(err => {
           console.log(err);
           return Observable.of([]);
@@ -30,9 +28,7 @@ export class DeviceService {
     const json = deviceCredentials.asJson();
     return this.http.post('/device', json)
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);
@@ -57,14 +53,23 @@ export class DeviceService {
     const json = deviceUpdate.asJson();
     return this.http.put('/device/' + deviceId, json)
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);
         })
       );
+  }
+
+  deleteDevice(deviceId: string): Observable<boolean> {
+    return this.http.delete('/device/' + deviceId)
+      .pipe(
+        map(() => true),
+        catchError(err => {
+          console.log(err);
+          return Observable.of(false);
+        })
+    );
   }
 
   // TODO: device must be unassigned
