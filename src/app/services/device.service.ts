@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {Device} from '../../shared/devices/Device';
@@ -40,9 +40,36 @@ export class DeviceService {
       );
   }
 
+  getDevice(deviceId: string): Observable<Device> {
+    return this.http.get('/device/' + deviceId)
+      .pipe(
+        map((response: any) => {
+          return response.body;
+        }),
+        catchError(err => {
+          console.log(err);
+          return Observable.of(null);
+        })
+      );
+  }
+
   updateDevice(deviceId: string, deviceUpdate: DeviceUpdate) {
     const json = deviceUpdate.asJson();
     return this.http.put('/device/' + deviceId, json)
+      .pipe(
+        map((response: any) => {
+          return true;
+        }),
+        catchError(err => {
+          console.log(err);
+          return Observable.of(false);
+        })
+      );
+  }
+
+  // TODO: device must be unassigned
+  removeDevice(deviceId: string): Observable<boolean> {
+    return this.http.delete('/device/' + deviceId)
       .pipe(
         map((response: any) => {
           return true;

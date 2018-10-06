@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {Router} from '@angular/router';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import 'rxjs-compat/add/observable/of';
@@ -7,15 +6,14 @@ import {HttpService} from './http.service';
 import {VehicleCredentials} from '../../shared/vehicles/VehicleCredentials';
 import {Vehicle} from '../../shared/vehicles/Vehicle';
 import {VehicleUpdate} from '../../shared/vehicles/VehicleUpdate';
+import {Assignation} from '../../shared/Assignation';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VehicleService {
 
-  private vehicles: Vehicle[];
-  constructor(private http: HttpService,
-              private router: Router) {
+  constructor(private http: HttpService) {
   }
 
   fetchVehicles(): Observable<Vehicle[]> {
@@ -45,6 +43,19 @@ export class VehicleService {
       );
   }
 
+  getVehicle(vehicleId: string): Observable<Vehicle> {
+    return this.http.get('/vehicle/' + vehicleId)
+      .pipe(
+        map((response: any) => {
+          return response.body;
+        }),
+        catchError(err => {
+          console.log(err);
+          return Observable.of(null);
+        })
+      );
+  }
+
   updateVehicle(vehicleId: string, vehicleUpdate: VehicleUpdate) {
     const json = vehicleUpdate.asJson();
     return this.http.put('/vehicle/' + vehicleId, json)
@@ -55,6 +66,32 @@ export class VehicleService {
         catchError(err => {
           console.log(err);
           return Observable.of(false);
+        })
+      );
+  }
+
+  removeVehicle(vehicleId: string): Observable<boolean> {
+    return this.http.delete('/vehicle/' + vehicleId)
+      .pipe(
+        map((response: any) => {
+          return true;
+        }),
+        catchError(err => {
+          console.log(err);
+          return Observable.of(false);
+        })
+      );
+  }
+
+  fetchDeviceAssignations(): Observable<Assignation> {
+    return this.http.get('/assign')
+      .pipe(
+        map( (response: any) => {
+          return response.body;
+        }),
+        catchError( err => {
+          console.log(err);
+          return Observable.of(null);
         })
       );
   }
@@ -81,6 +118,19 @@ export class VehicleService {
         catchError(err => {
           console.log(err);
           return Observable.of(false);
+        })
+      );
+  }
+
+  getUserVehicles(userId: string): Observable<Vehicle[]> {
+    return this.http.get('/vehicle/owner/' + userId)
+      .pipe(
+        map( (response: any) => {
+          return response.body;
+        }),
+        catchError( err => {
+          console.log(err);
+          return Observable.of(null);
         })
       );
   }

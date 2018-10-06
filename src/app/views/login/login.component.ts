@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ClientCredentials} from '../../../shared/ClientCredentials';
 import { Router } from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
 import {UserService} from '../../services/user.service';
+import {ClientCredentials} from '../../../shared/users/ClientCredentials';
 
 @Component({
   selector: 'app-dashboard',
