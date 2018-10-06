@@ -3,8 +3,8 @@ export class DeviceCredentials {
     return new DeviceCredentials( '', '');
   }
 
-  constructor(private mac: string,
-              private alias: string) {}
+  constructor(public mac: string,
+              public alias: string) {}
 
   public asJson() {
     return {
