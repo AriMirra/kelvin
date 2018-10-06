@@ -6,9 +6,6 @@
                     <div class="form-group row">
                         <label class="col-10 col-form-label">
                             <strong>Agregar nuevo vehículo</strong>
-                            <!--
-                            <small> escriba la patente en las formas "AA-000-AA" o "AAA-000"</small>
-                            -->
                         </label>
                         <div class="col-2">
                             <button type="submit"
@@ -25,7 +22,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
-                            <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                            <form (submit)="submitVehicle()" class="form-horizontal">
                                 <div class="form-group row">
                                     <label class="col-lg-4 col-form-label" for="new-vehicle-license-plate">Patente del Vehículo</label>
                                     <div class="col-lg-8">
@@ -34,6 +31,8 @@
                                                name="new-vehicle-license-plate"
                                                class="form-control"
                                                placeholder="Ejemplo: DSL-190 o AB-918-DX"
+                                               required
+                                               [(ngModel)]="newVehicle.domain"
                                         >
                                         <span class="help-block">
                                             <small>
@@ -51,6 +50,8 @@
                                                name="new-vehicle-brand"
                                                class="form-control"
                                                placeholder="Ejemplo: Peugeot"
+                                               required
+                                               [(ngModel)]="newVehicle.brand"
                                         >
                                     </div>
                                 </div>
@@ -62,6 +63,21 @@
                                                name="new-vehicle-model"
                                                class="form-control"
                                                placeholder="Ejemplo: Partner"
+                                               [(ngModel)]="newVehicle.model"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-md-3 col-form-label" for="new-vehicle-wheels">Ruedas</label>
+                                    <div class="col-md-9">
+                                        <input type="number"
+                                               id="new-vehicle-wheels"
+                                               name="new-vehicle-wheels"
+                                               class="form-control"
+                                               placeholder="2"
+                                               min="2"
+                                               max="10"
+                                               [(ngModel)]="newVehicle.wheels"
                                         >
                                     </div>
                                 </div>
@@ -71,29 +87,28 @@
                                         <select id="new-vehicle-client"
                                                 name="new-vehicle-client"
                                                 class="form-control"
+                                                required
+                                                [(ngModel)]="newVehicle.ownerId"
                                         >
-                                            <option value="0">Seleccione cliente</option>
-                                            <option value="1">Option #1</option>
-                                            <option value="2">Option #2</option>
-                                            <option value="3">Option #3</option>
+                                            <option [value]="''" selected>Seleccione un cliente</option>
+                                            <option *ngFor="let client of clients" [value]="client.id">{{client.lastName + ', ' + client.name}}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-vehicle-device">Dispositivo</label>
-                                    <div class="col-lg-8">
-                                        <select id="new-vehicle-device"
-                                                name="new-vehicle-device"
-                                                class="form-control"
-                                        >
-                                            <option value="0">Seleccione dispositivo</option>
-                                            <option value="1">Option #1</option>
-                                            <option value="2">Option #2</option>
-                                            <option value="3">Option #3</option>
-                                        </select>
+                                    <div class="col-2 offset-10">
+                                        <button type="submit" class="btn btn-primary float-right w-100">OK</button>
                                     </div>
                                 </div>
                             </form>
+                            <div *ngIf="showSubmitMsg">
+                                <div class="alert alert-success" role="alert" *ngIf="successfulAdd">
+                                    Vehiculo agregado exitosamente.
+                                </div>
+                                <div class="alert alert-warning" role="alert" *ngIf="!successfulAdd">
+                                    Ha ocurrido un problema para agregar el vehículo.
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -107,7 +122,7 @@
                     <div class="form-group row">
                         <label class="col-6 col-form-label">
                             <strong>Todos los vehículos |</strong>
-                            <small *ngIf="vehicleWithoutDevice && vehicleWithoutClient">
+                            <!--<small *ngIf="vehicleWithoutDevice && vehicleWithoutClient">
                                 <i class="ml-2 mr-1 fa fa-warning"></i>
                                 tiene vehículos sin dispositivos y clientes asignados
                             </small>
@@ -118,7 +133,7 @@
                             <small *ngIf="!vehicleWithoutDevice && vehicleWithoutClient">
                                 <i class="ml-2 mr-1 fa fa-warning"></i>
                                 tiene vehículos sin clientes asignados
-                            </small>
+                            </small>-->
                         </label>
                         <div class="col-6">
                             <input type="text"
@@ -126,6 +141,7 @@
                                    name="search-vehicle"
                                    class="form-control"
                                    placeholder="Buscar vehículo"
+                                   [(ngModel)]="vehicleSearch"
                             >
                         </div>
                     </div>
@@ -133,32 +149,35 @@
             </div>
             <div class="card-body" [ngClass]="{'h-0': addingVehicle}">
                 <table class="table">
-                    <!--
                     <thead>
                     <tr>
-                        <th>Username</th>
-                        <th>Date registered</th>
-                        <th>Role</th>
-                        <th>Status</th>
+                        <th>Patente</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Cliente</th>
+                        <th>Dispositivo</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
                     </tr>
                     </thead>
-                    -->
                     <tbody>
-                    <tr>
-                        <td>Patente</td>
-                        <td>Marca</td>
-                        <td>Modelo</td>
+                    <tr *ngFor="let vehicle of vehicles.filter(vehicleSearchFilter)">
+                        <td>{{vehicle.domain}}</td>
+                        <td>{{vehicle.brand}}</td>
+                        <td>{{vehicle.model}}</td>
                         <td>
-                            <a class="badge badge-success" data-toggle="modal">Nombre de Cliente</a>
+                            <a class="badge badge-success" data-toggle="modal" *ngIf="vehicle.hasOwner()">{{vehicle.ownerId}}</a>
+                            <a class="badge badge-warning"  *ngIf="!vehicle.hasOwner()">Sin Cliente Asociado</a>
                         </td>
                         <td>
-                            <a class="badge badge-success" data-toggle="modal">Alias de Dispositivo</a>
+                            <a class="badge badge-success" data-toggle="modal" *ngIf="vehicle.hasDevice()">{{vehicle.deviceId}}</a>
+                            <a class="badge badge-warning" *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
                         </td>
                         <td>
-                            <a class="badge badge-primary" data-toggle="modal" (click)="largeModal.show()">Editar</a>
+                            <a class="badge badge-primary" data-toggle="modal" (click)="largeModal.show(); startVehicleEdit(vehicle)">Editar</a>
                         </td>
                         <td>
-                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
+                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show(); startVehicleDelete(vehicle.id)">Eliminar</a>
                         </td>
                     </tr>
                     <tr>
@@ -225,16 +244,97 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h4 class="modal-title">Modal title</h4>
-                <button type="button" class="close" (click)="largeModal.hide()" aria-label="Close">
+                <button type="button" class="close" (click)="largeModal.hide(); cancelEdit()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <p>One fine body&hellip;</p>
+                <form class="form-horizontal">
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="edit-vehicle-license-plate">Patente del Vehículo</label>
+                        <div class="col-md-9">
+                            <input type="text"
+                                   id="edit-vehicle-license-plate"
+                                   name="edit-vehicle-license-plate"
+                                   class="form-control"
+                                   placeholder="Ejemplo: DSL-190 o AB-918-DX"
+                                   required
+                                   [(ngModel)]="editingVehicle.domain"
+                            >
+                            <span class="help-block">
+                                            <small>
+                                                <i class="ml-2 mr-1 fa fa-info-circle"></i>
+                                                escriba la patente en las formas "AA-000-AA" o "AAA-000"
+                                            </small>
+                                        </span>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="edit-vehicle-brand">Marca</label>
+                        <div class="col-md-9">
+                            <input type="text"
+                                   id="edit-vehicle-brand"
+                                   name="edit-vehicle-brand"
+                                   class="form-control"
+                                   placeholder="Ejemplo: Peugeot"
+                                   required
+                                   [(ngModel)]="editingVehicle.brand"
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="edit-vehicle-model">Modelo</label>
+                        <div class="col-md-9">
+                            <input type="text"
+                                   id="edit-vehicle-model"
+                                   name="edit-vehicle-model"
+                                   class="form-control"
+                                   placeholder="Ejemplo: Partner"
+                                   [(ngModel)]="editingVehicle.model"
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="edit-vehicle-wheels">Ruedas</label>
+                        <div class="col-md-9">
+                            <input type="number"
+                                   id="edit-vehicle-wheels"
+                                   name="edit-vehicle-wheels"
+                                   class="form-control"
+                                   placeholder="2"
+                                   min="2"
+                                   max="10"
+                                   [(ngModel)]="editingVehicle.wheels"
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label" for="edit-vehicle-client">Cliente</label>
+                        <div class="col-md-9">
+                            <select id="edit-vehicle-client"
+                                    name="edit-vehicle-client"
+                                    class="form-control"
+                                    required
+                                    [(ngModel)]="editingVehicle.ownerId"
+                            >
+                                <option [value]="''" selected>Seleccione un cliente</option>
+                                <option *ngFor="let client of clients" [value]="client.id">{{client.lastName + ', ' + client.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <div *ngIf="showEditMsg">
+                    <div class="alert alert-success" role="alert" *ngIf="successfulEdit">
+                        Vehiculo editado exitosamente.
+                    </div>
+                    <div class="alert alert-warning" role="alert" *ngIf="!successfulEdit">
+                        Ha ocurrido un problema para editar el vehículo.
+                    </div>
+                </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="largeModal.hide()">Close</button>
-                <button type="button" class="btn btn-primary">Guardar Cambios</button>
+                <button type="button" class="btn btn-secondary" (click)="largeModal.hide(); cancelEdit()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="editVehicle()">Guardar Cambios</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -254,8 +354,8 @@
                 <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo vehículo.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide()">Regresar</button>
-                <button type="button" class="btn btn-danger">Eliminar</button>
+                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar</button>
+                <button type="button" class="btn btn-danger" (click)="deleteVehicle()">Eliminar</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

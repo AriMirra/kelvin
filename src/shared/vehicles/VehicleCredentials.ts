@@ -1,14 +1,14 @@
 export class VehicleCredentials {
 
   public static empty(): VehicleCredentials {
-    return new VehicleCredentials('', '', 0, '', '');
+    return new VehicleCredentials('', '', 2, '', '');
   }
 
-  constructor(private ownerId: string,
-              private domain: string,
-              private wheels: number,
-              private brand: string,
-              private model: string) {
+  constructor(public ownerId: string,
+              public domain: string,
+              public wheels: number,
+              public brand: string,
+              public model: string) {
   }
 
 

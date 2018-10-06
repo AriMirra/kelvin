@@ -4,14 +4,13 @@ export class Vehicle {
     return new Vehicle('', '', '', 0, '', '', '');
   }
 
-  constructor(private id: string,
-              private ownerId: string,
-              private domain: string,
-              private wheels: number,
-              private brand: string,
-              private model: string,
-              private deviceId: string) {}
-
+  constructor(public id: string,
+              public ownerId: string,
+              public domain: string,
+              public wheels: number,
+              public brand: string,
+              public model: string,
+              public deviceId: string) {}
 
   public asJson() {
     return {
@@ -29,4 +28,11 @@ export class Vehicle {
     return JSON.stringify(this.asJson());
   }
 
+  public hasOwner(): boolean {
+    return this.ownerId !== undefined && this.ownerId !== '';
+  }
+
+  public hasDevice(): boolean {
+    return this.deviceId !== undefined && this.deviceId !== '';
+  }
 }
