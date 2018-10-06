@@ -37,7 +37,7 @@ export class DefaultLayoutComponent implements OnInit {
     logout() {
         this.cookieService.delete('token');
         this.cookieService.delete('UserType');
-        this.router.navigate(['']);
+        this.router.navigate(['']).then();
     }
     private displayNavBar() {
         this.navItems = this.userType === UserType.ADMIN ? adminNavItems : clientNavItems;

@@ -1,8 +1,189 @@
 <div class="animated fadeIn">
     <div class="row">
-        <div class="col-12">
+        <div class="col-4">
             <div class="card">
-                <div id="map" style="height: calc(100vh - 177px)"></div>
+                <div class="card-header not-clickable">
+                    <form>
+                        <div class="form-group row">
+                            <label class="col-10 col-form-label">
+                                <strong>Generar recorrido</strong>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" for="new-route-client">Cliente</label>
+                                        <div class="col-lg-8">
+                                            <select id="new-route-client"
+                                                    name="new-route-client"
+                                                    class="form-control"
+                                            >
+                                                <option value="0">Seleccione cliente</option>
+                                                <option value="1">Option #1</option>
+                                                <option value="2">Option #2</option>
+                                                <option value="3">Option #3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" for="new-route-vehicle">Vehículo</label>
+                                        <div class="col-lg-8">
+                                            <select id="new-route-vehicle"
+                                                    name="new-route-vehicle"
+                                                    class="form-control"
+                                            >
+                                                <option value="0">Todos</option>
+                                                <option value="1">Option #1</option>
+                                                <option value="2">Option #2</option>
+                                                <option value="3">Option #3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label"
+                                               for="new-route-device">Dispositivo</label>
+                                        <div class="col-lg-8">
+                                            <select id="new-route-device"
+                                                    name="new-route-device"
+                                                    class="form-control"
+                                            >
+                                                <option value="0">Todos</option>
+                                                <option value="1">Option #1</option>
+                                                <option value="2">Option #2</option>
+                                                <option value="3">Option #3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label"
+                                               for="new-route-lower-time-limit">Desde</label>
+                                        <div class="col-lg-8">
+                                            <div class="row">
+                                                <div class="col-12 mb-3">
+                                                    <input type="date"
+                                                           id="new-route-lower-date-limit"
+                                                           name="new-route-lower-date-limit"
+                                                           class="form-control"
+                                                    >
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="time"
+                                                           id="new-route-lower-time-limit"
+                                                           name="new-route-lower-time-limit"
+                                                           class="form-control"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label"
+                                               for="new-route-upper-time-limit">Hasta</label>
+                                        <div class="col-lg-8">
+                                            <div class="row">
+                                                <div class="col-12 mb-3">
+                                                    <input type="date"
+                                                           id="new-route-upper-date-limit"
+                                                           name="new-route-upper-date-limit"
+                                                           class="form-control"
+                                                    >
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="time"
+                                                           id="new-route-upper-time-limit"
+                                                           name="new-route-upper-time-limit"
+                                                           class="form-control"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-form-label" for="new-route-lower-temperature-limit">Temperatura</label>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-12 mb-3">
+                                                    <input type="number"
+                                                           min="0"
+                                                           max="49"
+                                                           id="new-route-lower-temperature-limit"
+                                                           name="new-route-lower-temperature-limit"
+                                                           class="form-control"
+                                                           placeholder="Min (ºC)"
+                                                    >
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="number"
+                                                           min="1"
+                                                           max="50"
+                                                           id="new-route-upper-temperature-limit"
+                                                           name="new-route-upper-temperature-limit"
+                                                           class="form-control"
+                                                           placeholder="Máx (ºC)"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-8 col-form-label" for="new-route-moisture">Incluir
+                                            Humedad</label>
+                                        <div class="col-4">
+                                            <input type="checkbox"
+                                                   id="new-route-moisture"
+                                                   name="new-route-moisture"
+                                                   class="text-center"
+                                            >
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-8 col-form-label" for="new-route-light">Incluir Apertura de
+                                            Contenedor</label>
+                                        <div class="col-4">
+                                            <input type="checkbox"
+                                                   id="new-route-light"
+                                                   name="new-route-light"
+                                                   class="text-center"
+                                            >
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-danger"><strong>Reset</strong></button>
+                            <div class="float-right">
+                                <button class="btn btn-primary mx-2"><strong>Guardar</strong></button>
+                                <button class="btn btn-primary"><strong>Buscar</strong></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="map-card">
+                <div id="map" style="height: 100%;"></div>
+            </div>
+            <div class="card mb-0">
+                <div class="card-header not-clickable">
+                    <form>
+                        <div class="form-group row">
+                            <label class="col-10 col-form-label">
+                                <strong>Referencia:</strong>
+                            </label>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

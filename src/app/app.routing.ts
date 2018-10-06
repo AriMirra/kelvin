@@ -79,11 +79,11 @@ export const routes: Routes = [
       {
         path: 'routes',
         component: RoutesComponent
-      }, /*
+      },
       {
         path: 'clients',
         component: ClientsComponent
-      }, */
+      },
       {
         path: 'vehicles',
         component: VehiclesComponent

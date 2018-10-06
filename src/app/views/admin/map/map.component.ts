@@ -3,7 +3,8 @@ import { getStyle, hexToRgba } from '@coreui/coreui/dist/js/coreui-utilities';
 import L from 'leaflet';
 
 @Component({
-    templateUrl: 'map.component.html'
+    templateUrl: 'map.component.html',
+    styleUrls: ['./map.component.scss']
 })
 export class AdminMapComponent implements OnInit {
     constructor() {}
@@ -14,7 +15,5 @@ export class AdminMapComponent implements OnInit {
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
         L.marker([51.5, -0.09]).addTo(map)
-            .bindPopup('A pretty CSS3 popup.<br> Easily customizable.')
-            .openPopup();
     }
 }
