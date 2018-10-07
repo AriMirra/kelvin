@@ -28,7 +28,7 @@ export class DefaultLayoutComponent implements OnInit {
     ngOnInit(): void {
         this.cookieService.set('UserType', 'admin');
         if (this.cookieService.check('UserType')) {
-            this.userType = (this.cookieService.get('UserType') === 'admin') ? UserType.ADMIN : UserType.CLIENT;
+            this.userType = (this.cookieService.get('UserType') === 'ADMIN') ? UserType.ADMIN : UserType.CLIENT;
         } else {
             throw Error('cookie UserType not found');
         }
