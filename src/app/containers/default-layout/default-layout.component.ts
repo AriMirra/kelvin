@@ -26,7 +26,6 @@ export class DefaultLayoutComponent implements OnInit {
         });
     }
     ngOnInit(): void {
-        this.cookieService.set('UserType', 'admin');
         if (this.cookieService.check('UserType')) {
             this.userType = (this.cookieService.get('UserType') === 'ADMIN') ? UserType.ADMIN : UserType.CLIENT;
         } else {
@@ -34,11 +33,13 @@ export class DefaultLayoutComponent implements OnInit {
         }
         this.displayNavBar();
     }
+
     logout() {
         this.cookieService.delete('token');
         this.cookieService.delete('UserType');
         this.router.navigate(['']).then();
     }
+
     private displayNavBar() {
         this.navItems = this.userType === UserType.ADMIN ? adminNavItems : clientNavItems;
     }
