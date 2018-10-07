@@ -13,7 +13,6 @@ export class Route {
               public vampire: boolean) {
   }
 
-
   public asJson() {
     return {
       id: this.id,
