@@ -29,10 +29,10 @@ export class Vehicle {
   }
 
   public hasOwner(): boolean {
-    return this.ownerId !== undefined && this.ownerId !== '';
+    return this.ownerId && this.ownerId !== '';
   }
 
   public hasDevice(): boolean {
-    return this.deviceId !== undefined && this.deviceId !== '';
+    return this.deviceId && this.deviceId !== '';
   }
 }

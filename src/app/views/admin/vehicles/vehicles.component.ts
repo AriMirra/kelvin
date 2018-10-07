@@ -5,6 +5,9 @@ import {VehicleCredentials} from '../../../../shared/vehicles/VehicleCredentials
 import {UserService} from '../../../services/user.service';
 import {Vehicle} from '../../../../shared/vehicles/Vehicle';
 import {User} from '../../../../shared/users/User';
+import {of, forkJoin} from 'rxjs';
+import {DeviceService} from '../../../services/device.service';
+import {Device} from '../../../../shared/devices/Device';
 
 @Component({
   selector: 'app-vehicles',
@@ -19,6 +22,9 @@ export class VehiclesComponent implements OnInit {
 
   clients: User[] = [];
   vehicles: Vehicle[] = [];
+  devices: Device[] = [];
+  clientIdMap: Map<string, User> = new Map<string, User>();
+  deviceIdMap: Map<string, Device> = new Map<string, Device>();
 
   vehicleSearch = '';
 
@@ -35,20 +41,40 @@ export class VehiclesComponent implements OnInit {
   successfulDelete: boolean;
   showDeleteMsg = false;
 
-  constructor(private vehicleService: VehicleService, private clientService: UserService) {
-    this.vehicleService.fetchVehicles().subscribe(vehicles => {
+  constructor(private vehicleService: VehicleService, private clientService: UserService, private deviceService: DeviceService) {
+    const futureVehicles = this.vehicleService.fetchVehicles();
+    const futureClients = this.clientService.fetchUsers();
+    const futureDevices = this.deviceService.fetchDevices();
+    forkJoin(futureClients, futureVehicles, futureDevices).subscribe(([clients, vehicles, devices]) => {
+      this.clients = clients.filter(user => user.type === 'USER');
       this.vehicles = vehicles;
+      this.devices = devices;
+
+      this.vehicles.map(v => {
+        const client = this.clients.find(c => c.id === v.ownerId);
+        const device = this.devices.find(d => d.id === v.deviceId);
+        const tuple: [string, User, Device] = [v.id, client, device];
+        return tuple;
+      }).forEach(([id, client, device]) => {
+        this.clientIdMap.set(id, client);
+        this.deviceIdMap.set(id, device);
+      });
+
     });
-    this.clientService.fetchUsers().subscribe(users => {
-        this.clients = users.filter(user => user.type === 'USER');
-      }
-    );
     this.addingVehicle = false;
     this.vehicleWithoutDevice = true; // TODO boolean depends on the list of vehicles.
     this.vehicleWithoutClient = true; // TODO boolean depends on the list of vehicles.
   }
 
   ngOnInit() {
+  }
+
+  getVehicleOwner(vehicle: Vehicle): User {
+    return this.clientIdMap.get(vehicle.id);
+  }
+
+  getVehicleDevice(vehicle: Vehicle): Device {
+    return this.deviceIdMap.get(vehicle.id);
   }
 
   // Add

@@ -26,4 +26,8 @@ export class User {
     return JSON.stringify(this.asJson());
   }
 
+  public getFullName(): string {
+    return `${this.lastName}, ${this.name}`;
+  }
+
 }
