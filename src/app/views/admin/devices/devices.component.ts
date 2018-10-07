@@ -4,6 +4,7 @@ import {Device} from '../../../../shared/devices/Device';
 import {DeviceCredentials} from '../../../../shared/devices/DeviceCredentials';
 import {DeviceUpdate} from '../../../../shared/devices/DeviceUpdate';
 import {DeviceService} from '../../../services/device.service';
+import {Vehicle} from '../../../../shared/vehicles/Vehicle';
 
 @Component({
   selector: 'app-devices',
@@ -33,6 +34,9 @@ export class DevicesComponent implements OnInit {
   showDeleteMsg = false;
 
   constructor(private deviceService: DeviceService, private clientService: UserService) {
+    this.deviceService.fetchDevices().subscribe(devices => {
+      this.devices = devices;
+    });
     this.addingDevice = false;
   }
 
@@ -99,10 +103,14 @@ export class DevicesComponent implements OnInit {
 
   // Search
 
+  filteredDevices(): Device[] {
+    return this.devices.filter(d => this.deviceSearchFilter(d));
+  }
+
   deviceSearchFilter(device: Device): boolean {
     return !![device.alias, device.mac]
-      .map(e => e.toLowerCase())
-      .find(e => e.includes(this.deviceSearch));
+        .map(e => e.toLowerCase())
+        .find(e => e.includes(this.deviceSearch));
   }
 
 }

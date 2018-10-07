@@ -24,7 +24,7 @@ export const adminNavItems = [
     },
     {
         name: 'Clientes',
-        url: '/admin/clients',
+        url: '/admin/users',
         icon: 'icon-user'
     },
     {

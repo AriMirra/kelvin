@@ -23,7 +23,7 @@ export class UserService {
     const json = clientCredentials.asJson();
     return this.http.post('/auth', json)
       .pipe(
-        map((response: any) => {
+        map((response) => {
           this.cookieService.set('token', response.body.token);
           console.log(response.body.token);
           return true;
@@ -38,8 +38,8 @@ export class UserService {
   fetchUsers(): Observable<User[]> {
     return this.http.get('/user')
       .pipe(
-        map((response: any) => {
-          return response.body;
+        map((response) => {
+          return response.body.map(a => Object.assign(User.empty(), a));
         }),
         catchError(err => {
           console.log(err);
@@ -50,11 +50,10 @@ export class UserService {
 
   addUser(userCredentials: UserCredentials): Observable<boolean> {
     const json = userCredentials.asJson();
+    console.log(json);
     return this.http.post('/user', json)
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);
@@ -65,8 +64,8 @@ export class UserService {
   getUser(userId: string): Observable<User> {
     return this.http.get('/user/' + userId)
       .pipe(
-        map((response: any) => {
-          return response.body;
+        map((response) => {
+          return Object.assign(User.empty(), response.body);
         }),
         catchError(err => {
           console.log(err);
@@ -78,7 +77,7 @@ export class UserService {
   getUserId(): Observable<String> {
     return this.http.get('/user/me')
       .pipe(
-        map((response: any) => {
+        map((response) => {
           return response.body.id;
         }),
         catchError(err => {
@@ -91,12 +90,23 @@ export class UserService {
   getLoggedUser(): Observable<User> {
     return this.http.get('/user/me')
       .pipe(
-        map((response: any) => {
-          return response.body;
+        map((response) => {
+          return Object.assign(User.empty(), response.body);
         }),
         catchError(err => {
           console.log(err);
           return null;
+        })
+      );
+  }
+
+  deleteUser(userId: string): Observable<boolean> {
+    return this.http.delete('/user/' + userId)
+      .pipe(
+        map(() => true),
+        catchError(err => {
+          console.log(err);
+          return Observable.of(false);
         })
       );
   }

@@ -18,7 +18,7 @@
                     </div>
                 </form>
             </div>
-            <div class="card-body" [ngClass]="{'h-0': !addingVehicle}">
+            <div class="card-body h-0" [ngStyle]="addingVehicle? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}"> <!-- [ngClass]="{'open': addingVehicle}"-->
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
@@ -147,7 +147,7 @@
                     </div>
                 </form>
             </div>
-            <div class="card-body" [ngClass]="{'h-0': addingVehicle}">
+            <div class="card-body open" [ngClass]="{'h-0': addingVehicle}"> <!--[ngClass]="{'h-0': addingVehicle}"-->
                 <table class="table">
                     <thead>
                     <tr>
@@ -161,7 +161,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let vehicle of vehicles.filter(vehicleSearchFilter)">
+                    <tr *ngFor="let vehicle of filteredVehicles()">
                         <td>{{vehicle.domain}}</td>
                         <td>{{vehicle.brand}}</td>
                         <td>{{vehicle.model}}</td>

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {CookieService} from 'ngx-cookie-service';
 
 @Injectable({
@@ -46,36 +46,36 @@ export class HttpService {
     return this._http;
   }
 
-  public get(url: string, options?: any, ignoreBaseUrl?: boolean): Observable<any> {
+  public get(url: string, options?: any, ignoreBaseUrl?: boolean): Observable<HttpResponse<any>> {
     return this._http.get((ignoreBaseUrl ? '' : this.baseUrl) + url, {headers: this.requestOptions(options), observe: 'response'});
   }
 
-  public post(url: string, body: any, options?: any): Observable<any> {
+  public post(url: string, body: any, options?: any): Observable<HttpResponse<any>> {
     return (this._http.post(this.baseUrl + url, body, {headers: this.requestOptions(options), observe: 'response'}));
   }
 
-  public put(url: string, body: any, options?: any): Observable<any> {
+  public put(url: string, body: any, options?: any): Observable<HttpResponse<any>> {
     return (this._http.put(this.baseUrl + url, body, {headers: this.requestOptions(options), observe: 'response'}));
   }
 
-  public delete(url: string, options?: any): Observable<any> {
+  public delete(url: string, options?: any): Observable<HttpResponse<any>> {
     return (this._http.delete(this.baseUrl + url, {headers: this.requestOptions(options), observe: 'response'}));
   }
 
-  public patch(url: string, body: any, options?: any): Observable<any> {
+  public patch(url: string, body: any, options?: any): Observable<HttpResponse<any>> {
     return (this._http.patch(this.baseUrl + url, body, {headers: this.requestOptions(options), observe: 'response'}));
   }
 
-  public head(url: string, options?: any): Observable<any> {
+  public head(url: string, options?: any): Observable<HttpResponse<any>> {
     return (this._http.head(this.baseUrl + url, {headers: this.requestOptions(options), observe: 'response'}));
   }
 
-  public options(url: string, options?: any): Observable<any> {
+  public options(url: string, options?: any): Observable<HttpResponse<any>> {
     return (this._http.options(this.baseUrl + url, {headers: this.requestOptions(options), observe: 'response'}));
   }
 
   private requestOptions(options?: any) {
-    const authHeader = {Authorization: this.authToken};
+    const authHeader = {Authorization: `Bearer ${this.authToken}`};
     if (options) {
       return new HttpHeaders(Object.assign(options, authHeader));
     } else {

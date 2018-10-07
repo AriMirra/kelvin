@@ -19,8 +19,8 @@ export class VehicleService {
   fetchVehicles(): Observable<Vehicle[]> {
     return this.http.get('/vehicle')
       .pipe(
-        map((response: any) => {
-          return response.body;
+        map((response) => {
+          return response.body.map(a => Object.assign(Vehicle.empty(), a));
         }),
         catchError(err => {
           console.log(err);
@@ -33,9 +33,7 @@ export class VehicleService {
     const json = vehicleCredentials.asJson();
     return this.http.post('/vehicle', json)
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);
@@ -46,8 +44,8 @@ export class VehicleService {
   getVehicle(vehicleId: string): Observable<Vehicle> {
     return this.http.get('/vehicle/' + vehicleId)
       .pipe(
-        map((response: any) => {
-          return response.body;
+        map((response) => {
+          return Object.assign(Vehicle.empty(), response.body);
         }),
         catchError(err => {
           console.log(err);
@@ -60,9 +58,7 @@ export class VehicleService {
     const json = vehicleUpdate.asJson();
     return this.http.put('/vehicle/' + vehicleId, json)
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);
@@ -73,9 +69,7 @@ export class VehicleService {
   deleteVehicle(vehicleId: string): Observable<boolean> {
     return this.http.delete('/vehicle/' + vehicleId)
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);
@@ -86,8 +80,8 @@ export class VehicleService {
   fetchDeviceAssignations(): Observable<Assignation> {
     return this.http.get('/assign')
       .pipe(
-        map( (response: any) => {
-          return response.body;
+        map( (response) => {
+          return Object.assign(Assignation.empty(), response.body);
         }),
         catchError( err => {
           console.log(err);
@@ -121,8 +115,8 @@ export class VehicleService {
   getUserVehicles(userId: string): Observable<Vehicle[]> {
     return this.http.get('/vehicle/owner/' + userId)
       .pipe(
-        map( (response: any) => {
-          return response.body;
+        map((response) => {
+          return response.body.map(a => Object.assign(Vehicle.empty(), a));
         }),
         catchError( err => {
           console.log(err);

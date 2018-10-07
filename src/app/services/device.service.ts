@@ -5,6 +5,8 @@ import {Device} from '../../shared/devices/Device';
 import {HttpService} from './http.service';
 import {DeviceCredentials} from '../../shared/devices/DeviceCredentials';
 import {DeviceUpdate} from '../../shared/devices/DeviceUpdate';
+import {Product} from '../../shared/products/Product';
+import {Route} from '../../shared/routes/Route';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,9 @@ export class DeviceService {
   fetchDevices(): Observable<Device[]> {
     return this.http.get('/device')
       .pipe(
-        map(response => response.body),
+        map((response) => {
+          return response.body.map(a => Object.assign(Device.empty(), a));
+        }),
         catchError(err => {
           console.log(err);
           return Observable.of([]);
@@ -39,8 +43,8 @@ export class DeviceService {
   getDevice(deviceId: string): Observable<Device> {
     return this.http.get('/device/' + deviceId)
       .pipe(
-        map((response: any) => {
-          return response.body;
+        map((response) => {
+          return Object.assign(Device.empty(), response.body);
         }),
         catchError(err => {
           console.log(err);
@@ -76,9 +80,7 @@ export class DeviceService {
   removeDevice(deviceId: string): Observable<boolean> {
     return this.http.delete('/device/' + deviceId)
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);

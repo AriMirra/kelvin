@@ -8,9 +8,9 @@ import {P500Component} from './views/error/500.component';
 import {LoginComponent} from './views/login/login.component';
 import {AdminMapComponent} from './views/admin/map/map.component';
 import {RoutesComponent} from './views/admin/routes/routes.component';
-import {ClientsComponent} from './views/admin/clients/clients.component';
 import {VehiclesComponent} from './views/admin/vehicles/vehicles.component';
 import {DevicesComponent} from './views/admin/devices/devices.component';
+import {UsersComponent} from './views/admin/users/users.component';
 
 export const routes: Routes = [
   /*
@@ -81,8 +81,8 @@ export const routes: Routes = [
         component: RoutesComponent
       },
       {
-        path: 'clients',
-        component: ClientsComponent
+        path: 'users',
+        component: UsersComponent
       },
       {
         path: 'vehicles',

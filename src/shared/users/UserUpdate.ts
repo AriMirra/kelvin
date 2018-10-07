@@ -1,14 +1,21 @@
-export class UserCredentials {
+import {User} from './User';
 
-  public static empty(): UserCredentials {
-    return new UserCredentials( '', '', '', '', 'USER');
+export class UserUpdate {
+
+  public static empty(): UserUpdate {
+    return new UserUpdate('', '', '', '');
+  }
+
+  public static for(user: User): UserUpdate {
+    return new UserUpdate(user.username, user.password, user.name, user.lastName);
   }
 
   constructor(public username: string,
               public password: string,
               public name: string,
-              public lastName: string,
-              public type: string) {}
+              public lastName: string
+  ) {}
+
 
   public asJson() {
     return {
@@ -16,7 +23,6 @@ export class UserCredentials {
       password: this.password,
       name: this.name,
       lastName: this.lastName,
-      type: this.type
     };
   }
 

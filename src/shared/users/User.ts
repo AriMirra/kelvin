@@ -4,12 +4,12 @@ export class User {
     return new User('', '', '', '', '', '');
   }
 
-  constructor(private id: string,
-              private username: string,
-              private password: string,
-              private name: string,
-              private lastName: string,
-              private type: string) {}
+  constructor(public id: string,
+              public username: string,
+              public password: string,
+              public name: string,
+              public lastName: string,
+              public type: string) {}
 
   public asJson() {
     return {

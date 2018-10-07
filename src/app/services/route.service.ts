@@ -4,6 +4,7 @@ import {catchError, map} from 'rxjs/operators';
 import {HttpService} from './http.service';
 import {Route} from '../../shared/routes/Route';
 import {RouteCredentials} from '../../shared/routes/RouteCredentials';
+import {User} from '../../shared/users/User';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class RouteService {
   fetchRoutes(): Observable<Route[]> {
     return this.http.get('/route')
       .pipe(
-        map((response: any) => {
-          return response.body;
+        map((response) => {
+          return response.body.map(a => Object.assign(Route.empty(), a));
         }),
         catchError(err => {
           console.log(err);
@@ -28,8 +29,8 @@ export class RouteService {
   getUserRoutes(): Observable<Route[]> {
     return this.http.get('/route/user')
       .pipe(
-        map((response: any) => {
-          return response.body;
+        map((response) => {
+          return response.body.map(a => Object.assign(Route.empty(), a));
         }),
         catchError(err => {
           console.log(err);
@@ -42,9 +43,7 @@ export class RouteService {
     const json = routeCredentials.asJson();
     return this.http.post('/route', json)
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);
@@ -55,8 +54,8 @@ export class RouteService {
   getRoute(routeId: string): Observable<Route> {
     return this.http.get('/route/' + routeId)
       .pipe(
-        map((response: any) => {
-          return response.body;
+        map((response) => {
+          return Object.assign(Route.empty(), response.body);
         }),
         catchError(err => {
           console.log(err);
@@ -69,9 +68,7 @@ export class RouteService {
     const json = routeCredentials.asJson();
     return this.http.put('/route/' + routeId, json)
       .pipe(
-        map((response: any) => {
-          return true;
-        }),
+        map(() => true),
         catchError(err => {
           console.log(err);
           return Observable.of(false);
