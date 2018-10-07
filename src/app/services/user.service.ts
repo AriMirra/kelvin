@@ -25,7 +25,6 @@ export class UserService {
       .pipe(
         map((response) => {
           this.cookieService.set('token', response.body.token);
-          console.log(response.body.token);
           return true;
         }),
         catchError(err => {

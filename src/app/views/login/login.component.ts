@@ -26,7 +26,13 @@ export class LoginComponent implements OnInit {
   login() {
     this.userService.login(this.credentials).subscribe(success => {
       if (success) {
-        this.router.navigate(['/admin']);
+        this.userService.getLoggedUser().subscribe(user => {
+          if (user.type === 'ADMIN') {
+            this.router.navigate(['/admin']);
+          } else {
+            this.router.navigate(['/client']);
+          }
+        });
       } else {
         this.showErrorMessage();
       }
