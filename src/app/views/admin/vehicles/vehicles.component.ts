@@ -41,6 +41,11 @@ export class VehiclesComponent implements OnInit {
   successfulDelete: boolean;
   showDeleteMsg = false;
 
+  vehicleToAssign: Vehicle;
+  deviceAssignId: string;
+  successfulAssign: boolean;
+  showAssignMsg = false;
+
   constructor(private vehicleService: VehicleService, private clientService: UserService, private deviceService: DeviceService) {
     const futureVehicles = this.vehicleService.fetchVehicles();
     const futureClients = this.clientService.fetchUsers();
@@ -136,6 +141,29 @@ export class VehiclesComponent implements OnInit {
 
   cancelDelete() {
     this.deleteVehicleId = undefined;
+  }
+
+  // Assign
+
+  startDeviceAssign(vehicle: Vehicle) {
+    this.vehicleToAssign = vehicle;
+    this.deviceAssignId = vehicle.deviceId;
+    console.log(this.deviceAssignId);
+  }
+
+  assignDevice() {
+    this.vehicleService
+      .addDevice(this.vehicleToAssign.id, this.deviceAssignId)
+      .subscribe(assigned => {
+        this.successfulAssign = assigned;
+        this.showAssignMsg = true;
+        setTimeout(() => this.showAssignMsg = false, 1000);
+      });
+  }
+
+  cancelAssign() {
+    this.vehicleToAssign = undefined;
+    this.deviceAssignId = undefined;
   }
 
   // Search

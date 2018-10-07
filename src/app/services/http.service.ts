@@ -9,20 +9,12 @@ import {CookieService} from 'ngx-cookie-service';
 export class HttpService {
 
   private DEFAULT_HEADERS = {'Content-Type': 'application/json'}; // in content-type-interceptor
-  private _authToken: string; // in auth service
 
   private readonly baseUrl: string;
 
 
   get authToken(): string {
-    if (!this._authToken) {
-      this._authToken = this.cookieService.get('token');
-    }
-    return this._authToken;
-  }
-
-  set authToken(value: string) {
-    this._authToken = value;
+    return this.cookieService.get('token');
   }
 
   constructor(private _http: HttpClient,

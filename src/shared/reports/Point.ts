@@ -5,7 +5,7 @@ export class Point {
     return new Point(false, 0, 0, 0, '', null);
   }
 
-  constructor(private isLighted: boolean,
+  constructor(private lighted: boolean,
               private speed: number,
               private temperature: number,
               private humidity: number,
@@ -15,7 +15,7 @@ export class Point {
 
   public asJson() {
     return {
-      isLighted: this.isLighted,
+      lighted: this.lighted,
       speed: this.speed,
       temperature: this.temperature,
       humidity: this.humidity,

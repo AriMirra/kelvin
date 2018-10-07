@@ -2,12 +2,13 @@ import {Injectable} from '@angular/core';
 import {Router} from '@angular/router';
 import {CookieService} from 'ngx-cookie-service';
 import {Observable} from 'rxjs';
-import {catchError, map} from 'rxjs/operators';
+import {catchError, map, tap} from 'rxjs/operators';
 import 'rxjs-compat/add/observable/of';
 import {HttpService} from './http.service';
 import {User} from '../../shared/users/User';
 import {UserCredentials} from '../../shared/users/UserCredentials';
 import {ClientCredentials} from '../../shared/users/ClientCredentials';
+import {flatMap} from 'rxjs/internal/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +22,16 @@ export class UserService {
 
   login(clientCredentials: ClientCredentials): Observable<boolean> {
     const json = clientCredentials.asJson();
+    console.log(json);
     return this.http.post('/auth', json)
       .pipe(
-        map((response) => {
+        flatMap((response) => {
           this.cookieService.set('token', response.body.token);
-          console.log(response.body.token);
+          return this.getLoggedUser();
+        }),
+        map((response) => {
+          console.log(response);
+          this.cookieService.set('UserType', response.type);
           return true;
         }),
         catchError(err => {

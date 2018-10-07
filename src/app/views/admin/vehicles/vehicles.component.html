@@ -170,8 +170,8 @@
                             <a class="badge badge-warning"  *ngIf="!vehicle.hasOwner()">Sin Cliente Asociado</a>
                         </td>
                         <td>
-                            <a class="badge badge-success" data-toggle="modal" *ngIf="vehicle.hasDevice()">{{getVehicleDevice(vehicle).alias}}</a>
-                            <a class="badge badge-warning" *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
+                            <a class="badge badge-success" data-toggle="modal" (click)="assignModal.show(); startDeviceAssign(vehicle)" *ngIf="vehicle.hasDevice()">{{getVehicleDevice(vehicle).alias}}</a>
+                            <a class="badge badge-warning" (click)="assignModal.show(); startDeviceAssign(vehicle)" *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
                         </td>
                         <td>
                             <a class="badge badge-primary" data-toggle="modal" (click)="largeModal.show(); startVehicleEdit(vehicle)">Editar</a>
@@ -192,7 +192,7 @@
     <div class="modal-dialog modal-lg modal-primary" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Modal title</h4>
+                <h4 class="modal-title">Editar vehículo</h4>
                 <button type="button" class="close" (click)="largeModal.hide(); cancelEdit()" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -305,6 +305,50 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar</button>
                 <button type="button" class="btn btn-danger" (click)="deleteVehicle()">Eliminar</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #assignModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-success" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Asignar dispositivo</h4>
+                <button type="button" class="close" (click)="assignModal.hide(); cancelAssign()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="edit-vehicle-device">Dispositivo asignado</label>
+                        <div class="col-lg-8">
+                            <select id="edit-vehicle-device"
+                                    name="edit-vehicle-device"
+                                    class="form-control"
+                                    required
+                                    [(ngModel)]="deviceAssignId"
+                            >
+                                <option [value]="null" selected>Sin dispositivo</option>
+                                <option *ngFor="let device of devices" [value]="device.id">{{device.alias}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+                <div *ngIf="showAssignMsg">
+                    <div class="alert alert-success" role="alert" *ngIf="successfulAssign">
+                        Dispositivo asignado editado exitosamente.
+                    </div>
+                    <div class="alert alert-warning" role="alert" *ngIf="!successfulAssign">
+                        Ha ocurrido un problema para editar el dispositivo asignado.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="assignModal.hide(); cancelAssign()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="assignDevice()">Guardar Cambios</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
