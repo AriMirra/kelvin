@@ -149,7 +149,7 @@
             </div>
             <div class="card-body open" [ngClass]="{'h-0': addingVehicle}"> <!--[ngClass]="{'h-0': addingVehicle}"-->
                 <table class="table">
-                    <thead>
+                    <!--<thead>
                     <tr>
                         <th>Patente</th>
                         <th>Marca</th>
@@ -159,7 +159,7 @@
                         <th>Editar</th>
                         <th>Eliminar</th>
                     </tr>
-                    </thead>
+                    </thead>-->
                     <tbody>
                     <tr *ngFor="let vehicle of filteredVehicles()">
                         <td>{{vehicle.domain}}</td>

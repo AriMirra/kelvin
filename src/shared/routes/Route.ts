@@ -3,14 +3,14 @@ export class Route {
     return new Route('', '', '', 0, 0, 0, 0, false);
   }
 
-  constructor(private id: string,
-              private name: string,
-              private productId: string,
-              private minTemperature: number,
-              private maxTemperature: number,
-              private minHumidity: number,
-              private maxHumidity: number,
-              private vampire: boolean) {
+  constructor(public id: string,
+              public name: string,
+              public productId: string,
+              public minTemperature: number,
+              public maxTemperature: number,
+              public minHumidity: number,
+              public maxHumidity: number,
+              public vampire: boolean) {
   }
 
 

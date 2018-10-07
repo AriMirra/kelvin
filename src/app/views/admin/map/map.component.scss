@@ -25,6 +25,57 @@
 
 }
 
+.reference-card {
+
+  .temperature {
+    ul {
+      margin: 0;
+      padding: 0;
+      li {
+        display: inline-block;
+        p {
+          margin: 0;
+          font-size: 12px;
+          font-weight: bold;
+          span {
+            -webkit-border-radius: 36px;
+            -moz-border-radius: 36px;
+            border-radius: 36px;
+            display: inline-block;
+            margin: 0 6px 0 18px;
+            height: 12px;
+            width: 12px;
+            &.blue {
+              background-color: blue;
+            }
+            &.green {
+              background-color: green;
+            }
+            &.red {
+              background-color: red;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .light {
+    img {
+      display: inline-block;
+      height: 30px;
+      width: auto;
+    }
+    p {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: bold;
+      margin: 0;
+    }
+  }
+
+}
+
 .card {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;

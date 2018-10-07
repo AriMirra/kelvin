@@ -130,6 +130,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!--
                                     <div class="form-group row">
                                         <label class="col-8 col-form-label" for="new-route-moisture">Incluir
                                             Humedad</label>
@@ -141,6 +142,7 @@
                                             >
                                         </div>
                                     </div>
+                                    -->
                                     <div class="form-group row">
                                         <label class="col-8 col-form-label" for="new-route-light">Incluir Apertura de
                                             Contenedor</label>
@@ -174,13 +176,39 @@
             <div class="map-card">
                 <div id="map" style="height: 100%;"></div>
             </div>
-            <div class="card mb-0">
+            <div class="card reference-card mb-0">
                 <div class="card-header not-clickable">
                     <form>
                         <div class="form-group row">
-                            <label class="col-10 col-form-label">
-                                <strong>Referencia:</strong>
-                            </label>
+                            <div class="col-8 align-self-center temperature">
+                                <ul>
+                                    <li>
+                                        <p>
+                                            <span class="colored-circle blue"></span>
+                                            T(ºC) <= {{newRoute.minTemperature}}
+                                        </p>
+                                    </li>
+                                    <li>
+
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            {{newRoute.minTemperature}} < T(ºC) < {{newRoute.maxTemperature}}
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                            <span class="colored-circle red"></span>
+                                            T(ºC) >= {{newRoute.maxTemperature}}
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-4 align-self-center light">
+                                <p>
+                                    <img src="../../../../assets/img/markers/light.png" alt="light-img">
+                                    = Apertura de contenedor
+                                </p>
+                            </div>
                         </div>
                     </form>
                 </div>
