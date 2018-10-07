@@ -22,11 +22,11 @@
                                             <select id="new-route-client"
                                                     name="new-route-client"
                                                     class="form-control"
+                                                    [(ngModel)]="selectedUserId"
+                                                    (change)="selectedVehicleId = ''"
                                             >
-                                                <option value="0">Seleccione cliente</option>
-                                                <option value="1">Option #1</option>
-                                                <option value="2">Option #2</option>
-                                                <option value="3">Option #3</option>
+                                                <option [value]="''" selected>Seleccione un cliente</option>
+                                                <option *ngFor="let user of users" [value]="user.id">{{user.getFullName()}}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -36,15 +36,14 @@
                                             <select id="new-route-vehicle"
                                                     name="new-route-vehicle"
                                                     class="form-control"
+                                                    [(ngModel)]="selectedVehicleId"
                                             >
-                                                <option value="0">Todos</option>
-                                                <option value="1">Option #1</option>
-                                                <option value="2">Option #2</option>
-                                                <option value="3">Option #3</option>
+                                                <option [value]="''" selected>Seleccione un vehiculo</option>
+                                                <option *ngFor="let vehicle of getSelectedUserVehicles()" [value]="vehicle.id">{{vehicle.domain}}</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
+                                    <!--<div class="form-group row">
                                         <label class="col-lg-4 col-form-label"
                                                for="new-route-device">Dispositivo</label>
                                         <div class="col-lg-8">
@@ -58,7 +57,7 @@
                                                 <option value="3">Option #3</option>
                                             </select>
                                         </div>
-                                    </div>
+                                    </div>-->
                                     <div class="form-group row">
                                         <label class="col-lg-4 col-form-label"
                                                for="new-route-lower-time-limit">Desde</label>
@@ -69,6 +68,7 @@
                                                            id="new-route-lower-date-limit"
                                                            name="new-route-lower-date-limit"
                                                            class="form-control"
+                                                           [(ngModel)]="fromDate"
                                                     >
                                                 </div>
                                                 <div class="col-12">
@@ -76,6 +76,7 @@
                                                            id="new-route-lower-time-limit"
                                                            name="new-route-lower-time-limit"
                                                            class="form-control"
+                                                           [(ngModel)]="fromTime"
                                                     >
                                                 </div>
                                             </div>
@@ -91,6 +92,7 @@
                                                            id="new-route-upper-date-limit"
                                                            name="new-route-upper-date-limit"
                                                            class="form-control"
+                                                           [(ngModel)]="toDate"
                                                     >
                                                 </div>
                                                 <div class="col-12">
@@ -98,6 +100,7 @@
                                                            id="new-route-upper-time-limit"
                                                            name="new-route-upper-time-limit"
                                                            class="form-control"
+                                                           [(ngModel)]="toTime"
                                                     >
                                                 </div>
                                             </div>
@@ -115,6 +118,7 @@
                                                            name="new-route-lower-temperature-limit"
                                                            class="form-control"
                                                            placeholder="Min (ºC)"
+                                                           [(ngModel)]="newRoute.minTemperature"
                                                     >
                                                 </div>
                                                 <div class="col-12">
@@ -125,6 +129,36 @@
                                                            name="new-route-upper-temperature-limit"
                                                            class="form-control"
                                                            placeholder="Máx (ºC)"
+                                                           [(ngModel)]="newRoute.maxTemperature"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-form-label" for="new-route-lower-humidity-limit">Humedad</label>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-12 mb-3">
+                                                    <input type="number"
+                                                           min="0"
+                                                           max="49"
+                                                           id="new-route-lower-humidity-limit"
+                                                           name="new-route-lower-humidity-limit"
+                                                           class="form-control"
+                                                           placeholder="%"
+                                                           [(ngModel)]="newRoute.minHumidity"
+                                                    >
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="number"
+                                                           min="1"
+                                                           max="50"
+                                                           id="new-route-upper-humidity-limit"
+                                                           name="new-route-upper-humidity-limit"
+                                                           class="form-control"
+                                                           placeholder="%"
+                                                           [(ngModel)]="newRoute.maxHumidity"
                                                     >
                                                 </div>
                                             </div>
@@ -146,11 +180,12 @@
                                     <div class="form-group row">
                                         <label class="col-8 col-form-label" for="new-route-light">Incluir Apertura de
                                             Contenedor</label>
-                                        <div class="col-4">
+                                        <div class="col-4 checkbox-align">
                                             <input type="checkbox"
                                                    id="new-route-light"
                                                    name="new-route-light"
                                                    class="text-center"
+                                                   [(ngModel)]="newRoute.vampire"
                                             >
                                         </div>
                                     </div>
@@ -162,10 +197,10 @@
                 <div class="card-footer">
                     <div class="row">
                         <div class="col-12">
-                            <button class="btn btn-danger"><strong>Reset</strong></button>
+                            <button class="btn btn-danger" (click)="resetForm()"><strong>Reset</strong></button>
                             <div class="float-right">
-                                <button class="btn btn-primary mx-2"><strong>Guardar</strong></button>
-                                <button class="btn btn-primary"><strong>Buscar</strong></button>
+                                <!--<button class="btn btn-primary mx-2"><strong>Guardar</strong></button>-->
+                                <button class="btn btn-primary" (click)="getReport()"><strong>Buscar</strong></button>
                             </div>
                         </div>
                     </div>

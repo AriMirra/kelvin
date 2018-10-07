@@ -267,7 +267,7 @@
                                     [(ngModel)]="editingVehicle.ownerId"
                             >
                                 <option [value]="''" selected>Seleccione un cliente</option>
-                                <option *ngFor="let client of clients" [value]="client.id">{{client.lastName + ', ' + client.name}}</option>
+                                <option *ngFor="let client of clients" [value]="client.id">{{client.getFullName()}}</option>
                             </select>
                         </div>
                     </div>

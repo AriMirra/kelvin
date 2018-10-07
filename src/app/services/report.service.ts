@@ -8,7 +8,7 @@ import {ReportParameters} from '../../shared/reports/ReportParameters';
 @Injectable({
   providedIn: 'root'
 })
-export class ReportServiceService {
+export class ReportService {
 
   constructor(private http: HttpService) {
   }

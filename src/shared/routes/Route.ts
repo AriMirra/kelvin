@@ -1,6 +1,6 @@
 export class Route {
   public static empty(): Route {
-    return new Route('', '', '', 0, 0, 0, 0, false);
+    return new Route('', '', '', undefined, undefined, undefined, undefined, false);
   }
 
   constructor(public id: string,

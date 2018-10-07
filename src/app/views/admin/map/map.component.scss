@@ -1,3 +1,9 @@
+.checkbox-align{
+  display: flex;
+  align-content: center;
+  justify-content: end;
+}
+
 .map-card {
   -webkit-box-shadow: 0 0 1px 0 rgba(0, 0, 0, .08);
   -moz-box-shadow: 0 0 1px 0 rgba(0, 0, 0, .08);

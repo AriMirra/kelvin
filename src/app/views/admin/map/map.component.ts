@@ -3,24 +3,60 @@ import {getStyle, hexToRgba} from '@coreui/coreui/dist/js/coreui-utilities';
 import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 import L from 'leaflet';
 import {Route} from '../../../../shared/routes/Route';
+import {User} from '../../../../shared/users/User';
+import {Vehicle} from '../../../../shared/vehicles/Vehicle';
+import {UserService} from '../../../services/user.service';
+import {VehicleService} from '../../../services/vehicle.service';
+import * as Rx from 'rxjs/internal/operators';
+import {forkJoin, Observable} from 'rxjs';
+import {Report} from '../../../../shared/reports/Report';
+import {Time} from '@angular/common';
+import {ReportService} from '../../../services/report.service';
+import {ReportParameters} from '../../../../shared/reports/ReportParameters';
 
 @Component({
-    templateUrl: 'map.component.html',
-    styleUrls: ['./map.component.scss']
+  templateUrl: 'map.component.html',
+  styleUrls: ['./map.component.scss']
 })
 export class AdminMapComponent implements OnInit {
 
-    newRoute: Route;
-    map: any;
+  newRoute: Route = Route.empty();
+  map: any;
 
-    lightIcon = L.icon({
-        iconUrl: '/../../../../assets/img/markers/light.png',
+  fromDate: string;
+  fromTime: string;
 
-        iconSize: [36, 36], // size of the icon
-        iconAnchor: [18, 18], // point of the icon which will correspond to marker's location
-        popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+  toDate: string;
+  toTime: string;
+
+  currentReport: Report;
+
+  users: User[];
+  userVehiclesMap: Map<string, Vehicle[]> = new Map<string, Vehicle[]>();
+
+  selectedUserId = '';
+  selectedVehicleId = '';
+
+  lightIcon = L.icon({
+    iconUrl: '/../../../../assets/img/markers/light.png',
+
+    iconSize: [36, 36], // size of the icon
+    iconAnchor: [18, 18], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+  });
+
+  constructor(private userService: UserService, private vehicleService: VehicleService, private reportService: ReportService) {
+    this.userService.fetchUsers().subscribe(users => {
+      this.users = users;
+      this.users.map(u => [u, this.vehicleService.getUserVehicles(u.id)]).forEach(tuple => {
+        const user = tuple[0] as User;
+        const observable = tuple[1] as Observable<Vehicle[]>;
+        observable.subscribe(vehicles => {
+          this.userVehiclesMap.set(user.id, vehicles);
+        });
+      });
     });
-
+  }
     // main chart
 
     public mainChartElements = 27; // TODO Report size
@@ -153,9 +189,6 @@ export class AdminMapComponent implements OnInit {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
-    constructor() {
-    }
-
     ngOnInit(): void {
         // generate random values for mainChart
         for (let i = 0; i <= this.mainChartElements; i++) { // TODO push data from back
@@ -172,71 +205,110 @@ export class AdminMapComponent implements OnInit {
         this.newRoute = Route.empty();
         this.map = L.map('map').setView([-34.61315, -58.37723], 10);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            minZoom: 4,
-            maxZoom: 16
-        }).addTo(this.map);
-        L.control.scale().addTo(this.map);
-    }
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      minZoom: 4,
+      maxZoom: 16
+    }).addTo(this.map);
+    L.control.scale().addTo(this.map);
+  }
 
-    drawRoute(): void {
-        this.resetMap(this.map); // reset all current markers
-        // TODO Loop addMarkerToMap
-        // TODO centerMap
-    }
+  parseDate(date: string, time: string): string {
+    const [hours, minutes] = time.split(':').map(e => parseInt(e, 10));
+    const result = new Date(date);
+    result.setHours(hours);
+    result.setMinutes(minutes);
+    return result.toISOString();
+  }
 
-    addMarkerToMap: (coordinates: number[],
-                     temperature: number,
-                     moisture: number,
-                     lightSensed: boolean,
-                     currentRoute: Route,
-                     map: any) => void =
-        function (coordinates: number[],
-                  temperature: number,
-                  moisture: number,
-                  lightSensed: boolean,
-                  currentRoute: Route,
-                  map: any): void {
-            if (currentRoute.vampire && lightSensed) {
-                L.marker(coordinates, {icon: this.lightIcon}).bindPopup('Luz detectada, se abrió el contenedor').addTo(map);
-            } else {
-                let circleColor: string;
-                if (temperature >= currentRoute.maxTemperature) {
-                    circleColor = 'red';
-                } else if (temperature <= currentRoute.minTemperature) {
-                    circleColor = 'blue';
-                } else {
-                    circleColor = 'green';
-                }
-                L.circle(coordinates, {
-                    color: circleColor,
-                    fillColor: circleColor,
-                    fillOpacity: 1,
-                    radius: 1
-                }).bindPopup('Temperatura medida = ' + 50 + 'ºC.\n' + 'Humedad medida = ' + 95 + '%').addTo(map);
-            }
-        };
 
-    centerMap: (coordinatesStart: number[], coordinatesFinish: number[]) => void =
-        function (coordinatesStart: number[], coordinatesFinish: number[]): void {
-            const corner1 = L.latLng(coordinatesStart[0], coordinatesStart[1]),
-                corner2 = L.latLng(coordinatesFinish[0], coordinatesFinish[1]),
-                bounds = L.latLngBounds(corner1, corner2);
-            L.flyToBounds(bounds);
-        };
+  // Form
+  getSelectedUserVehicles(): Vehicle[] {
+    return this.userVehiclesMap.get(this.selectedUserId) || [];
+  }
 
-    // probably doesn't work
-    resetMap: (map: any) => void =
-        function (map: any): void {
-            map = L.map('map').setView([-34.61315, -58.37723], 9);
+  resetForm() {
+    this.newRoute = Route.empty();
+    this.selectedUserId = '';
+    this.selectedVehicleId = '';
+  }
 
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                minZoom: 3,
-                maxZoom: 15
-            }).addTo(map);
-            L.control.scale().addTo(map);
-        };
+  getReport() {
+    const parameters = new ReportParameters(
+      this.selectedVehicleId,
+      this.parseDate(this.fromDate, this.fromTime),
+      this.parseDate(this.toDate, this.toTime)
+      );
+    this.reportService.getReport(parameters).subscribe(
+      report => {
+        this.currentReport = report;
+        console.log(this.currentReport);
+      },
+      e => {
+        console.log(e);
+      }
+    );
+  }
+
+  // Map
+
+  drawRoute(): void {
+    this.resetMap(this.map); // reset all current markers
+    // TODO Loop addMarkerToMap
+    // TODO centerMap
+  }
+
+  addMarkerToMap: (coordinates: number[],
+                   temperature: number,
+                   moisture: number,
+                   lightSensed: boolean,
+                   currentRoute: Route,
+                   map: any) => void =
+    function (coordinates: number[],
+              temperature: number,
+              moisture: number,
+              lightSensed: boolean,
+              currentRoute: Route,
+              map: any): void {
+      if (currentRoute.vampire && lightSensed) {
+        L.marker(coordinates, {icon: this.lightIcon}).bindPopup('Luz detectada, se abrió el contenedor').addTo(map);
+      } else {
+        let circleColor: string;
+        if (temperature >= currentRoute.maxTemperature) {
+          circleColor = 'red';
+        } else if (temperature <= currentRoute.minTemperature) {
+          circleColor = 'blue';
+        } else {
+          circleColor = 'green';
+        }
+        L.circle(coordinates, {
+          color: circleColor,
+          fillColor: circleColor,
+          fillOpacity: 1,
+          radius: 1
+        }).bindPopup('Temperatura medida = ' + 50 + 'ºC.\n' + 'Humedad medida = ' + 95 + '%').addTo(map);
+      }
+    };
+
+  centerMap: (coordinatesStart: number[], coordinatesFinish: number[]) => void =
+    function (coordinatesStart: number[], coordinatesFinish: number[]): void {
+      const corner1 = L.latLng(coordinatesStart[0], coordinatesStart[1]),
+        corner2 = L.latLng(coordinatesFinish[0], coordinatesFinish[1]),
+        bounds = L.latLngBounds(corner1, corner2);
+      L.flyToBounds(bounds);
+    };
+
+  // probably doesn't work
+  resetMap: (map: any) => void =
+    function (map: any): void {
+      map = L.map('map').setView([-34.61315, -58.37723], 9);
+
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        minZoom: 3,
+        maxZoom: 15
+      }).addTo(map);
+      L.control.scale().addTo(map);
+    };
 
 }

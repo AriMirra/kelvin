@@ -53,7 +53,7 @@ export class VehiclesComponent implements OnInit {
 
     forkJoin(futureClients, futureVehicles, futureDevices)
       .subscribe(([clients, vehicles, devices]) => {
-        this.clients = clients.filter(user => user.type === 'USER');
+        this.clients = clients;
         this.vehicles = vehicles;
         this.devices = devices;
 

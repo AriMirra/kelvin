@@ -1,11 +1,11 @@
 export class ReportParameters {
   public static empty(): ReportParameters {
-    return new ReportParameters('', '', '');
+    return new ReportParameters(undefined, undefined, undefined);
   }
 
-  constructor(private vehicleId: string,
-              private from: string,
-              private to: string) {}
+  constructor(public vehicleId: string,
+              public from: string,
+              public to: string) {}
 
 
   public asJson() {
