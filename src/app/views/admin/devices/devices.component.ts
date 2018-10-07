@@ -5,6 +5,8 @@ import {DeviceCredentials} from '../../../../shared/devices/DeviceCredentials';
 import {DeviceUpdate} from '../../../../shared/devices/DeviceUpdate';
 import {DeviceService} from '../../../services/device.service';
 import {Vehicle} from '../../../../shared/vehicles/Vehicle';
+import {VehicleService} from '../../../services/vehicle.service';
+import {forkJoin} from 'rxjs';
 
 @Component({
   selector: 'app-devices',
@@ -15,8 +17,8 @@ export class DevicesComponent implements OnInit {
 
   addingDevice: boolean;
 
-  clients = [];
   devices: Device[] = [];
+  vehicleIdMap: Map<string, Vehicle> = new Map<string, Vehicle>();
 
   deviceSearch = '';
 
@@ -33,14 +35,32 @@ export class DevicesComponent implements OnInit {
   successfulDelete: boolean;
   showDeleteMsg = false;
 
-  constructor(private deviceService: DeviceService, private clientService: UserService) {
-    this.deviceService.fetchDevices().subscribe(devices => {
-      this.devices = devices;
-    });
+  constructor(private deviceService: DeviceService, private vehicleService: VehicleService) {
+    const futureDevices = this.deviceService.fetchDevices();
+    const futureVehicles = this.vehicleService.fetchVehicles();
+
+    forkJoin(futureDevices, futureVehicles)
+      .subscribe(([devices, vehicles]) => {
+        this.devices = devices;
+
+        this.devices.map(d => {
+          const id = d.id;
+          const vehicle = vehicles.find(v => v.deviceId === id);
+          return [id, vehicle] as ([string, Vehicle]);
+        }).forEach(([id, vehicle]) => {
+          this.vehicleIdMap.set(id, vehicle);
+        });
+
+      });
+
     this.addingDevice = false;
   }
 
   ngOnInit() {
+  }
+
+  getDeviceVehicle(device: Device): Vehicle {
+    return this.vehicleIdMap.get(device.id);
   }
 
   // Add

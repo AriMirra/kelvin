@@ -5,7 +5,7 @@ import {VehicleCredentials} from '../../../../shared/vehicles/VehicleCredentials
 import {UserService} from '../../../services/user.service';
 import {Vehicle} from '../../../../shared/vehicles/Vehicle';
 import {User} from '../../../../shared/users/User';
-import {of, forkJoin} from 'rxjs';
+import {forkJoin} from 'rxjs';
 import {DeviceService} from '../../../services/device.service';
 import {Device} from '../../../../shared/devices/Device';
 
@@ -45,22 +45,24 @@ export class VehiclesComponent implements OnInit {
     const futureVehicles = this.vehicleService.fetchVehicles();
     const futureClients = this.clientService.fetchUsers();
     const futureDevices = this.deviceService.fetchDevices();
-    forkJoin(futureClients, futureVehicles, futureDevices).subscribe(([clients, vehicles, devices]) => {
-      this.clients = clients.filter(user => user.type === 'USER');
-      this.vehicles = vehicles;
-      this.devices = devices;
 
-      this.vehicles.map(v => {
-        const client = this.clients.find(c => c.id === v.ownerId);
-        const device = this.devices.find(d => d.id === v.deviceId);
-        const tuple: [string, User, Device] = [v.id, client, device];
-        return tuple;
-      }).forEach(([id, client, device]) => {
-        this.clientIdMap.set(id, client);
-        this.deviceIdMap.set(id, device);
-      });
+    forkJoin(futureClients, futureVehicles, futureDevices)
+      .subscribe(([clients, vehicles, devices]) => {
+        this.clients = clients.filter(user => user.type === 'USER');
+        this.vehicles = vehicles;
+        this.devices = devices;
+
+        this.vehicles.map(v => {
+          const client = this.clients.find(c => c.id === v.ownerId);
+          const device = this.devices.find(d => d.id === v.deviceId);
+          return [v.id, client, device] as ([string, User, Device]);
+        }).forEach(([id, client, device]) => {
+          this.clientIdMap.set(id, client);
+          this.deviceIdMap.set(id, device);
+        });
 
     });
+
     this.addingVehicle = false;
     this.vehicleWithoutDevice = true; // TODO boolean depends on the list of vehicles.
     this.vehicleWithoutClient = true; // TODO boolean depends on the list of vehicles.

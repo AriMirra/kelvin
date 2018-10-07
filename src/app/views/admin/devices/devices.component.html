@@ -123,7 +123,7 @@
             <td>{{device.alias}}</td>
             <td>{{device.mac}}</td>
             <td>
-              <a class="badge badge-success" data-toggle="modal" *ngIf="device.assigned">{{device.assigned}}</a>
+              <a class="badge badge-success" data-toggle="modal" *ngIf="device.assigned">{{getDeviceVehicle(device).domain}}</a>
               <a class="badge badge-warning"  *ngIf="!device.assigned">Sin vehículo asignado</a>
             </td>
             <td>
@@ -131,32 +131,6 @@
             </td>
             <td>
               <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show(); startDeviceDelete(device.id)">Eliminar</a>
-            </td>
-          </tr>
-          <tr>
-            <td>Alias</td>
-            <td>Mac</td>
-            <td>
-              <a class="badge badge-warning" >Sin vehículo asignado</a>
-            </td>
-            <td>
-              <a class="badge badge-primary" data-toggle="modal" (click)="largeModal.show()">Editar</a>
-            </td>
-            <td>
-              <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
-            </td>
-          </tr>
-          <tr>
-            <td>Alias</td>
-            <td>Mac</td>
-            <td>
-              <a class="badge badge-success">Vehiculo asignado</a>
-            </td>
-            <td>
-              <a class="badge badge-primary" data-toggle="modal" (click)="largeModal.show()">Editar</a>
-            </td>
-            <td>
-              <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show()">Eliminar</a>
             </td>
           </tr>
           </tbody>
