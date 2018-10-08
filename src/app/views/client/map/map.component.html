@@ -1,3 +1,427 @@
-<p>
-  map works!
-</p>
+<div class="animated fadeIn">
+    <div class="row">
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header not-clickable">
+                    <form>
+                        <div class="form-group row">
+                            <label class="col-10 col-form-label">
+                                <strong>Generar recorrido</strong>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12">
+                                <form action="" method="post" enctype="multipart/form-data" class="form-horizontal">
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label" for="new-route-vehicle">Vehículo</label>
+                                        <div class="col-lg-8">
+                                            <select id="new-route-vehicle"
+                                                    name="new-route-vehicle"
+                                                    class="form-control"
+                                                    [(ngModel)]="selectedVehicleId"
+                                            >
+                                                <option [value]="''" selected>Seleccione un vehiculo</option>
+                                                <option *ngFor="let vehicle of getSelectedUserVehicles()" [value]="vehicle.id">{{vehicle.domain}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label"
+                                               for="new-route-lower-time-limit">Desde</label>
+                                        <div class="col-lg-8">
+                                            <div class="row">
+                                                <div class="col-12 mb-3">
+                                                    <input type="date"
+                                                           id="new-route-lower-date-limit"
+                                                           name="new-route-lower-date-limit"
+                                                           class="form-control"
+                                                           [(ngModel)]="fromDate"
+                                                    >
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="time"
+                                                           id="new-route-lower-time-limit"
+                                                           name="new-route-lower-time-limit"
+                                                           class="form-control"
+                                                           [(ngModel)]="fromTime"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-4 col-form-label"
+                                               for="new-route-upper-time-limit">Hasta</label>
+                                        <div class="col-lg-8">
+                                            <div class="row">
+                                                <div class="col-12 mb-3">
+                                                    <input type="date"
+                                                           id="new-route-upper-date-limit"
+                                                           name="new-route-upper-date-limit"
+                                                           class="form-control"
+                                                           [(ngModel)]="toDate"
+                                                    >
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="time"
+                                                           id="new-route-upper-time-limit"
+                                                           name="new-route-upper-time-limit"
+                                                           class="form-control"
+                                                           [(ngModel)]="toTime"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-form-label" for="new-route-lower-temperature-limit">Temperatura</label>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-12 mb-3">
+                                                    <input type="number"
+                                                           min="0"
+                                                           max="49"
+                                                           id="new-route-lower-temperature-limit"
+                                                           name="new-route-lower-temperature-limit"
+                                                           class="form-control"
+                                                           placeholder="Min (ºC)"
+                                                           [(ngModel)]="newRoute.minTemperature"
+                                                    >
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="number"
+                                                           min="1"
+                                                           max="50"
+                                                           id="new-route-upper-temperature-limit"
+                                                           name="new-route-upper-temperature-limit"
+                                                           class="form-control"
+                                                           placeholder="Máx (ºC)"
+                                                           [(ngModel)]="newRoute.maxTemperature"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <label class="col-lg-6 col-form-label" for="new-route-lower-humidity-limit">Humedad</label>
+                                        <div class="col-lg-6">
+                                            <div class="row">
+                                                <div class="col-12 mb-3">
+                                                    <input type="number"
+                                                           min="0"
+                                                           max="99"
+                                                           id="new-route-lower-humidity-limit"
+                                                           name="new-route-lower-humidity-limit"
+                                                           class="form-control"
+                                                           placeholder="Min (%)"
+                                                           [(ngModel)]="newRoute.minHumidity"
+                                                    >
+                                                </div>
+                                                <div class="col-12">
+                                                    <input type="number"
+                                                           min="1"
+                                                           max="100"
+                                                           id="new-route-upper-humidity-limit"
+                                                           name="new-route-upper-humidity-limit"
+                                                           class="form-control"
+                                                           placeholder="Max (%)"
+                                                           [(ngModel)]="newRoute.maxHumidity"
+                                                    >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!--
+                                    <div class="form-group row">
+                                        <label class="col-8 col-form-label" for="new-route-moisture">Incluir
+                                            Humedad</label>
+                                        <div class="col-4">
+                                            <input type="checkbox"
+                                                   id="new-route-moisture"
+                                                   name="new-route-moisture"
+                                                   class="text-center"
+                                            >
+                                        </div>
+                                    </div>
+                                    -->
+                                    <div class="form-group row">
+                                        <label class="col-8 col-form-label" for="new-route-light">Incluir Apertura de
+                                            Contenedor</label>
+                                        <div class="col-4 checkbox-align">
+                                            <input type="checkbox"
+                                                   id="new-route-light"
+                                                   name="new-route-light"
+                                                   class="text-center"
+                                                   [(ngModel)]="newRoute.vampire"
+                                            >
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col-12">
+                            <button class="btn btn-danger" (click)="resetForm()"><strong>Reset</strong></button>
+                            <div class="float-right">
+                                <!--<button class="btn btn-primary mx-2"><strong>Guardar</strong></button>-->
+                                <button class="btn btn-primary" (click)="getReport()"><strong>Buscar</strong></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="map-card">
+                <div id="map" style="height: 100%;"></div>
+            </div>
+            <div class="card reference-card">
+                <div class="card-header not-clickable reference-key">
+                    <form class="h-100">
+                        <div class="form-group row h-100">
+                            <div class="col-8 align-self-center temperature" *ngIf="checkingTemp()">
+                                <ul>
+                                    <li *ngIf="currentRoute.hasMinTemp()">
+                                        <p>
+                                            <span class="colored-circle blue"></span>
+                                            T(ºC) <= {{currentRoute.minTemperature}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMinTemp() && !currentRoute.hasMaxTemp()">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            {{currentRoute.minTemperature}} < T(ºC)
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMinTemp() && currentRoute.hasMaxTemp()">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            {{currentRoute.minTemperature}} < T(ºC) < {{currentRoute.maxTemperature}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="!currentRoute.hasMinTemp() && currentRoute.hasMaxTemp()">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            T(ºC) < {{currentRoute.maxTemperature}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMaxTemp()">
+                                        <p>
+                                            <span class="colored-circle red"></span>
+                                            T(ºC) >= {{currentRoute.maxTemperature}}
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                            <span class="colored-circle grey"></span>
+                                            Sin datos
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-8 align-self-center temperature" *ngIf="checkingHumidity()">
+                                <ul>
+                                    <li *ngIf="currentRoute.hasMinHumidity()">
+                                        <p>
+                                            <span class="colored-circle blue"></span>
+                                            H(%) <= {{currentRoute.minHumidity}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMinHumidity() && !currentRoute.hasMaxHumidity">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            {{currentRoute.minHumidity}} < H(%)
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMinHumidity() && currentRoute.hasMaxHumidity">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            {{currentRoute.minHumidity}} < H(%) < {{currentRoute.maxHumidity}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="!currentRoute.hasMinHumidity() && currentRoute.hasMaxHumidity">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            H(%) < {{currentRoute.maxHumidity}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMaxHumidity">
+                                        <p>
+                                            <span class="colored-circle red"></span>
+                                            H(%) >= {{currentRoute.maxHumidity}}
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                            <span class="colored-circle grey"></span>
+                                            Sin datos
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-8 align-self-center temperature" *ngIf="checkingLight()">
+                                <ul>
+                                    <li>
+                                        <p>
+                                            <span class="colored-circle yellow"></span>
+                                            Luz detectada
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="currentRoute">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header not-clickable">
+                    <form>
+                        <div class="form-group row">
+                            <label class="col-10 col-form-label">
+                                <strong>Reporte de Recorrido - Temperatura</strong>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <div class="chart-wrapper" style="height: calc(100vh - 367px); margin-top:0;">
+                        <canvas baseChart class="chart"
+                                [datasets]="temperatureChartData"
+                                [labels]="mainChartLabels"
+                                [options]="temperatureChartOptions"
+                                [colors]="temperatureChartColors"
+                                [legend]="mainChartLegend"
+                                [chartType]="mainChartType"></canvas>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row text-center">
+                        <div class="col-sm-12 col-md-2 mb-sm-2 mb-0">
+                            <div class="text-muted">Temperatura Mínima</div>
+                            <div class="progress progress-xs mt-4">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 100%"
+                                     aria-valuenow="100"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2 mb-sm-2 mb-0">
+                            <div class="text-muted">Temperatura Medida</div>
+                            <div class="progress progress-xs mt-4">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                                     aria-valuenow="100"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2 mb-sm-2 mb-0">
+                            <div class="text-muted">Temperatura Máxima</div>
+                            <div class="progress progress-xs mt-4">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 100%"
+                                     aria-valuenow="100"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header not-clickable">
+                    <form>
+                        <div class="form-group row">
+                            <label class="col-10 col-form-label">
+                                <strong>Reporte de Recorrido - Humedad</strong>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="card-body">
+                    <div class="chart-wrapper" style="height: calc(100vh - 367px); margin-top:0;">
+                        <canvas baseChart class="chart"
+                                [datasets]="moistureChartData"
+                                [labels]="mainChartLabels"
+                                [options]="moistureChartOptions"
+                                [colors]="moistureChartColors"
+                                [legend]="mainChartLegend"
+                                [chartType]="mainChartType"></canvas>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div class="row text-center">
+                        <div class="col-sm-12 col-md-2 mb-sm-2 mb-0">
+                            <div class="text-muted">Humedad Mínima</div>
+                            <div class="progress progress-xs mt-4">
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar invisible" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar invisible" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-info" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2 mb-sm-2 mb-0">
+                            <div class="text-muted">Humedad Medida</div>
+                            <div class="progress progress-xs mt-4">
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar invisible" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar invisible" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-success" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-2 mb-sm-2 mb-0">
+                            <div class="text-muted">Humedad Máxima</div>
+                            <div class="progress progress-xs mt-4">
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar invisible" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar invisible" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
+                                     aria-valuenow="50"
+                                     aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
