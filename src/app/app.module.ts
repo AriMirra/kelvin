@@ -45,7 +45,7 @@ import {RoutesComponent} from './views/admin/routes/routes.component';
 import {AdminVehiclesComponent} from './views/admin/vehicles/vehicles.component';
 import {ClientVehiclesComponent} from './views/client/vehicles/vehicles.component';
 import {DevicesComponent} from './views/admin/devices/devices.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {UserService} from './services/user.service';
 import {HttpClientModule} from '@angular/common/http';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -69,7 +69,8 @@ import {ProductsComponent} from './views/client/products/products.component';
         TabsModule.forRoot(),
         ChartsModule,
         FormsModule,
-        HttpClientModule
+        HttpClientModule,
+        ReactiveFormsModule
     ],
     declarations: [
         AppComponent,

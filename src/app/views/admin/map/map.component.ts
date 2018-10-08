@@ -13,6 +13,7 @@ import {ReportParameters} from '../../../../shared/reports/ReportParameters';
 import {ReportService} from '../../../services/report.service';
 import {PointInfo} from '../../../../shared/reports/PointInfo';
 import {Coordinate} from '../../../../shared/reports/Coordinate';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   templateUrl: 'map.component.html',
@@ -224,7 +225,12 @@ export class AdminMapComponent implements OnInit {
   public mainChartLegend = false;
   public mainChartType = 'line';
 
-  constructor(private userService: UserService, private vehicleService: VehicleService, private reportService: ReportService) {
+  mapForm: FormGroup;
+
+  constructor(private userService: UserService,
+              private vehicleService: VehicleService,
+              private reportService: ReportService,
+              private formBuilder: FormBuilder) {
     this.userService.fetchUsers().subscribe(users => {
       this.users = users;
       this.users.map(u => [u, this.vehicleService.getUserVehicles(u.id)]).forEach(tuple => {
@@ -247,6 +253,22 @@ export class AdminMapComponent implements OnInit {
       maxZoom: 16
     }).addTo(this.map);
     L.control.scale().addTo(this.map);
+
+    this.mapForm = this.formBuilder.group({
+      minTemp: Validators.compose([Validators.min(0), Validators.max(49)])
+    });
+  }
+
+  isFieldValid(field: string) {
+    if (this.mapForm == null) { return false; }
+    return !this.mapForm.get(field).valid && this.mapForm.get(field).touched;
+  }
+
+  displayFieldCss(field: string) {
+    return {
+      'has-error': this.isFieldValid(field),
+      'has-feedback': this.isFieldValid(field)
+    };
   }
 
   parseDate(date: string, time: string): string {
