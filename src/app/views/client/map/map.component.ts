@@ -206,21 +206,18 @@ export class ClientMapComponent implements OnInit {
       backgroundColor: 'transparent',
       borderColor: getStyle('--danger'),
       pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
       borderDash: [8, 5]
     },
     { // moisture
       backgroundColor: hexToRgba(getStyle('--success'), 10),
       borderColor: getStyle('--success'),
       pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
       borderDash: [8, 5]
     },
     { // min-moisture
       backgroundColor: 'transparent',
       borderColor: getStyle('--info'),
       pointHoverBackgroundColor: '#fff',
-      borderWidth: 1,
       borderDash: [8, 5]
     },
   ];
