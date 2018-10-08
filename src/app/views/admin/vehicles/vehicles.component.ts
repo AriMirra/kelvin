@@ -80,12 +80,23 @@ export class AdminVehiclesComponent implements OnInit {
     return this.clientIdMap.get(vehicle.id);
   }
 
+  getVehicleOwnerName(vehicle: Vehicle): string {
+    const owner = this.clientIdMap.get(vehicle.id);
+    if (owner && owner.name !== null) { return owner.name; }
+    return '';
+  }
+
   getVehicleDevice(vehicle: Vehicle): Device {
     return this.deviceIdMap.get(vehicle.id);
   }
 
-  // Add
+  getVehicleDeviceAlias(vehicle: Vehicle): string {
+    const device = this.deviceIdMap.get(vehicle.id);
+    if (device && device.alias !== null) { return device.alias; }
+    return '';
+  }
 
+  // Add
   toggleAddingVehicle() {
     this.addingVehicle = !this.addingVehicle;
   }
@@ -169,6 +180,9 @@ export class AdminVehiclesComponent implements OnInit {
   // Search
 
   filteredVehicles(): Vehicle[] {
+    if (this.vehicleSearch === '') {
+      return this.vehicles;
+    }
     return this.vehicles.filter(v => this.vehicleSearchFilter(v));
   }
 
