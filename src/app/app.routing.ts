@@ -16,50 +16,6 @@ import {UsersComponent} from './views/admin/users/users.component';
 import {ProductsComponent} from './views/client/products/products.component';
 
 export const routes: Routes = [
-    /*
-    {
-      path: 'admin',
-      component: AdminComponent,
-      data: {
-        title: 'Login Page'
-      },
-      children: [
-        {
-          path: 'register',
-          component: AdminRegisterComponent
-        },
-        {
-          path: 'login',
-          component: AdminLoginComponent
-        },
-        {
-          path: 'dashboard',
-          component: AdminRegisterComponent
-        }
-      ]
-    },
-    {
-      path: 'client',
-      component: ClientComponent,
-      data: {
-        title: 'Login Page'
-      },
-      children: [
-        {
-          path: 'register',
-          component: ClientRegisterComponent
-        },
-        {
-          path: 'login',
-          component: ClientLoginComponent
-        },
-        {
-          path: 'dashboard',
-          component: ClientRegisterComponent
-        }
-      ]
-    },
-    */
     {
         path: '',
         component: LoginComponent
@@ -71,12 +27,6 @@ export const routes: Routes = [
             title: 'Home'
         },
         children: [
-            /*
-            {
-                path: '',
-                loadChildren: './views/admin/dashboard/dashboard.module#DashboardModule'
-            },
-            */
             {
                 path: '',
                 component: AdminMapComponent
@@ -97,36 +47,6 @@ export const routes: Routes = [
                 path: 'devices',
                 component: DevicesComponent
             }
-            /*
-            {
-                path: 'base',
-                loadChildren: './views/base/base.module#BaseModule'
-            },
-            {
-                path: 'buttons',
-                loadChildren: './views/buttons/buttons.module#ButtonsModule'
-            },
-            {
-                path: 'charts',
-                loadChildren: './views/chartjs/chartjs.module#ChartJSModule'
-            },
-            {
-                path: 'icons',
-                loadChildren: './views/icons/icons.module#IconsModule'
-            },
-            {
-                path: 'notifications',
-                loadChildren: './views/notifications/notifications.module#NotificationsModule'
-            },
-            {
-                path: 'theme',
-                loadChildren: './views/theme/theme.module#ThemeModule'
-            },
-            {
-                path: 'widgets',
-                loadChildren: './views/widgets/widgets.module#WidgetsModule'
-            }
-            */
         ]
     },
     {
@@ -136,22 +56,6 @@ export const routes: Routes = [
             title: 'Home'
         },
         children: [
-            /*
-            {
-                path: '',
-                loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
-            },
-            */
-            {
-                path: '',
-                component: ClientMapComponent
-            },
-            /*
-            {
-                path: 'routes',
-                loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
-            },
-            */
             {
                 path: 'vehicles',
                 component: ClientVehiclesComponent
@@ -160,36 +64,6 @@ export const routes: Routes = [
                 path: 'products',
                 component: ProductsComponent
             }
-            /*
-            {
-                path: 'base',
-                loadChildren: './views/base/base.module#BaseModule'
-            },
-            {
-                path: 'buttons',
-                loadChildren: './views/buttons/buttons.module#ButtonsModule'
-            },
-            {
-                path: 'charts',
-                loadChildren: './views/chartjs/chartjs.module#ChartJSModule'
-            },
-            {
-                path: 'icons',
-                loadChildren: './views/icons/icons.module#IconsModule'
-            },
-            {
-                path: 'notifications',
-                loadChildren: './views/notifications/notifications.module#NotificationsModule'
-            },
-            {
-                path: 'theme',
-                loadChildren: './views/theme/theme.module#ThemeModule'
-            },
-            {
-                path: 'widgets',
-                loadChildren: './views/widgets/widgets.module#WidgetsModule'
-            }
-            */
         ]
     },
     {

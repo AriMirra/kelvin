@@ -17,8 +17,8 @@ import {Device} from '../../../../shared/devices/Device';
 export class AdminVehiclesComponent implements OnInit {
 
   addingVehicle: boolean;
-  vehicleWithoutDevice: boolean;
-  vehicleWithoutClient: boolean;
+  // vehicleWithoutDevice: boolean;
+  // vehicleWithoutClient: boolean;
 
   clients: User[] = [];
   vehicles: Vehicle[] = [];
@@ -69,8 +69,6 @@ export class AdminVehiclesComponent implements OnInit {
     });
 
     this.addingVehicle = false;
-    this.vehicleWithoutDevice = true; // TODO boolean depends on the list of vehicles.
-    this.vehicleWithoutClient = true; // TODO boolean depends on the list of vehicles.
   }
 
   ngOnInit() {
