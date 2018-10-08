@@ -303,7 +303,11 @@ export class AdminMapComponent implements OnInit {
                 console.log(e);
             }
         );
-        // this.updateChartData();
+        // this.updateChartData(this.currentReport.asJson().pointInfo,
+        //     this.newRoute.minTemperature,
+        //     this.newRoute.maxTemperature,
+        //     this.newRoute.minHumidity,
+        //     this.newRoute.maxHumidity);
         this.routeSearched = true;
     }
 
