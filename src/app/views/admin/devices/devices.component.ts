@@ -43,7 +43,7 @@ export class DevicesComponent implements OnInit {
       .subscribe(([devices, vehicles]) => {
         this.devices = devices;
 
-        this.devices.map(d => {
+        this.devices.filter(d => d.assigned).map(d => {
           const id = d.id;
           const vehicle = vehicles.find(v => v.deviceId === id);
           return [id, vehicle] as ([string, Vehicle]);

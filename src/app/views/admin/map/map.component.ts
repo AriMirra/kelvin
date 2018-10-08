@@ -9,10 +9,12 @@ import {UserService} from '../../../services/user.service';
 import {VehicleService} from '../../../services/vehicle.service';
 import * as Rx from 'rxjs/internal/operators';
 import {forkJoin, Observable} from 'rxjs';
-import {Report} from '../../../../shared/reports/Report';
+import {Point} from '../../../../shared/reports/Point';
 import {Time} from '@angular/common';
 import {ReportParameters} from '../../../../shared/reports/ReportParameters';
 import {ReportService} from '../../../services/report.service';
+import {PointInfo} from '../../../../shared/reports/PointInfo';
+import {Coordinate} from '../../../../shared/reports/Coordinate';
 import {Point} from '../../../../shared/reports/Point';
 
 @Component({
@@ -31,7 +33,8 @@ export class AdminMapComponent implements OnInit {
     toDate: string;
     toTime: string;
 
-    currentReport: Report;
+  currentReport: Point[];
+  currentReportLayer: any;
 
     users: User[];
     userVehiclesMap: Map<string, Vehicle[]> = new Map<string, Vehicle[]>();
@@ -49,7 +52,7 @@ export class AdminMapComponent implements OnInit {
 
     // main chart
 
-    public mainChartElements = 27; // TODO Report size
+  public mainChartElements = 27; // TODO Report size
 
     // temperature
     public maxTemperature: Array<number> = [];
@@ -225,18 +228,22 @@ export class AdminMapComponent implements OnInit {
     public mainChartLegend = false;
     public mainChartType = 'line';
 
-    constructor(private userService: UserService, private vehicleService: VehicleService, private reportService: ReportService) {
-        this.userService.fetchUsers().subscribe(users => {
-            this.users = users;
-            this.users.map(u => [u, this.vehicleService.getUserVehicles(u.id)]).forEach(tuple => {
-                const user = tuple[0] as User;
-                const observable = tuple[1] as Observable<Vehicle[]>;
-                observable.subscribe(vehicles => {
-                    this.userVehiclesMap.set(user.id, vehicles);
-                });
-            });
-        });
-    }
+  public random(min: number, max: number) { // TODO delete
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+  constructor(private userService: UserService, private vehicleService: VehicleService, private reportService: ReportService) {
+      this.userService.fetchUsers().subscribe(users => {
+          this.users = users;
+          this.users.map(u => [u, this.vehicleService.getUserVehicles(u.id)]).forEach(tuple => {
+              const user = tuple[0] as User;
+              const observable = tuple[1] as Observable<Vehicle[]>;
+              observable.subscribe(vehicles => {
+                  this.userVehiclesMap.set(user.id, vehicles);
+              });
+          });
+      });
+  }
 
     ngOnInit(): void {
         this.newRoute = Route.empty();
@@ -249,6 +256,17 @@ export class AdminMapComponent implements OnInit {
         }).addTo(this.map);
         L.control.scale().addTo(this.map);
     }
+
+  parseDate(date: string, time: string): string {
+    const [hours, minutes] = time.split(':').map(e => parseInt(e, 10));
+    const result = new Date(date);
+    result.setDate(result.getDate() + 1);
+    result.setHours(hours);
+    result.setMinutes(minutes);
+    const s = result.toISOString();
+    console.log(s);
+    return s;
+  }
 
     updateChartData(points: Point[],
                     minTemperature: number,
@@ -290,82 +308,83 @@ export class AdminMapComponent implements OnInit {
         this.selectedVehicleId = '';
     }
 
-    getReport() {
-        const parameters = new ReportParameters(
-            this.selectedVehicleId,
-            this.parseDate(this.fromDate, this.fromTime),
-            this.parseDate(this.toDate, this.toTime)
-        );
-        this.reportService.getReport(parameters).subscribe(
-            report => {
-                this.currentReport = report;
-                console.log(this.currentReport);
-            },
-            e => {
-                console.log(e);
-            }
-        );
-        // this.updateChartData(this.currentReport.asJson().pointInfo,
-        //     this.newRoute.minTemperature,
-        //     this.newRoute.maxTemperature,
-        //     this.newRoute.minHumidity,
-        //     this.newRoute.maxHumidity);
-        this.routeSearched = true;
-    }
+  getReport() {
+    const parameters = new ReportParameters(
+      this.selectedVehicleId,
+      this.parseDate(this.fromDate, this.fromTime),
+      this.parseDate(this.toDate, this.toTime)
+    );
+    this.reportService.getReport(parameters).subscribe(
+      report => {
+        this.currentReport = report;
+        this.drawRoute();
+        console.log(this.currentReport);
+      },
+      e => {
+        console.log(e);
+      }
+    );
+  }
 
     // Map
 
-    drawRoute(): void {
-        this.resetMap(this.map); // reset all current markers
-        // TODO Loop addMarkerToMap
-        // TODO centerMap
+  drawRoute(): void {
+    this.resetMap(this.map); // reset all current markers
+    this.addRouteLayer(this.currentReport.map(p => p.info), this.newRoute, this.map);
+    this.centerMap(this.currentReport.map(p => p.info.coordinates), this.map);
+    // TODO Loop addMarkerToMap
+    // TODO centerMap
+  }
+
+  addRouteLayer(pointInfos: PointInfo[], currentRoute: Route, map: any): void {
+    const markers = pointInfos.map(i => this.makeMarker(i, currentRoute));
+    this.currentReportLayer = L.layerGroup(markers);
+    this.currentReportLayer.addTo(map);
+  }
+
+  makeMarker(p: PointInfo, currentRoute: Route): any {
+    const coordinates = L.latLng(p.coordinates.lat, p.coordinates.lon);
+    const temperature = p.temperature;
+    const moisture = p.humidity;
+    const lightSensed = p.lighted;
+    if (currentRoute.vampire && lightSensed) {
+      return L.marker(coordinates, {icon: this.lightIcon}).bindPopup('Luz detectada, se abrió el contenedor');
+    } else {
+      let circleColor: string;
+      if (temperature >= currentRoute.maxTemperature) {
+        circleColor = 'red';
+      } else if (temperature <= currentRoute.minTemperature) {
+        circleColor = 'blue';
+      } else {
+        circleColor = 'green';
+      }
+      return L.circle(coordinates, {
+        color: circleColor,
+        fillColor: circleColor,
+        fillOpacity: 1,
+        radius: 1
+      }).bindPopup('Temperatura medida = ' + 50 + 'ºC.\n' + 'Humedad medida = ' + 95 + '%');
     }
+  }
 
-    addMarkerToMap(coordinates: number[],
-                   temperature: number,
-                   moisture: number,
-                   lightSensed: boolean,
-                   currentRoute: Route,
-                   map: any): void {
-        if (currentRoute.vampire && lightSensed) {
-            L.marker(coordinates, {icon: this.lightIcon}).bindPopup('Luz detectada, se abrió el contenedor').addTo(map);
-        } else {
-            let circleColor: string;
-            if (temperature >= currentRoute.maxTemperature) {
-                circleColor = 'red';
-            } else if (temperature <= currentRoute.minTemperature) {
-                circleColor = 'blue';
-            } else {
-                circleColor = 'green';
-            }
-            L.circle(coordinates, {
-                color: circleColor,
-                fillColor: circleColor,
-                fillOpacity: 1,
-                radius: 1
-            }).bindPopup('Temperatura medida = ' + 50 + 'ºC.\n' + 'Humedad medida = ' + 95 + '%').addTo(map);
-        }
+  centerMap(coordinates: Coordinate[], map: any): void {
+    const bounds = L.latLngBounds(coordinates.map(c => L.latLng(c.lat, c.lon)));
+    this.map.fitBounds(bounds);
+  }
+
+  // probably doesn't work
+  resetMap(map: any): void {
+    if (this.currentReportLayer) {
+      map.removeLayer(this.currentReportLayer);
     }
+    /*map = L.map('map').setView([-34.61315, -58.37723], 9);
 
-    centerMap: (coordinatesStart: number[], coordinatesFinish: number[]) => void =
-        function (coordinatesStart: number[], coordinatesFinish: number[]): void {
-            const corner1 = L.latLng(coordinatesStart[0], coordinatesStart[1]),
-                corner2 = L.latLng(coordinatesFinish[0], coordinatesFinish[1]),
-                bounds = L.latLngBounds(corner1, corner2);
-            L.flyToBounds(bounds);
-        };
-
-    // probably doesn't work
-    resetMap: (map: any) => void =
-        function (map: any): void {
-            map = L.map('map').setView([-34.61315, -58.37723], 9);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-                minZoom: 3,
-                maxZoom: 15
-            }).addTo(map);
-            L.control.scale().addTo(map);
-        };
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      minZoom: 3,
+      maxZoom: 15
+    }).addTo(map);
+    L.control.scale().addTo(map);*/
+  }
 
 }
