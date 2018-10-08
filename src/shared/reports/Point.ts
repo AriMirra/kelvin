@@ -1,26 +1,25 @@
-import {Coordinate} from './Coordinate';
+import {PointInfo} from './PointInfo';
 
 export class Point {
   public static empty(): Point {
-    return new Point(false, 0, 0, 0, '', null);
+    return new Point('', '', null);
   }
 
-  constructor(private lighted: boolean,
-              private speed: number,
-              private temperature: number,
-              private humidity: number,
-              private time: string,
-              private coordinates: Coordinate) {}
+  public static fromAny(a: any) {
+    const info = Object.assign(PointInfo.empty(), a.point);
+    return new Point(a.id, a.mac, info);
+  }
+
+  constructor(public id: string,
+              public mac: string,
+              public info: PointInfo) {}
 
 
   public asJson() {
     return {
-      lighted: this.lighted,
-      speed: this.speed,
-      temperature: this.temperature,
-      humidity: this.humidity,
-      time: this.time,
-      coordinates: this.coordinates.asJson()
+      id: this.id,
+      mac: this.mac,
+      pointInfo: this.info.asJson()
     };
   }
 

@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {catchError, map} from 'rxjs/operators';
 import {HttpService} from './http.service';
-import {Report} from '../../shared/reports/Report';
+import {Point} from '../../shared/reports/Point';
 import {ReportParameters} from '../../shared/reports/ReportParameters';
 
 @Injectable({
@@ -13,12 +13,15 @@ export class ReportService {
   constructor(private http: HttpService) {
   }
 
-  getReport(reportParameters: ReportParameters): Observable<Report> {
+  getReport(reportParameters: ReportParameters): Observable<Point[]> {
     const json = reportParameters.asJson();
     return this.http.post('/report', json)
       .pipe(
-        map((response: any) => {
-          return response.body;
+        map((response) => {
+          console.log(response);
+          const map1 = response.body.map(p => Point.fromAny(p));
+          console.log(map1);
+          return map1;
         }),
         catchError(err => {
           console.log(err);

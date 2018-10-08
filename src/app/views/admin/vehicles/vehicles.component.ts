@@ -163,6 +163,14 @@ export class AdminVehiclesComponent implements OnInit {
   }
 
   assignDevice() {
+    if (this.deviceAssignId === null) {
+      this.vehicleService.removeDevice(this.vehicleToAssign.id)
+        .subscribe(removed => {
+          this.successfulAssign = removed;
+          this.showAssignMsg = true;
+          setTimeout(() => this.showAssignMsg = false, 1000);
+        });
+    } else {
     this.vehicleService
       .addDevice(this.vehicleToAssign.id, this.deviceAssignId)
       .subscribe(assigned => {
@@ -170,6 +178,7 @@ export class AdminVehiclesComponent implements OnInit {
         this.showAssignMsg = true;
         setTimeout(() => this.showAssignMsg = false, 1000);
       });
+    }
   }
 
   cancelAssign() {

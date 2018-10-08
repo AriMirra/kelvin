@@ -3,8 +3,8 @@ export class Coordinate {
     return new Coordinate('', '');
   }
 
-  constructor(private lat: string,
-              private lon: string) {}
+  constructor(public lat: string,
+              public lon: string) {}
 
 
   public asJson() {
