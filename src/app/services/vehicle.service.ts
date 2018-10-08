@@ -120,7 +120,7 @@ export class VehicleService {
         }),
         catchError( err => {
           console.log(err);
-          return Observable.of(null);
+          return Observable.of([]);
         })
       );
   }
