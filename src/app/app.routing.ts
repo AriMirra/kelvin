@@ -7,10 +7,13 @@ import {P404Component} from './views/error/404.component';
 import {P500Component} from './views/error/500.component';
 import {LoginComponent} from './views/login/login.component';
 import {AdminMapComponent} from './views/admin/map/map.component';
+import {ClientMapComponent} from './views/client/map/map.component';
 import {RoutesComponent} from './views/admin/routes/routes.component';
-import {VehiclesComponent} from './views/admin/vehicles/vehicles.component';
+import {AdminVehiclesComponent} from './views/admin/vehicles/vehicles.component';
+import {ClientVehiclesComponent} from './views/client/vehicles/vehicles.component';
 import {DevicesComponent} from './views/admin/devices/devices.component';
 import {UsersComponent} from './views/admin/users/users.component';
+import {ProductsComponent} from './views/client/products/products.component';
 
 export const routes: Routes = [
     /*
@@ -88,7 +91,7 @@ export const routes: Routes = [
             },
             {
                 path: 'vehicles',
-                component: VehiclesComponent
+                component: AdminVehiclesComponent
             },
             {
                 path: 'devices',
@@ -141,19 +144,21 @@ export const routes: Routes = [
             */
             {
                 path: '',
-                loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
+                component: ClientMapComponent
             },
+            /*
             {
                 path: 'routes',
                 loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
             },
+            */
             {
                 path: 'vehicles',
-                loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
+                component: ClientVehiclesComponent
             },
             {
                 path: 'products',
-                loadChildren: './views/client/dashboard/dashboard.module#DashboardModule'
+                component: ProductsComponent
             }
             /*
             {

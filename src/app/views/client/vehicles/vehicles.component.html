@@ -1,3 +1,63 @@
-<p>
-  vehicles works!
-</p>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header not-clickable">
+                <form>
+                    <div class="form-group row">
+                        <label class="col-6 col-form-label">
+                            <strong>Todos los vehículos</strong>
+                            <!--<small *ngIf="vehicleWithoutDevice && vehicleWithoutClient">
+                                <i class="ml-2 mr-1 fa fa-warning"></i>
+                                tiene vehículos sin dispositivos y clientes asignados
+                            </small>
+                            <small *ngIf="vehicleWithoutDevice && !vehicleWithoutClient">
+                                <i class="ml-2 mr-1 fa fa-warning"></i>
+                                tiene vehículos sin dispositivos asignados
+                            </small>
+                            <small *ngIf="!vehicleWithoutDevice && vehicleWithoutClient">
+                                <i class="ml-2 mr-1 fa fa-warning"></i>
+                                tiene vehículos sin clientes asignados
+                            </small>-->
+                        </label>
+                        <!--
+                        <div class="col-6">
+                            <input type="text"
+                                   id="search-vehicle"
+                                   name="search-vehicle"
+                                   class="form-control"
+                                   placeholder="Buscar vehículo"
+                                   [(ngModel)]="vehicleSearch"
+                            >
+                        </div>
+                        -->
+                    </div>
+                </form>
+            </div>
+            <div class="card-body open">
+                <!--
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Patente</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Dispositivo</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let vehicle of filteredVehicles()">
+                        <td>{{vehicle.domain}}</td>
+                        <td>{{vehicle.brand}}</td>
+                        <td>{{vehicle.model}}</td>
+                        <td>
+                            <a class="badge badge-success" *ngIf="vehicle.hasDevice()">{{getVehicleDevice(vehicle).alias}}</a>
+                            <a class="badge badge-warning" *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                -->
+            </div>
+        </div>
+    </div>
+</div>

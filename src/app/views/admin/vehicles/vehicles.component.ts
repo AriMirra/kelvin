@@ -14,7 +14,7 @@ import {Device} from '../../../../shared/devices/Device';
   templateUrl: './vehicles.component.html',
   styleUrls: ['./vehicles.component.scss']
 })
-export class VehiclesComponent implements OnInit {
+export class AdminVehiclesComponent implements OnInit {
 
   addingVehicle: boolean;
   vehicleWithoutDevice: boolean;

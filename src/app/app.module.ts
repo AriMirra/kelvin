@@ -42,7 +42,8 @@ import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {CookieService} from 'ngx-cookie-service';
 import {AdminMapComponent} from './views/admin/map/map.component';
 import {RoutesComponent} from './views/admin/routes/routes.component';
-import {VehiclesComponent} from './views/admin/vehicles/vehicles.component';
+import {AdminVehiclesComponent} from './views/admin/vehicles/vehicles.component';
+import {ClientVehiclesComponent} from './views/client/vehicles/vehicles.component';
 import {DevicesComponent} from './views/admin/devices/devices.component';
 import {FormsModule} from '@angular/forms';
 import {UserService} from './services/user.service';
@@ -50,8 +51,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {ModalsComponent} from './views/others/notifications/modals.component';
 import {UsersComponent} from './views/admin/users/users.component';
-import { MapComponent } from './views/client/map/map.component';
-import { ProductsComponent } from './views/client/products/products.component';
+import {ClientMapComponent} from './views/client/map/map.component';
+import {ProductsComponent} from './views/client/products/products.component';
 
 @NgModule({
     imports: [
@@ -80,10 +81,11 @@ import { ProductsComponent } from './views/client/products/products.component';
         ModalsComponent,
         RoutesComponent,
         UsersComponent,
-        VehiclesComponent,
+        AdminVehiclesComponent,
+        ClientVehiclesComponent,
         DevicesComponent,
         AdminMapComponent,
-        MapComponent,
+        ClientMapComponent,
         ProductsComponent
     ],
     providers: [
