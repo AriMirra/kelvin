@@ -18,37 +18,40 @@ import {Coordinate} from '../../../../shared/reports/Coordinate';
 import {Point} from '../../../../shared/reports/Point';
 
 @Component({
-    templateUrl: 'map.component.html',
-    styleUrls: ['./map.component.scss']
+  templateUrl: 'map.component.html',
+  styleUrls: ['./map.component.scss']
 })
 export class AdminMapComponent implements OnInit {
 
-    newRoute: Route = Route.empty();
-    routeSearched = false;
-    map: any;
+  newRoute: Route = Route.empty();
+  currentRoute;
+  map: any;
 
-    fromDate: string;
-    fromTime: string;
+  fromDate: string;
+  fromTime: string;
 
-    toDate: string;
-    toTime: string;
+  toDate: string;
+  toTime: string;
 
   currentReport: Point[];
   currentReportLayer: any;
+  currentLayerControl: any;
 
-    users: User[];
-    userVehiclesMap: Map<string, Vehicle[]> = new Map<string, Vehicle[]>();
+  checking: Check = Check.BASIC;
 
-    selectedUserId = '';
-    selectedVehicleId = '';
+  users: User[];
+  userVehiclesMap: Map<string, Vehicle[]> = new Map<string, Vehicle[]>();
 
-    lightIcon = L.icon({
-        iconUrl: '/../../../../assets/img/markers/light.png',
+  selectedUserId = '';
+  selectedVehicleId = '';
 
-        iconSize: [36, 36], // size of the icon
-        iconAnchor: [18, 18], // point of the icon which will correspond to marker's location
-        popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
-    });
+  lightIcon = L.icon({
+    iconUrl: '/../../../../assets/img/markers/light.png',
+
+    iconSize: [18, 18], // size of the icon
+    iconAnchor: [9, 9], // point of the icon which will correspond to marker's location
+    popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
+  });
 
     // main chart
 
@@ -233,32 +236,35 @@ export class AdminMapComponent implements OnInit {
   }
 
   constructor(private userService: UserService, private vehicleService: VehicleService, private reportService: ReportService) {
-      this.userService.fetchUsers().subscribe(users => {
-          this.users = users;
-          this.users.map(u => [u, this.vehicleService.getUserVehicles(u.id)]).forEach(tuple => {
-              const user = tuple[0] as User;
-              const observable = tuple[1] as Observable<Vehicle[]>;
-              observable.subscribe(vehicles => {
-                  this.userVehiclesMap.set(user.id, vehicles);
-              });
-          });
+    this.userService.fetchUsers().subscribe(users => {
+      this.users = users;
+      this.users.map(u => [u, this.vehicleService.getUserVehicles(u.id)]).forEach(tuple => {
+        const user = tuple[0] as User;
+        const observable = tuple[1] as Observable<Vehicle[]>;
+        observable.subscribe(vehicles => {
+          this.userVehiclesMap.set(user.id, vehicles);
+        });
       });
+    });
   }
 
     ngOnInit(): void {
         this.newRoute = Route.empty();
         this.map = L.map('map').setView([-34.61315, -58.37723], 10);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-            minZoom: 4,
-            maxZoom: 16
-        }).addTo(this.map);
-        L.control.scale().addTo(this.map);
-    }
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      minZoom: 4,
+      maxZoom: 16
+    }).addTo(this.map);
+    L.control.scale().addTo(this.map);
+  }
 
   parseDate(date: string, time: string): string {
-    const [hours, minutes] = time.split(':').map(e => parseInt(e, 10));
+    const [hours, minutes] = time ? time.split(':').map(e => {
+      const value = parseInt(e, 10);
+      return (value === undefined || value === null) ? 0 : value;
+    }) : [0, 0];
     const result = new Date(date);
     result.setDate(result.getDate() + 1);
     result.setHours(hours);
@@ -297,16 +303,20 @@ export class AdminMapComponent implements OnInit {
         }
     }
 
-    // Form
-    getSelectedUserVehicles(): Vehicle[] {
-        return this.userVehiclesMap.get(this.selectedUserId) || [];
-    }
+  // Form
+  getSelectedUserVehicles(): Vehicle[] {
+    return this.userVehiclesMap.get(this.selectedUserId) || [];
+  }
 
-    resetForm() {
-        this.newRoute = Route.empty();
-        this.selectedUserId = '';
-        this.selectedVehicleId = '';
-    }
+  resetForm() {
+    this.newRoute = Route.empty();
+    this.selectedUserId = '';
+    this.selectedVehicleId = '';
+    this.fromTime = '';
+    this.fromDate = '';
+    this.toDate = '';
+    this.toTime = '';
+  }
 
   getReport() {
     const parameters = new ReportParameters(
@@ -326,45 +336,119 @@ export class AdminMapComponent implements OnInit {
     );
   }
 
-    // Map
+  // Map
 
   drawRoute(): void {
     this.resetMap(this.map); // reset all current markers
-    this.addRouteLayer(this.currentReport.map(p => p.info), this.newRoute, this.map);
+    this.addLayers(this.currentReport.map(p => p.info), this.newRoute, this.map);
     this.centerMap(this.currentReport.map(p => p.info.coordinates), this.map);
-    // TODO Loop addMarkerToMap
-    // TODO centerMap
+    this.currentRoute = Route.clone(this.newRoute);
   }
 
-  addRouteLayer(pointInfos: PointInfo[], currentRoute: Route, map: any): void {
-    const markers = pointInfos.map(i => this.makeMarker(i, currentRoute));
-    this.currentReportLayer = L.layerGroup(markers);
-    this.currentReportLayer.addTo(map);
-  }
-
-  makeMarker(p: PointInfo, currentRoute: Route): any {
-    const coordinates = L.latLng(p.coordinates.lat, p.coordinates.lon);
-    const temperature = p.temperature;
-    const moisture = p.humidity;
-    const lightSensed = p.lighted;
-    if (currentRoute.vampire && lightSensed) {
-      return L.marker(coordinates, {icon: this.lightIcon}).bindPopup('Luz detectada, se abrió el contenedor');
-    } else {
-      let circleColor: string;
-      if (temperature >= currentRoute.maxTemperature) {
-        circleColor = 'red';
-      } else if (temperature <= currentRoute.minTemperature) {
-        circleColor = 'blue';
-      } else {
-        circleColor = 'green';
+  addLayers(pointInfos: PointInfo[], route: Route, map: any): void {
+    const temperatureMarkers = [];
+    const humidityMarkers = [];
+    const lightMarkers = [];
+    const markers = [];
+    pointInfos.forEach( i => {
+      markers.push(this.makeMarker(i.coordinates));
+      if (i.lighted && route.vampire) {
+        lightMarkers.push(this.makeMarkerLight(i.coordinates));
       }
+      if (route.checksTemperature()) {
+        temperatureMarkers.push(this.makeMarkerWithRange(
+          i.coordinates,
+          i.temperature,
+          route.minTemperature,
+          route.maxTemperature,
+          'Temperatura',
+          'ºC'
+          )
+        );
+      }
+      if (route.checksHumidity()) {
+        humidityMarkers.push(this.makeMarkerWithRange(
+          i.coordinates,
+          i.humidity,
+          route.minHumidity,
+          route.maxHumidity,
+          'Humedad',
+          '%'
+          )
+        );
+      }
+      }
+    );
+    const baseLayers = {};
+    let extraLayers = false;
+    if (route.checksTemperature()) {
+      baseLayers['Temperatura'] = L.layerGroup(temperatureMarkers).on('add', () => this.changeCheck(Check.TEMP));
+      extraLayers = true;
+    }
+    if (route.checksHumidity()) {
+      baseLayers['Humedad'] = L.layerGroup(humidityMarkers).on('add', () => this.changeCheck(Check.HUMIDITY));
+      extraLayers = true;
+    }
+    if (route.vampire) {
+      baseLayers['Luz'] = L.layerGroup(lightMarkers).on('add', () => this.changeCheck(Check.LIGHT));
+      extraLayers = true;
+    }
+    this.currentReportLayer = L.layerGroup(markers).addTo(map);
+    if (extraLayers) {
+      baseLayers['Basico'] = this.currentReportLayer.on('add', () => this.changeCheck(Check.BASIC));
+      this.currentLayerControl = L.control.layers(baseLayers).addTo(map);
+    }
+  }
+
+  makeMarkerLight(c: Coordinate): any {
+    const coordinates = L.latLng(c.lat, c.lon);
+    const circleColor = '#e6d827';
+    return L.circle(coordinates, {
+      color: circleColor,
+      fillColor: circleColor,
+      fillOpacity: 1,
+      radius: 1
+    }).bindPopup('Luz detectada, se abrió el contenedor');
+  }
+
+  makeMarkerWithRange(c: Coordinate, value: number, min: number, max: number, name: string, unit: string): any {
+    const coordinates = L.latLng(c.lat, c.lon);
+    let circleColor: string;
+    if (value === undefined || value === null) {
+      circleColor = '#696969';
       return L.circle(coordinates, {
         color: circleColor,
         fillColor: circleColor,
         fillOpacity: 1,
         radius: 1
-      }).bindPopup('Temperatura medida = ' + 50 + 'ºC.\n' + 'Humedad medida = ' + 95 + '%');
+      }).bindPopup('Sin datos');
+    } else {
+      if (!this.isUndefined(max) && value >= max) {
+        circleColor = 'red';
+      } else if (!this.isUndefined(min) && value <= min) {
+        circleColor = 'blue';
+      } else {
+        circleColor = 'green';
+      }
+
+      return L.circle(coordinates, {
+        color: circleColor,
+        fillColor: circleColor,
+        fillOpacity: 1,
+        radius: 1
+      }).bindPopup(`${name} medida: ${value} ${unit}`);
     }
+  }
+
+  makeMarker(c: Coordinate): any {
+    const coordinates = L.latLng(c.lat, c.lon);
+    const circleColor = 'black';
+    return L.circle(coordinates, {
+      color: circleColor,
+      fillColor: circleColor,
+      fillOpacity: 1,
+      radius: 1
+    });
   }
 
   centerMap(coordinates: Coordinate[], map: any): void {
@@ -374,8 +458,11 @@ export class AdminMapComponent implements OnInit {
 
   // probably doesn't work
   resetMap(map: any): void {
+    if (this.currentLayerControl) {
+      this.currentLayerControl.remove(map);
+    }
     if (this.currentReportLayer) {
-      map.removeLayer(this.currentReportLayer);
+      this.currentReportLayer.remove(map);
     }
     /*map = L.map('map').setView([-34.61315, -58.37723], 9);
 
@@ -387,4 +474,31 @@ export class AdminMapComponent implements OnInit {
     L.control.scale().addTo(map);*/
   }
 
+  changeCheck(check: Check) {
+    this.checking = check;
+  }
+
+  checkingTemp(): boolean {
+    return this.checking === Check.TEMP;
+  }
+
+  checkingHumidity(): boolean {
+    return this.checking === Check.HUMIDITY;
+  }
+
+  checkingLight(): boolean {
+    return this.checking === Check.LIGHT;
+  }
+
+  isChecking(): boolean {
+    return this.checking !== Check.BASIC;
+  }
+
+  private isUndefined(val): boolean {
+    return val === undefined || val === null;
+  }
+}
+
+enum Check {
+  TEMP, HUMIDITY, LIGHT, BASIC
 }

@@ -212,44 +212,98 @@
                 <div id="map" style="height: 100%;"></div>
             </div>
             <div class="card reference-card">
-                <div class="card-header not-clickable">
-                    <form *ngIf="!routeSearched">
-                        <div class="form-group row">
-                            <label class="col-10 col-form-label">
-                                <strong>Aquí estará la referencia del mapa una vez que genere un recorrido</strong>
-                            </label>
-                        </div>
-                    </form>
-                    <form *ngIf="routeSearched">
-                        <div class="form-group row">
-                            <div class="col-8 align-self-center temperature">
+                <div class="card-header not-clickable reference-key">
+                    <form class="h-100">
+                        <div class="form-group row h-100">
+                            <div class="col-8 align-self-center temperature" *ngIf="checkingTemp()">
                                 <ul>
-                                    <li>
+                                    <li *ngIf="currentRoute.hasMinTemp()">
                                         <p>
                                             <span class="colored-circle blue"></span>
-                                            T(ºC) <= {{newRoute.minTemperature}}
+                                            T(ºC) <= {{currentRoute.minTemperature}}
                                         </p>
                                     </li>
-                                    <li>
-
+                                    <li *ngIf="currentRoute.hasMinTemp() && !currentRoute.hasMaxTemp()">
                                         <p>
                                             <span class="colored-circle green"></span>
-                                            {{newRoute.minTemperature}} < T(ºC) < {{newRoute.maxTemperature}}
+                                            {{currentRoute.minTemperature}} < T(ºC)
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMinTemp() && currentRoute.hasMaxTemp()">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            {{currentRoute.minTemperature}} < T(ºC) < {{currentRoute.maxTemperature}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="!currentRoute.hasMinTemp() && currentRoute.hasMaxTemp()">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            T(ºC) < {{currentRoute.maxTemperature}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMaxTemp()">
+                                        <p>
+                                            <span class="colored-circle red"></span>
+                                            T(ºC) >= {{currentRoute.maxTemperature}}
                                         </p>
                                     </li>
                                     <li>
                                         <p>
-                                            <span class="colored-circle red"></span>
-                                            T(ºC) >= {{newRoute.maxTemperature}}
+                                            <span class="colored-circle grey"></span>
+                                            Sin datos
                                         </p>
                                     </li>
                                 </ul>
                             </div>
-                            <div class="col-4 align-self-center light">
-                                <p>
-                                    <img src="../../../../assets/img/markers/light.png" alt="light-img">
-                                    = Apertura de contenedor
-                                </p>
+                            <div class="col-8 align-self-center temperature" *ngIf="checkingHumidity()">
+                                <ul>
+                                    <li *ngIf="currentRoute.hasMinHumidity()">
+                                        <p>
+                                            <span class="colored-circle blue"></span>
+                                            H(%) <= {{currentRoute.minHumidity}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMinHumidity() && !currentRoute.hasMaxHumidity">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            {{currentRoute.minHumidity}} < H(%)
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMinHumidity() && currentRoute.hasMaxHumidity">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            {{currentRoute.minHumidity}} < H(%) < {{currentRoute.maxHumidity}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="!currentRoute.hasMinHumidity() && currentRoute.hasMaxHumidity">
+                                        <p>
+                                            <span class="colored-circle green"></span>
+                                            H(%) < {{currentRoute.maxHumidity}}
+                                        </p>
+                                    </li>
+                                    <li *ngIf="currentRoute.hasMaxHumidity">
+                                        <p>
+                                            <span class="colored-circle red"></span>
+                                            H(%) >= {{currentRoute.maxHumidity}}
+                                        </p>
+                                    </li>
+                                    <li>
+                                        <p>
+                                            <span class="colored-circle grey"></span>
+                                            Sin datos
+                                        </p>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-8 align-self-center temperature" *ngIf="checkingLight()">
+                                <ul>
+                                    <li>
+                                        <p>
+                                            <span class="colored-circle yellow"></span>
+                                            Luz detectada
+                                        </p>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </form>
@@ -257,7 +311,7 @@
             </div>
         </div>
     </div>
-    <div class="row" *ngIf="routeSearched">
+    <div class="row" *ngIf="currentRoute">
         <div class="col-12">
             <div class="card">
                 <div class="card-header not-clickable">
