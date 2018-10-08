@@ -7,15 +7,12 @@ import {User} from '../../../../shared/users/User';
 import {Vehicle} from '../../../../shared/vehicles/Vehicle';
 import {UserService} from '../../../services/user.service';
 import {VehicleService} from '../../../services/vehicle.service';
-import * as Rx from 'rxjs/internal/operators';
-import {forkJoin, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Point} from '../../../../shared/reports/Point';
-import {Time} from '@angular/common';
 import {ReportParameters} from '../../../../shared/reports/ReportParameters';
 import {ReportService} from '../../../services/report.service';
 import {PointInfo} from '../../../../shared/reports/PointInfo';
 import {Coordinate} from '../../../../shared/reports/Coordinate';
-import {Point} from '../../../../shared/reports/Point';
 
 @Component({
   templateUrl: 'map.component.html',
@@ -53,187 +50,182 @@ export class AdminMapComponent implements OnInit {
     popupAnchor: [0, 0] // point from which the popup should open relative to the iconAnchor
   });
 
-    // main chart
+  // temperature
+  public maxTemperature: Array<number> = [];
+  public currentTemperature: Array<number> = [];
+  public minTemperature: Array<number> = [];
 
-  public mainChartElements = 27; // TODO Report size
+  // humidity
+  public maxHumidity: Array<number> = [];
+  public currentHumidity: Array<number> = [];
+  public minHumidity: Array<number> = [];
 
-    // temperature
-    public maxTemperature: Array<number> = [];
-    public currentTemperature: Array<number> = [];
-    public minTemperature: Array<number> = [];
+  public mainChartLabels: Array<string> = [];
 
-    // moisture
-    public maxMoisture: Array<number> = [];
-    public currentMoisture: Array<number> = [];
-    public minMoisture: Array<number> = [];
+  public temperatureChartData: Array<any> = [
+    {
+      data: this.maxTemperature,
+      label: 'Temperatura Máxima'
+    },
+    {
+      data: this.currentTemperature,
+      label: 'Temperatura'
+    },
+    {
+      data: this.minTemperature,
+      label: 'Temperatura Mínima'
+    },
 
-    public mainChartLabels: Array<string> = [];
-    public temperatureChartData: Array<any> = [
-        {
-            data: this.maxTemperature,
-            label: 'Temperatura Máxima'
-        },
-        {
-            data: this.currentTemperature,
-            label: 'Temperatura'
-        },
-        {
-            data: this.minTemperature,
-            label: 'Temperatura Mínima'
-        },
+  ];
+  public moistureChartData: Array<any> = [
+    {
+      data: this.maxHumidity,
+      label: 'Humedad Máxima'
+    },
+    {
+      data: this.currentHumidity,
+      label: 'Humedad'
+    },
+    {
+      data: this.minHumidity,
+      label: 'Humedad Mínima'
+    },
 
-    ];
-    public moistureChartData: Array<any> = [
-        {
-            data: this.maxMoisture,
-            label: 'Humedad Máxima'
-        },
-        {
-            data: this.currentMoisture,
-            label: 'Humedad'
-        },
-        {
-            data: this.minMoisture,
-            label: 'Humedad Mínima'
-        },
-
-    ];
-    public temperatureChartOptions: any = {
-        tooltips: {
-            enabled: false,
-            custom: CustomTooltips,
-            intersect: true,
-            mode: 'index',
-            position: 'nearest',
-            callbacks: {
-                labelColor: function (tooltipItem, chart) {
-                    return {backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor};
-                }
-            }
-        },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    drawOnChartArea: false,
-                },
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    maxTicksLimit: 5,
-                    stepSize: Math.ceil(100 / 10),
-                    max: 50
-                }
-            }]
-        },
-        elements: {
-            line: {
-                borderWidth: 2
-            },
-            point: {
-                radius: 0,
-                hitRadius: 10,
-                hoverRadius: 4,
-                hoverBorderWidth: 3,
-            }
-        },
-        legend: {
-            display: false
+  ];
+  public temperatureChartOptions: any = {
+    tooltips: {
+      enabled: false,
+      custom: CustomTooltips,
+      intersect: true,
+      mode: 'index',
+      position: 'nearest',
+      callbacks: {
+        labelColor: function (tooltipItem, chart) {
+          return {backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor};
         }
-    };
-    public moistureChartOptions: any = {
-        tooltips: {
-            enabled: false,
-            custom: CustomTooltips,
-            intersect: true,
-            mode: 'index',
-            position: 'nearest',
-            callbacks: {
-                labelColor: function (tooltipItem, chart) {
-                    return {backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor};
-                }
-            }
+      }
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        display: false,
+        gridLines: {
+          drawOnChartArea: false,
         },
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-            xAxes: [{
-                gridLines: {
-                    drawOnChartArea: false,
-                },
-            }],
-            yAxes: [{
-                ticks: {
-                    beginAtZero: true,
-                    maxTicksLimit: 5,
-                    stepSize: Math.ceil(100 / 10),
-                    max: 100
-                }
-            }]
-        },
-        elements: {
-            line: {
-                borderWidth: 2
-            },
-            point: {
-                radius: 0,
-                hitRadius: 10,
-                hoverRadius: 4,
-                hoverBorderWidth: 3,
-            }
-        },
-        legend: {
-            display: false
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          maxTicksLimit: 5,
+          stepSize: Math.ceil(100 / 10),
+          max: 50
         }
-    };
-    public temperatureChartColors: Array<any> = [
-        { // max-temperature
-            backgroundColor: 'transparent',
-            borderColor: getStyle('--danger'),
-            pointHoverBackgroundColor: '#fff',
+      }]
+    },
+    elements: {
+      line: {
+        borderWidth: 2
+      },
+      point: {
+        radius: 0,
+        hitRadius: 10,
+        hoverRadius: 4,
+        hoverBorderWidth: 3,
+      }
+    },
+    legend: {
+      display: false
+    }
+  };
+  public moistureChartOptions: any = {
+    tooltips: {
+      enabled: false,
+      custom: CustomTooltips,
+      intersect: true,
+      mode: 'index',
+      position: 'nearest',
+      callbacks: {
+        labelColor: function (tooltipItem, chart) {
+          return {backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor};
+        }
+      }
+    },
+    responsive: true,
+    maintainAspectRatio: false,
+    scales: {
+      xAxes: [{
+        display: false,
+        gridLines: {
+          drawOnChartArea: false,
         },
-        { // temperature
-            backgroundColor: hexToRgba(getStyle('--success'), 10),
-            borderColor: getStyle('--success'),
-            pointHoverBackgroundColor: '#fff'
-        },
-        { // min-temperature
-            backgroundColor: 'transparent',
-            borderColor: getStyle('--info'),
-            pointHoverBackgroundColor: '#fff',
-        },
-    ];
-    public moistureChartColors: Array<any> = [
-        { // max-moisture
-            backgroundColor: 'transparent',
-            borderColor: getStyle('--danger'),
-            pointHoverBackgroundColor: '#fff',
-            borderWidth: 1,
-            borderDash: [8, 5]
-        },
-        { // moisture
-            backgroundColor: hexToRgba(getStyle('--success'), 10),
-            borderColor: getStyle('--success'),
-            pointHoverBackgroundColor: '#fff',
-            borderWidth: 1,
-            borderDash: [8, 5]
-        },
-        { // min-moisture
-            backgroundColor: 'transparent',
-            borderColor: getStyle('--info'),
-            pointHoverBackgroundColor: '#fff',
-            borderWidth: 1,
-            borderDash: [8, 5]
-        },
-    ];
-    public mainChartLegend = false;
-    public mainChartType = 'line';
-
-  public random(min: number, max: number) { // TODO delete
-    return Math.floor(Math.random() * (max - min + 1) + min);
-  }
+      }],
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          maxTicksLimit: 5,
+          stepSize: Math.ceil(100 / 10),
+          max: 100
+        }
+      }]
+    },
+    elements: {
+      line: {
+        borderWidth: 2
+      },
+      point: {
+        radius: 0,
+        hitRadius: 10,
+        hoverRadius: 4,
+        hoverBorderWidth: 3,
+      }
+    },
+    legend: {
+      display: false
+    }
+  };
+  public temperatureChartColors: Array<any> = [
+    { // max-temperature
+      backgroundColor: 'transparent',
+      borderColor: getStyle('--danger'),
+      pointHoverBackgroundColor: '#fff',
+    },
+    { // temperature
+      backgroundColor: hexToRgba(getStyle('--success'), 10),
+      borderColor: getStyle('--success'),
+      pointHoverBackgroundColor: '#fff'
+    },
+    { // min-temperature
+      backgroundColor: 'transparent',
+      borderColor: getStyle('--info'),
+      pointHoverBackgroundColor: '#fff',
+    },
+  ];
+  public moistureChartColors: Array<any> = [
+    { // max-moisture
+      backgroundColor: 'transparent',
+      borderColor: getStyle('--danger'),
+      pointHoverBackgroundColor: '#fff',
+      borderWidth: 1,
+      borderDash: [8, 5]
+    },
+    { // moisture
+      backgroundColor: hexToRgba(getStyle('--success'), 10),
+      borderColor: getStyle('--success'),
+      pointHoverBackgroundColor: '#fff',
+      borderWidth: 1,
+      borderDash: [8, 5]
+    },
+    { // min-moisture
+      backgroundColor: 'transparent',
+      borderColor: getStyle('--info'),
+      pointHoverBackgroundColor: '#fff',
+      borderWidth: 1,
+      borderDash: [8, 5]
+    },
+  ];
+  public mainChartLegend = false;
+  public mainChartType = 'line';
 
   constructor(private userService: UserService, private vehicleService: VehicleService, private reportService: ReportService) {
     this.userService.fetchUsers().subscribe(users => {
@@ -248,9 +240,9 @@ export class AdminMapComponent implements OnInit {
     });
   }
 
-    ngOnInit(): void {
-        this.newRoute = Route.empty();
-        this.map = L.map('map').setView([-34.61315, -58.37723], 10);
+  ngOnInit(): void {
+    this.newRoute = Route.empty();
+    this.map = L.map('map').setView([-34.61315, -58.37723], 10);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
@@ -269,39 +261,72 @@ export class AdminMapComponent implements OnInit {
     result.setDate(result.getDate() + 1);
     result.setHours(hours);
     result.setMinutes(minutes);
-    const s = result.toISOString();
-    console.log(s);
-    return s;
+    return result.toISOString();
   }
 
-    updateChartData(points: Point[],
-                    minTemperature: number,
-                    maxTemperature: number,
-                    minMoisture: number,
-                    maxMoisture: number): void {
-        for (let i = 0; i <= points.length; i++) {
-            const pointInfo = points[i].asJson();
-            this.mainChartLabels.push(pointInfo.time);
-            // temperature
-            this.maxTemperature.push(maxTemperature);
-            this.currentTemperature.push(pointInfo.temperature);
-            this.minTemperature.push(minTemperature);
-            // moisture
-            this.maxMoisture.push(maxMoisture);
-            this.currentMoisture.push(pointInfo.humidity);
-            this.minMoisture.push(minMoisture);
-        }
+  updateChartData(points: Point[], route: Route): void {
+    for (let i = 0; i < points.length; i++) {
+      if (i === 0) {
+        console.log(points[i].info.dateTime);
+      }
+      const pointInfo = points[i].info;
+      this.mainChartLabels.push(pointInfo.dateTime.toUTCString());
+      // temperature
+      this.maxTemperature.push(route.maxTemperature);
+      this.currentTemperature.push(pointInfo.temperature);
+      this.minTemperature.push(route.minTemperature);
+      // humidity
+      this.maxHumidity.push(route.maxHumidity);
+      this.currentHumidity.push(pointInfo.humidity);
+      this.minHumidity.push(route.minHumidity);
     }
+  }
 
-    parseDate(date: string, time: string): string {
-        if (!date == null && !time == null) {
-          const [hours, minutes] = time.split(':').map(e => parseInt(e, 10));
-          const result = new Date(date);
-          result.setHours(hours);
-          result.setMinutes(minutes);
-          return result.toISOString();
-        }
-    }
+  updateCharts() {
+    this.resetCharts();
+    this.updateChartData(this.currentReport, this.currentRoute);
+  }
+
+  resetCharts() {
+    this.mainChartLabels = [];
+    this.maxTemperature = [];
+    this.currentTemperature = [];
+    this.minTemperature = [];
+    this.maxHumidity = [];
+    this.currentHumidity = [];
+    this.minHumidity = [];
+
+    this.temperatureChartData = [
+      {
+        data: this.maxTemperature,
+        label: 'Temperatura Máxima'
+      },
+      {
+        data: this.currentTemperature,
+        label: 'Temperatura'
+      },
+      {
+        data: this.minTemperature,
+        label: 'Temperatura Mínima'
+      },
+
+    ];
+    this.moistureChartData = [
+      {
+        data: this.maxHumidity,
+        label: 'Humedad Máxima'
+      },
+      {
+        data: this.currentHumidity,
+        label: 'Humedad'
+      },
+      {
+        data: this.minHumidity,
+        label: 'Humedad Mínima'
+      },
+
+    ];
+  }
 
   // Form
   getSelectedUserVehicles(): Vehicle[] {
@@ -328,7 +353,7 @@ export class AdminMapComponent implements OnInit {
       report => {
         this.currentReport = report;
         this.drawRoute();
-        console.log(this.currentReport);
+        this.updateCharts();
       },
       e => {
         console.log(e);
@@ -350,33 +375,33 @@ export class AdminMapComponent implements OnInit {
     const humidityMarkers = [];
     const lightMarkers = [];
     const markers = [];
-    pointInfos.forEach( i => {
-      markers.push(this.makeMarker(i.coordinates));
-      if (i.lighted && route.vampire) {
-        lightMarkers.push(this.makeMarkerLight(i.coordinates));
-      }
-      if (route.checksTemperature()) {
-        temperatureMarkers.push(this.makeMarkerWithRange(
-          i.coordinates,
-          i.temperature,
-          route.minTemperature,
-          route.maxTemperature,
-          'Temperatura',
-          'ºC'
-          )
-        );
-      }
-      if (route.checksHumidity()) {
-        humidityMarkers.push(this.makeMarkerWithRange(
-          i.coordinates,
-          i.humidity,
-          route.minHumidity,
-          route.maxHumidity,
-          'Humedad',
-          '%'
-          )
-        );
-      }
+    pointInfos.forEach(i => {
+        markers.push(this.makeMarker(i.coordinates));
+        if (i.lighted && route.vampire) {
+          lightMarkers.push(this.makeMarkerLight(i.coordinates));
+        }
+        if (route.checksTemperature()) {
+          temperatureMarkers.push(this.makeMarkerWithRange(
+            i.coordinates,
+            i.temperature,
+            route.minTemperature,
+            route.maxTemperature,
+            'Temperatura',
+            'ºC'
+            )
+          );
+        }
+        if (route.checksHumidity()) {
+          humidityMarkers.push(this.makeMarkerWithRange(
+            i.coordinates,
+            i.humidity,
+            route.minHumidity,
+            route.maxHumidity,
+            'Humedad',
+            '%'
+            )
+          );
+        }
       }
     );
     const baseLayers = {};
@@ -456,7 +481,6 @@ export class AdminMapComponent implements OnInit {
     this.map.fitBounds(bounds);
   }
 
-  // probably doesn't work
   resetMap(map: any): void {
     if (this.currentLayerControl) {
       this.currentLayerControl.remove(map);
@@ -464,14 +488,6 @@ export class AdminMapComponent implements OnInit {
     if (this.currentReportLayer) {
       this.currentReportLayer.remove(map);
     }
-    /*map = L.map('map').setView([-34.61315, -58.37723], 9);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-      minZoom: 3,
-      maxZoom: 15
-    }).addTo(map);
-    L.control.scale().addTo(map);*/
   }
 
   changeCheck(check: Check) {
