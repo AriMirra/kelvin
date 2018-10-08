@@ -60,7 +60,7 @@ export class AdminMapComponent implements OnInit {
     public minMoisture: Array<number> = [];
 
     public mainChartLabels: Array<string> = [];
-    public mainChartData: Array<any> = [
+    public temperatureChartData: Array<any> = [
         {
             data: this.maxTemperature,
             label: 'Temperatura Máxima'
@@ -73,6 +73,9 @@ export class AdminMapComponent implements OnInit {
             data: this.minTemperature,
             label: 'Temperatura Mínima'
         },
+
+    ];
+    public moistureChartData: Array<any> = [
         {
             data: this.maxMoisture,
             label: 'Humedad Máxima'
@@ -87,7 +90,52 @@ export class AdminMapComponent implements OnInit {
         },
 
     ];
-    public mainChartOptions: any = {
+    public temperatureChartOptions: any = {
+        tooltips: {
+            enabled: false,
+            custom: CustomTooltips,
+            intersect: true,
+            mode: 'index',
+            position: 'nearest',
+            callbacks: {
+                labelColor: function (tooltipItem, chart) {
+                    return {backgroundColor: chart.data.datasets[tooltipItem.datasetIndex].borderColor};
+                }
+            }
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            xAxes: [{
+                gridLines: {
+                    drawOnChartArea: false,
+                },
+            }],
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true,
+                    maxTicksLimit: 5,
+                    stepSize: Math.ceil(100 / 10),
+                    max: 50
+                }
+            }]
+        },
+        elements: {
+            line: {
+                borderWidth: 2
+            },
+            point: {
+                radius: 0,
+                hitRadius: 10,
+                hoverRadius: 4,
+                hoverBorderWidth: 3,
+            }
+        },
+        legend: {
+            display: false
+        }
+    };
+    public moistureChartOptions: any = {
         tooltips: {
             enabled: false,
             custom: CustomTooltips,
@@ -132,7 +180,7 @@ export class AdminMapComponent implements OnInit {
             display: false
         }
     };
-    public mainChartColours: Array<any> = [
+    public temperatureChartColors: Array<any> = [
         { // max-temperature
             backgroundColor: 'transparent',
             borderColor: getStyle('--danger'),
@@ -148,6 +196,8 @@ export class AdminMapComponent implements OnInit {
             borderColor: getStyle('--info'),
             pointHoverBackgroundColor: '#fff',
         },
+    ];
+    public moistureChartColors: Array<any> = [
         { // max-moisture
             backgroundColor: 'transparent',
             borderColor: getStyle('--danger'),
@@ -156,7 +206,7 @@ export class AdminMapComponent implements OnInit {
             borderDash: [8, 5]
         },
         { // moisture
-            backgroundColor: 'transparent',
+            backgroundColor: hexToRgba(getStyle('--success'), 10),
             borderColor: getStyle('--success'),
             pointHoverBackgroundColor: '#fff',
             borderWidth: 1,
@@ -200,8 +250,8 @@ export class AdminMapComponent implements OnInit {
             this.minTemperature.push(0);
             // moisture
             this.maxMoisture.push(100);
-            this.currentMoisture.push(this.random(75, 100));
-            this.minMoisture.push(75);
+            this.currentMoisture.push(this.random(0, 100));
+            this.minMoisture.push(0);
         }
         this.newRoute = Route.empty();
         this.map = L.map('map').setView([-34.61315, -58.37723], 10);
