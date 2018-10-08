@@ -21,6 +21,7 @@ import {ReportService} from '../../../services/report.service';
 export class AdminMapComponent implements OnInit {
 
     newRoute: Route = Route.empty();
+    routeSearched = false;
     map: any;
 
     fromDate: string;
@@ -223,10 +224,6 @@ export class AdminMapComponent implements OnInit {
     public mainChartLegend = false;
     public mainChartType = 'line';
 
-    public random(min: number, max: number) { // TODO delete
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
     constructor(private userService: UserService, private vehicleService: VehicleService, private reportService: ReportService) {
         this.userService.fetchUsers().subscribe(users => {
             this.users = users;
@@ -241,18 +238,6 @@ export class AdminMapComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // generate random values for mainChart
-        for (let i = 0; i <= this.mainChartElements; i++) { // TODO push data from back
-            this.mainChartLabels.push('' + i);
-            // temperature
-            this.maxTemperature.push(50);
-            this.currentTemperature.push(this.random(0, 50));
-            this.minTemperature.push(0);
-            // moisture
-            this.maxMoisture.push(100);
-            this.currentMoisture.push(this.random(0, 100));
-            this.minMoisture.push(0);
-        }
         this.newRoute = Route.empty();
         this.map = L.map('map').setView([-34.61315, -58.37723], 10);
 
@@ -262,6 +247,25 @@ export class AdminMapComponent implements OnInit {
             maxZoom: 16
         }).addTo(this.map);
         L.control.scale().addTo(this.map);
+    }
+
+    updateChartData(temperature: number[],
+                    minTemperature: number,
+                    maxTemperature: number,
+                    moisture: number[],
+                    minMoisture: number,
+                    maxMoisture: number): void {
+        for (let i = 0; i <= temperature.length; i++) {
+            this.mainChartLabels.push('' + i);
+            // temperature
+            this.maxTemperature.push(maxTemperature);
+            this.currentTemperature.push(temperature[i]);
+            this.minTemperature.push(minTemperature);
+            // moisture
+            this.maxMoisture.push(maxMoisture);
+            this.currentMoisture.push(moisture[i]);
+            this.minMoisture.push(minMoisture);
+        }
     }
 
     parseDate(date: string, time: string): string {
@@ -298,6 +302,8 @@ export class AdminMapComponent implements OnInit {
                 console.log(e);
             }
         );
+        // this.updateChartData();
+        this.routeSearched = true;
     }
 
     // Map

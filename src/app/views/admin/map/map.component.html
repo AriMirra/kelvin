@@ -213,7 +213,14 @@
             </div>
             <div class="card reference-card">
                 <div class="card-header not-clickable">
-                    <form>
+                    <form *ngIf="!routeSearched">
+                        <div class="form-group row">
+                            <label class="col-10 col-form-label">
+                                <strong>Aquí estará la referencia del mapa una vez que genere un recorrido</strong>
+                            </label>
+                        </div>
+                    </form>
+                    <form *ngIf="routeSearched">
                         <div class="form-group row">
                             <div class="col-8 align-self-center temperature">
                                 <ul>
@@ -250,7 +257,7 @@
             </div>
         </div>
     </div>
-    <div class="row" *ngIf="newRoute">
+    <div class="row" *ngIf="routeSearched">
         <div class="col-12">
             <div class="card">
                 <div class="card-header not-clickable">

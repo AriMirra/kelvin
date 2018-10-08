@@ -15,11 +15,13 @@ export const adminNavItems = [
         url: '/admin',
         icon: 'icon-location-pin'
     },
+    /*
     {
         name: 'Recorridos',
         url: '/admin/routes',
         icon: 'icon-graph'
     },
+    */
     {
         title: true,
         name: 'Gestión de Vehículos'

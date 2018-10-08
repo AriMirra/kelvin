@@ -15,11 +15,13 @@ export const clientNavItems = [
         url: '/client',
         icon: 'icon-location-pin'
     },
+    /*
     {
         name: 'Recorridos',
         url: '/client/routes',
         icon: 'icon-graph'
     },
+    */
     {
         title: true,
         name: 'Gestión de Vehículos y Productos'
