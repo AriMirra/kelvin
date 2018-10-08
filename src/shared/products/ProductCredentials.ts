@@ -3,12 +3,12 @@ export class ProductCredentials {
     return new ProductCredentials( '', 0, 0, 0, 0, false);
   }
 
-  constructor(private name: string,
-              private minTemperature: number,
-              private maxTemperature: number,
-              private minHumidity: number,
-              private maxHumidity: number,
-              private vampire: boolean) {
+  constructor(public name: string,
+              public minTemperature: number,
+              public maxTemperature: number,
+              public minHumidity: number,
+              public maxHumidity: number,
+              public vampire: boolean) {
   }
 
 

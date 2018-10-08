@@ -1,3 +1,341 @@
-<p>
-  products works!
-</p>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header" (click)="toggleAddingProduct()">
+                <form>
+                    <div class="form-group row">
+                        <label class="col-10 col-form-label">
+                            <strong>Agregar nuevo producto</strong>
+                        </label>
+                        <div class="col-2">
+                            <button type="submit"
+                                    class="btn w-100"
+                                    [ngClass]="{'btn-primary': !addingProduct, 'btn-danger': addingProduct}"
+                            >
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body h-0" [ngStyle]="addingProduct? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-12">
+                            <form (submit)="submitProduct()" class="form-horizontal">
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label" for="new-product-name">Nombre del Producto</label>
+                                    <div class="col-lg-8">
+                                        <input type="text"
+                                               id="new-product-name"
+                                               name="new-product-name"
+                                               class="form-control"
+                                               placeholder="Nombre"
+                                               required
+                                               [(ngModel)]="newProduct.name"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label" for="new-product-min-temperature">Temperatura</label>
+                                    <div class="col-lg-8">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input type="number"
+                                                       min="0"
+                                                       max="49"
+                                                       id="new-product-min-temperature"
+                                                       name="new-product-min-temperature"
+                                                       class="form-control"
+                                                       placeholder="Mínima (ºC)"
+                                                       required
+                                                       [(ngModel)]="newProduct.minTemperature"
+                                                >
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number"
+                                                       min="1"
+                                                       max="50"
+                                                       id="new-product-max-temperature"
+                                                       name="new-product-max-temperature"
+                                                       class="form-control"
+                                                       placeholder="Máxima (ºC)"
+                                                       required
+                                                       [(ngModel)]="newProduct.minTemperature"
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label" for="new-product-min-moisture">Temperatura</label>
+                                    <div class="col-lg-8">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <input type="number"
+                                                       min="0"
+                                                       max="99"
+                                                       id="new-product-min-moisture"
+                                                       name="new-product-min-moisture"
+                                                       class="form-control"
+                                                       placeholder="Mínima (%)"
+                                                       required
+                                                       [(ngModel)]="newProduct.minHumidity"
+                                                >
+                                            </div>
+                                            <div class="col-6">
+                                                <input type="number"
+                                                       min="1"
+                                                       max="100"
+                                                       id="new-product-max-moisture"
+                                                       name="new-product-max-moisture"
+                                                       class="form-control"
+                                                       placeholder="Máxima (%)"
+                                                       required
+                                                       [(ngModel)]="newProduct.maxHumidity"
+                                                >
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-lg-4 col-form-label" for="new-product-vampire">Detección de luz</label>
+                                    <div class="col-lg-8">
+                                        <input type="checkbox"
+                                               id="new-product-vampire"
+                                               name="new-product-vampire"
+                                               class="form-control"
+                                               [(ngModel)]="newProduct.vampire"
+                                        >
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-2 offset-10">
+                                        <button type="submit" class="btn btn-primary float-right w-100">
+                                            <strong>Guardar</strong></button>
+                                    </div>
+                                </div>
+                            </form>
+                            <div *ngIf="showSubmitMsg">
+                                <div class="alert alert-success" role="alert" *ngIf="successfulAdd">
+                                    Producto agregado exitosamente.
+                                </div>
+                                <div class="alert alert-warning" role="alert" *ngIf="!successfulAdd">
+                                    Ha ocurrido un problema para agregar el producto.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header not-clickable">
+                <form>
+                    <div class="form-group row">
+                        <label class="col-6 col-form-label">
+                            <strong>Todos los productos</strong>
+                            <!--<small *ngIf="vehicleWithoutDevice && vehicleWithoutClient">
+                                <i class="ml-2 mr-1 fa fa-warning"></i>
+                                tiene vehículos sin dispositivos y clientes asignados
+                            </small>
+                            <small *ngIf="vehicleWithoutDevice && !vehicleWithoutClient">
+                                <i class="ml-2 mr-1 fa fa-warning"></i>
+                                tiene vehículos sin dispositivos asignados
+                            </small>
+                            <small *ngIf="!vehicleWithoutDevice && vehicleWithoutClient">
+                                <i class="ml-2 mr-1 fa fa-warning"></i>
+                                tiene vehículos sin clientes asignados
+                            </small>-->
+                        </label>
+                        <div class="col-6">
+                            <input type="text"
+                                   id="search-product"
+                                   name="search-product"
+                                   class="form-control"
+                                   placeholder="Buscar producto"
+                                   [(ngModel)]="productSearch"
+                            >
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="card-body open" [ngClass]="{'h-0': addingProduct}">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Temperatura Mínima (ºC)</th>
+                        <th>Temperatura Máxima (ºC)</th>
+                        <th>Humedad Mínima (%)</th>
+                        <th>Humedad Máxima (%)</th>
+                        <th>Detección de Luz</th>
+                        <th>Editar</th>
+                        <th>Eliminar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!--<tr *ngFor="let product of filteredProducts()">
+                        <td>{{product.name}}</td>
+                        <td>{{product.minTemperature}}</td>
+                        <td>{{product.maxTemperature}}</td>
+                        <td>{{product.minHumidity}}</td>
+                        <td>{{product.maxHumidity}}</td>
+                        <td *ngIf="product.vampire">SI</td>
+                        <td *ngIf="!product.vampire">NO</td>
+                        <td>
+                            <a class="badge badge-primary" data-toggle="modal"
+                               (click)="largeModal.show(); startProductEdit(product)">Editar</a>
+                        </td>
+                        <td>
+                            <a class="badge badge-danger" data-toggle="modal"
+                               (click)="dangerModal.show(); startProductDelete(product.id)">Eliminar</a>
+                        </td>
+                    </tr>-->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--
+<div bsModal #largeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-primary" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Editar producto</h4>
+                <button type="button" class="close" (click)="largeModal.hide(); cancelEdit()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form class="form-horizontal">
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="edit-product-name">Nombre del Producto</label>
+                        <div class="col-lg-8">
+                            <input type="text"
+                                   id="edit-product-name"
+                                   name="edit-product-name"
+                                   class="form-control"
+                                   placeholder="Nombre"
+                                   required
+                                   [(ngModel)]="editProduct.name"
+                            >
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="edit-product-min-temperature">Temperatura</label>
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="number"
+                                           min="0"
+                                           max="49"
+                                           id="edit-product-min-temperature"
+                                           name="edit-product-min-temperature"
+                                           class="form-control"
+                                           placeholder="Mínima (ºC)"
+                                           required
+                                           [(ngModel)]="editProduct.minTemperature"
+                                    >
+                                </div>
+                                <div class="col-6">
+                                    <input type="number"
+                                           min="1"
+                                           max="50"
+                                           id="edit-product-max-temperature"
+                                           name="edit-product-max-temperature"
+                                           class="form-control"
+                                           placeholder="Máxima (ºC)"
+                                           required
+                                           [(ngModel)]="editProduct.minTemperature"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="edit-product-min-moisture">Temperatura</label>
+                        <div class="col-lg-8">
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="number"
+                                           min="0"
+                                           max="99"
+                                           id="edit-product-min-moisture"
+                                           name="edit-product-min-moisture"
+                                           class="form-control"
+                                           placeholder="Mínima (%)"
+                                           required
+                                           [(ngModel)]="editProduct.minHumidity"
+                                    >
+                                </div>
+                                <div class="col-6">
+                                    <input type="number"
+                                           min="1"
+                                           max="100"
+                                           id="edit-product-max-moisture"
+                                           name="edit-product-max-moisture"
+                                           class="form-control"
+                                           placeholder="Máxima (%)"
+                                           required
+                                           [(ngModel)]="editProduct.maxHumidity"
+                                    >
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-lg-4 col-form-label" for="edit-product-vampire">Detección de luz</label>
+                        <div class="col-lg-8">
+                            <input type="checkbox"
+                                   id="edit-product-vampire"
+                                   name="edit-product-vampire"
+                                   class="form-control"
+                                   [(ngModel)]="editProduct.vampire"
+                            >
+                        </div>
+                    </div>
+                </form>
+                <div *ngIf="showEditMsg">
+                    <div class="alert alert-success" role="alert" *ngIf="successfulEdit">
+                        Producto editado exitosamente.
+                    </div>
+                    <div class="alert alert-warning" role="alert" *ngIf="!successfulEdit">
+                        Ha ocurrido un problema para editar el producto.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="largeModal.hide(); cancelEdit()">Close</button>
+                <button type="button" class="btn btn-primary" (click)="editProduct()">Guardar Cambios</button>
+            </div>
+        </div>&lt;!&ndash; /.modal-content &ndash;&gt;
+    </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
+</div>&lt;!&ndash; /.modal &ndash;&gt;
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-danger" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Eliminar producto</h4>
+                <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo producto.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
+                </button>
+                <button type="button" class="btn btn-danger" (click)="deleteProduct()">Eliminar</button>
+            </div>
+        </div>&lt;!&ndash; /.modal-content &ndash;&gt;
+    </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
+</div>&lt;!&ndash; /.modal &ndash;&gt;-->
