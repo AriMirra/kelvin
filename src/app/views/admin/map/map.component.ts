@@ -270,11 +270,13 @@ export class AdminMapComponent implements OnInit {
     }
 
     parseDate(date: string, time: string): string {
-        const [hours, minutes] = time.split(':').map(e => parseInt(e, 10));
-        const result = new Date(date);
-        result.setHours(hours);
-        result.setMinutes(minutes);
-        return result.toISOString();
+        if (!date == null && !time == null) {
+          const [hours, minutes] = time.split(':').map(e => parseInt(e, 10));
+          const result = new Date(date);
+          result.setHours(hours);
+          result.setMinutes(minutes);
+          return result.toISOString();
+        }
     }
 
     // Form
