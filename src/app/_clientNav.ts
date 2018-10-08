@@ -1,16 +1,18 @@
 export const clientNavItems = [
+    /*
     {
         name: 'Dashboard',
         url: '/client',
         icon: 'icon-speedometer',
     },
+    */
     {
         title: true,
         name: 'Gestión de Recorridos'
     },
     {
         name: 'Mapa',
-        url: '/client/map',
+        url: '/client',
         icon: 'icon-location-pin'
     },
     {

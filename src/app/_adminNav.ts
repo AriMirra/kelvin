@@ -1,16 +1,18 @@
 export const adminNavItems = [
+    /*
     {
         name: 'Dashboard',
         url: '/admin',
         icon: 'icon-speedometer',
     },
+    */
     {
         title: true,
         name: 'Gestión de Recorridos'
     },
     {
         name: 'Mapa',
-        url: '/admin/map',
+        url: '/admin',
         icon: 'icon-location-pin'
     },
     {
