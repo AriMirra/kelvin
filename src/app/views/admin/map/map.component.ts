@@ -13,6 +13,7 @@ import {Report} from '../../../../shared/reports/Report';
 import {Time} from '@angular/common';
 import {ReportParameters} from '../../../../shared/reports/ReportParameters';
 import {ReportService} from '../../../services/report.service';
+import {Point} from '../../../../shared/reports/Point';
 
 @Component({
     templateUrl: 'map.component.html',
@@ -249,21 +250,21 @@ export class AdminMapComponent implements OnInit {
         L.control.scale().addTo(this.map);
     }
 
-    updateChartData(temperature: number[],
+    updateChartData(points: Point[],
                     minTemperature: number,
                     maxTemperature: number,
-                    moisture: number[],
                     minMoisture: number,
                     maxMoisture: number): void {
-        for (let i = 0; i <= temperature.length; i++) {
-            this.mainChartLabels.push('' + i);
+        for (let i = 0; i <= points.length; i++) {
+            const pointInfo = points[i].asJson();
+            this.mainChartLabels.push(pointInfo.time);
             // temperature
             this.maxTemperature.push(maxTemperature);
-            this.currentTemperature.push(temperature[i]);
+            this.currentTemperature.push(pointInfo.temperature);
             this.minTemperature.push(minTemperature);
             // moisture
             this.maxMoisture.push(maxMoisture);
-            this.currentMoisture.push(moisture[i]);
+            this.currentMoisture.push(pointInfo.humidity);
             this.minMoisture.push(minMoisture);
         }
     }
