@@ -50,6 +50,8 @@ import {HttpClientModule} from '@angular/common/http';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {ModalsComponent} from './views/others/notifications/modals.component';
 import {UsersComponent} from './views/admin/users/users.component';
+import { MapComponent } from './views/client/map/map.component';
+import { ProductsComponent } from './views/client/products/products.component';
 
 @NgModule({
     imports: [
@@ -80,7 +82,9 @@ import {UsersComponent} from './views/admin/users/users.component';
         UsersComponent,
         VehiclesComponent,
         DevicesComponent,
-        AdminMapComponent
+        AdminMapComponent,
+        MapComponent,
+        ProductsComponent
     ],
     providers: [
         {
