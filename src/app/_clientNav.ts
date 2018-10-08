@@ -10,16 +10,16 @@ export const clientNavItems = [
     },
     {
         title: true,
-        name: 'Gestión de Vehículos y Productos'
+        name: 'Gestión de Vehículos'
     },
     {
         name: 'Vehículos',
         url: '/client/vehicles',
         icon: 'icon-cursor'
     },
-    {
+/*    {
         name: 'Productos',
         url: '/client/products',
         icon: 'icon-basket-loaded'
-    }
+    }*/
 ];

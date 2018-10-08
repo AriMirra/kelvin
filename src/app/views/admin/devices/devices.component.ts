@@ -36,24 +36,28 @@ export class DevicesComponent implements OnInit {
   showDeleteMsg = false;
 
   constructor(private deviceService: DeviceService, private vehicleService: VehicleService) {
-    const futureDevices = this.deviceService.fetchDevices();
-    const futureVehicles = this.vehicleService.fetchVehicles();
-
-    forkJoin(futureDevices, futureVehicles)
-      .subscribe(([devices, vehicles]) => {
-        this.devices = devices;
-
-        this.devices.filter(d => d.assigned).map(d => {
-          const id = d.id;
-          const vehicle = vehicles.find(v => v.deviceId === id);
-          return [id, vehicle] as ([string, Vehicle]);
-        }).forEach(([id, vehicle]) => {
-          this.vehicleIdMap.set(id, vehicle);
-        });
-
-      });
+    this.load();
 
     this.addingDevice = false;
+  }
+
+  load() {
+      const futureDevices = this.deviceService.fetchDevices();
+      const futureVehicles = this.vehicleService.fetchVehicles();
+
+      forkJoin(futureDevices, futureVehicles)
+          .subscribe(([devices, vehicles]) => {
+              this.devices = devices;
+
+              this.devices.filter(d => d.assigned).map(d => {
+                  const id = d.id;
+                  const vehicle = vehicles.find(v => v.deviceId === id);
+                  return [id, vehicle] as ([string, Vehicle]);
+              }).forEach(([id, vehicle]) => {
+                  this.vehicleIdMap.set(id, vehicle);
+              });
+
+          });
   }
 
   ngOnInit() {
@@ -74,6 +78,9 @@ export class DevicesComponent implements OnInit {
       .addDevice(this.newDevice)
       .subscribe(submitted => {
         this.successfulAdd = submitted;
+        if  (this.successfulAdd) {
+          this.load();
+        }
         this.showSubmitMsg = true;
         setTimeout(() => this.showSubmitMsg = false, 1000);
       });
@@ -91,6 +98,9 @@ export class DevicesComponent implements OnInit {
       .updateDevice(this.editDeviceId, this.editingDevice)
       .subscribe(edited => {
         this.successfulEdit = edited;
+        if (this.successfulEdit) {
+          this.load();
+        }
         this.showEditMsg = true;
         setTimeout(() => this.showEditMsg = false, 1000);
       });
@@ -112,6 +122,9 @@ export class DevicesComponent implements OnInit {
       .deleteDevice(this.deleteDeviceId)
       .subscribe(deleted => {
         this.successfulDelete = deleted;
+        if (this.successfulDelete) {
+          this.load();
+        }
         this.showDeleteMsg = true;
         setTimeout(() => this.showDeleteMsg = false, 1000);
       });

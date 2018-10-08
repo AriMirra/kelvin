@@ -47,31 +47,34 @@ export class AdminVehiclesComponent implements OnInit {
   showAssignMsg = false;
 
   constructor(private vehicleService: VehicleService, private clientService: UserService, private deviceService: DeviceService) {
+    this.load();
+    this.addingVehicle = false;
+  }
+
+  ngOnInit() {
+  }
+
+  load() {
     const futureVehicles = this.vehicleService.fetchVehicles();
     const futureClients = this.clientService.fetchUsers();
     const futureDevices = this.deviceService.fetchDevices();
 
     forkJoin(futureClients, futureVehicles, futureDevices)
-      .subscribe(([clients, vehicles, devices]) => {
-        this.clients = clients;
-        this.vehicles = vehicles;
-        this.devices = devices;
+        .subscribe(([clients, vehicles, devices]) => {
+            this.clients = clients;
+            this.vehicles = vehicles;
+            this.devices = devices;
 
-        this.vehicles.map(v => {
-          const client = this.clients.find(c => c.id === v.ownerId);
-          const device = this.devices.find(d => d.id === v.deviceId);
-          return [v.id, client, device] as ([string, User, Device]);
-        }).forEach(([id, client, device]) => {
-          this.clientIdMap.set(id, client);
-          this.deviceIdMap.set(id, device);
+            this.vehicles.map(v => {
+                const client = this.clients.find(c => c.id === v.ownerId);
+                const device = this.devices.find(d => d.id === v.deviceId);
+                return [v.id, client, device] as ([string, User, Device]);
+            }).forEach(([id, client, device]) => {
+                this.clientIdMap.set(id, client);
+                this.deviceIdMap.set(id, device);
+            });
+
         });
-
-    });
-
-    this.addingVehicle = false;
-  }
-
-  ngOnInit() {
   }
 
   getVehicleOwner(vehicle: Vehicle): User {
@@ -105,6 +108,9 @@ export class AdminVehiclesComponent implements OnInit {
       .addVehicle(this.newVehicle)
       .subscribe(submitted => {
         this.successfulAdd = submitted;
+        if (this.successfulAdd) {
+          this.load();
+        }
         this.showSubmitMsg = true;
         setTimeout(() => this.showSubmitMsg = false, 1000);
       });
@@ -122,6 +128,9 @@ export class AdminVehiclesComponent implements OnInit {
       .updateVehicle(this.editVehicleId, this.editingVehicle)
       .subscribe(edited => {
         this.successfulEdit = edited;
+        if (this.successfulEdit) {
+          this.load();
+        }
         this.showEditMsg = true;
           setTimeout(() => this.showEditMsg = false, 1000);
       });
@@ -143,6 +152,9 @@ export class AdminVehiclesComponent implements OnInit {
       .deleteVehicle(this.deleteVehicleId)
       .subscribe(deleted => {
         this.successfulDelete = deleted;
+        if (this.successfulDelete) {
+          this.load();
+        }
         this.showDeleteMsg = true;
         setTimeout(() => this.showDeleteMsg = false, 1000);
       });
@@ -165,6 +177,9 @@ export class AdminVehiclesComponent implements OnInit {
       this.vehicleService.removeDevice(this.vehicleToAssign.id)
         .subscribe(removed => {
           this.successfulAssign = removed;
+          if (this.successfulAssign) {
+            this.load();
+          }
           this.showAssignMsg = true;
           setTimeout(() => this.showAssignMsg = false, 1000);
         });
@@ -173,6 +188,9 @@ export class AdminVehiclesComponent implements OnInit {
       .addDevice(this.vehicleToAssign.id, this.deviceAssignId)
       .subscribe(assigned => {
         this.successfulAssign = assigned;
+        if (this.successfulAssign) {
+            this.load();
+        }
         this.showAssignMsg = true;
         setTimeout(() => this.showAssignMsg = false, 1000);
       });

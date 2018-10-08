@@ -27,9 +27,13 @@ export class UsersComponent implements OnInit {
 
   constructor(private userService: UserService) {
     this.addingUser = false;
-    this.userService.fetchUsers().subscribe(res => {
-      this.users = res;
-    });
+    this.load();
+  }
+
+  load() {
+      this.userService.fetchUsers().subscribe(res => {
+          this.users = res;
+      });
   }
 
   ngOnInit() {
@@ -46,6 +50,9 @@ export class UsersComponent implements OnInit {
       .addUser(this.newUser)
       .subscribe(submitted => {
         this.successfulAdd = submitted;
+        if (this.successfulAdd) {
+          this.load();
+        }
         this.showSubmitMsg = true;
         setTimeout(() => this.showSubmitMsg = false, 1000);
       });
@@ -62,6 +69,9 @@ export class UsersComponent implements OnInit {
       .deleteUser(this.deleteUserId)
       .subscribe(deleted => {
         this.successfulDelete = deleted;
+        if (this.successfulDelete) {
+          this.load();
+        }
         this.showDeleteMsg = true;
         setTimeout(() => this.showDeleteMsg = false, 1000);
       });
