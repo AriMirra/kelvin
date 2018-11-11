@@ -17,9 +17,11 @@ export const clientNavItems = [
         url: '/client/vehicles',
         icon: 'icon-cursor'
     },
-/*    {
+    /*
+    {
         name: 'Productos',
         url: '/client/products',
         icon: 'icon-basket-loaded'
-    }*/
+    }
+    */
 ];

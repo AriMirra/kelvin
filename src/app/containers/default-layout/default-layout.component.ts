@@ -24,7 +24,9 @@ export class DefaultLayoutComponent implements OnInit {
         this.changes.observe(<Element>this.element, {
             attributes: true
         });
+
     }
+
     ngOnInit(): void {
         if (this.cookieService.check('UserType')) {
             this.userType = (this.cookieService.get('UserType') === 'ADMIN') ? UserType.ADMIN : UserType.CLIENT;
@@ -34,15 +36,22 @@ export class DefaultLayoutComponent implements OnInit {
         this.displayNavBar();
     }
 
+    /**
+     * Method that removes the user type token from browser and redirects to login page.
+     */
     logout() {
         this.cookieService.delete('token');
         this.cookieService.delete('UserType');
         this.router.navigate(['']).then();
     }
 
+    /**
+     * Method that renders a determined nav based on user type token.
+     */
     private displayNavBar() {
         this.navItems = this.userType === UserType.ADMIN ? adminNavItems : clientNavItems;
     }
+
 }
 
 export enum UserType {
