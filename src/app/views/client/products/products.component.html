@@ -4,10 +4,10 @@
             <div class="card-header" (click)="toggleAddingProduct()">
                 <form>
                     <div class="form-group row">
-                        <label class="col-10 col-form-label">
+                        <label class="col-12 col-sm-6 col-md-8 col-form-label">
                             <strong>Agregar nuevo producto</strong>
                         </label>
-                        <div class="col-2">
+                        <div class="col-12 col-sm-6 col-md-4">
                             <button type="submit"
                                     class="btn w-100"
                                     [ngClass]="{'btn-primary': !addingProduct, 'btn-danger': addingProduct}"
@@ -18,8 +18,8 @@
                     </div>
                 </form>
             </div>
-            <div class="card-body h-0" [ngStyle]="addingProduct? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
-                <div class="container">
+            <div class="card-body h-0" [ngStyle]="addingProduct ? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
+                <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
                             <form (submit)="submitProduct()" class="form-horizontal">
@@ -29,7 +29,7 @@
                                         <input type="text"
                                                id="new-product-name"
                                                name="new-product-name"
-                                               class="form-control"
+                                               class="form-control mt-3"
                                                placeholder="Nombre"
                                                required
                                                [(ngModel)]="newProduct.name"
@@ -40,25 +40,25 @@
                                     <label class="col-lg-4 col-form-label" for="new-product-min-temperature">Temperatura</label>
                                     <div class="col-lg-8">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-md-6">
                                                 <input type="number"
                                                        min="0"
                                                        max="49"
                                                        id="new-product-min-temperature"
                                                        name="new-product-min-temperature"
-                                                       class="form-control"
+                                                       class="form-control mt-3"
                                                        placeholder="Mínima (ºC)"
                                                        required
                                                        [(ngModel)]="newProduct.minTemperature"
                                                 >
                                             </div>
-                                            <div class="col-6">
+                                            <div class="col-md-6">
                                                 <input type="number"
                                                        min="1"
                                                        max="50"
                                                        id="new-product-max-temperature"
                                                        name="new-product-max-temperature"
-                                                       class="form-control"
+                                                       class="form-control mt-3"
                                                        placeholder="Máxima (ºC)"
                                                        required
                                                        [(ngModel)]="newProduct.minTemperature"
@@ -68,28 +68,28 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-product-min-moisture">Temperatura</label>
+                                    <label class="col-lg-4 col-form-label" for="new-product-min-moisture">Humedad</label>
                                     <div class="col-lg-8">
                                         <div class="row">
-                                            <div class="col-6">
+                                            <div class="col-md-6">
                                                 <input type="number"
                                                        min="0"
                                                        max="99"
                                                        id="new-product-min-moisture"
                                                        name="new-product-min-moisture"
-                                                       class="form-control"
+                                                       class="form-control mt-3"
                                                        placeholder="Mínima (%)"
                                                        required
                                                        [(ngModel)]="newProduct.minHumidity"
                                                 >
                                             </div>
-                                            <div class="col-6">
+                                            <div class="col-md-6">
                                                 <input type="number"
                                                        min="1"
                                                        max="100"
                                                        id="new-product-max-moisture"
                                                        name="new-product-max-moisture"
-                                                       class="form-control"
+                                                       class="form-control mt-3"
                                                        placeholder="Máxima (%)"
                                                        required
                                                        [(ngModel)]="newProduct.maxHumidity"
@@ -110,7 +110,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-2 offset-10">
+                                    <div  class="col-12 col-sm-4 col-md-2 offset-md-10 offset-sm-8">
                                         <button type="submit" class="btn btn-primary float-right w-100">
                                             <strong>Guardar</strong></button>
                                     </div>
@@ -135,22 +135,10 @@
             <div class="card-header not-clickable">
                 <form>
                     <div class="form-group row">
-                        <label class="col-6 col-form-label">
+                        <label class="col-12 col-sm-6 col-md-8 col-form-label">
                             <strong>Todos los productos</strong>
-                            <!--<small *ngIf="vehicleWithoutDevice && vehicleWithoutClient">
-                                <i class="ml-2 mr-1 fa fa-warning"></i>
-                                tiene vehículos sin dispositivos y clientes asignados
-                            </small>
-                            <small *ngIf="vehicleWithoutDevice && !vehicleWithoutClient">
-                                <i class="ml-2 mr-1 fa fa-warning"></i>
-                                tiene vehículos sin dispositivos asignados
-                            </small>
-                            <small *ngIf="!vehicleWithoutDevice && vehicleWithoutClient">
-                                <i class="ml-2 mr-1 fa fa-warning"></i>
-                                tiene vehículos sin clientes asignados
-                            </small>-->
                         </label>
-                        <div class="col-6">
+                        <div class="col-12 col-sm-6 col-md-4">
                             <input type="text"
                                    id="search-product"
                                    name="search-product"
@@ -177,7 +165,8 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <!--<tr *ngFor="let product of filteredProducts()">
+                    <!--
+                    <tr *ngFor="let product of filteredProducts()">
                         <td>{{product.name}}</td>
                         <td>{{product.minTemperature}}</td>
                         <td>{{product.maxTemperature}}</td>
@@ -193,7 +182,8 @@
                             <a class="badge badge-danger" data-toggle="modal"
                                (click)="dangerModal.show(); startProductDelete(product.id)">Eliminar</a>
                         </td>
-                    </tr>-->
+                    </tr>
+                    -->
                     </tbody>
                 </table>
             </div>
@@ -201,7 +191,6 @@
     </div>
 </div>
 
-<!--
 <div bsModal #largeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
     <div class="modal-dialog modal-lg modal-primary" role="document">
@@ -314,9 +303,9 @@
                 <button type="button" class="btn btn-secondary" (click)="largeModal.hide(); cancelEdit()">Close</button>
                 <button type="button" class="btn btn-primary" (click)="editProduct()">Guardar Cambios</button>
             </div>
-        </div>&lt;!&ndash; /.modal-content &ndash;&gt;
-    </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
-</div>&lt;!&ndash; /.modal &ndash;&gt;
+        </div>
+    </div>
+</div>
 
 <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
@@ -336,6 +325,6 @@
                 </button>
                 <button type="button" class="btn btn-danger" (click)="deleteProduct()">Eliminar</button>
             </div>
-        </div>&lt;!&ndash; /.modal-content &ndash;&gt;
-    </div>&lt;!&ndash; /.modal-dialog &ndash;&gt;
-</div>&lt;!&ndash; /.modal &ndash;&gt;-->
+        </div>
+    </div>
+</div>

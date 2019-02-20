@@ -57,16 +57,16 @@ export const routes: Routes = [
         },
         children: [
             {
+                path: '',
+                component: ClientMapComponent
+            },
+            {
                 path: 'vehicles',
                 component: ClientVehiclesComponent
             },
             {
                 path: 'products',
                 component: ProductsComponent
-            },
-            {
-                path: '',
-                component: ClientMapComponent
             }
         ]
     },

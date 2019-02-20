@@ -1,6 +1,6 @@
 <div class="animated fadeIn">
     <div class="row">
-        <div class="col-4">
+        <div class="col-12 col-sm-6 col-md-4">
             <div class="card">
                 <div class="card-header not-clickable">
                     <form>
@@ -26,7 +26,8 @@
                                                     (change)="selectedVehicleId = ''"
                                             >
                                                 <option [value]="''" selected>Seleccione un cliente</option>
-                                                <option *ngFor="let user of users" [value]="user.id">{{user.getFullName()}}</option>
+                                                <option *ngFor="let user of users"
+                                                        [value]="user.id">{{user.getFullName()}}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -39,7 +40,8 @@
                                                     [(ngModel)]="selectedVehicleId"
                                             >
                                                 <option [value]="''" selected>Seleccione un vehiculo</option>
-                                                <option *ngFor="let vehicle of getSelectedUserVehicles()" [value]="vehicle.id">{{vehicle.domain}}</option>
+                                                <option *ngFor="let vehicle of getSelectedUserVehicles()"
+                                                        [value]="vehicle.id">{{vehicle.domain}}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -149,19 +151,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!--
-                                    <div class="form-group row">
-                                        <label class="col-8 col-form-label" for="new-route-moisture">Incluir
-                                            Humedad</label>
-                                        <div class="col-4">
-                                            <input type="checkbox"
-                                                   id="new-route-moisture"
-                                                   name="new-route-moisture"
-                                                   class="text-center"
-                                            >
-                                        </div>
-                                    </div>
-                                    -->
                                     <div class="form-group row">
                                         <label class="col-8 col-form-label" for="new-route-light">Incluir Apertura de
                                             Contenedor</label>
@@ -181,18 +170,17 @@
                 </div>
                 <div class="card-footer">
                     <div class="row">
-                        <div class="col-12">
-                            <button class="btn btn-danger" (click)="resetForm()"><strong>Reset</strong></button>
-                            <div class="float-right">
-                                <!--<button class="btn btn-primary mx-2"><strong>Guardar</strong></button>-->
-                                <button class="btn btn-primary" (click)="getReport()"><strong>Buscar</strong></button>
-                            </div>
+                        <div class="col-6">
+                            <button class="btn btn-danger w-100" (click)="resetForm()"><strong>Reset</strong></button>
+                        </div>
+                        <div class="col-6">
+                            <button class="btn btn-primary w-100" (click)="getReport()"><strong>Buscar</strong></button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-8">
+        <div class="col-12 col-sm-6 col-md-8">
             <div class="map-card">
                 <div id="map" style="height: 100%;"></div>
             </div>

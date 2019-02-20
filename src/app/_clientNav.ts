@@ -9,6 +9,11 @@ export const clientNavItems = [
         icon: 'icon-location-pin'
     },
     {
+        name: 'Rutas',
+        url: '/client/routes',
+        icon: 'icon-location-pin'
+    },
+    {
         title: true,
         name: 'Gestión de Vehículos'
     },
@@ -17,11 +22,9 @@ export const clientNavItems = [
         url: '/client/vehicles',
         icon: 'icon-cursor'
     },
-    /*
     {
         name: 'Productos',
         url: '/client/products',
         icon: 'icon-basket-loaded'
     }
-    */
 ];

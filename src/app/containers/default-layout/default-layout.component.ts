@@ -30,10 +30,10 @@ export class DefaultLayoutComponent implements OnInit {
     ngOnInit(): void {
         if (this.cookieService.check('UserType')) {
             this.userType = (this.cookieService.get('UserType') === 'ADMIN') ? UserType.ADMIN : UserType.CLIENT;
+            this.displayNavBar();
         } else {
-            throw Error('cookie UserType not found');
+            this.displayDefaultNavBar();
         }
-        this.displayNavBar();
     }
 
     /**
@@ -50,6 +50,13 @@ export class DefaultLayoutComponent implements OnInit {
      */
     private displayNavBar() {
         this.navItems = this.userType === UserType.ADMIN ? adminNavItems : clientNavItems;
+    }
+
+    /**
+     * Method that renders admin's nav items for folks that are lazy.
+     */
+    private displayDefaultNavBar() {
+        this.navItems = clientNavItems;
     }
 
 }
