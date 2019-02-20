@@ -1,17 +1,17 @@
-import { Component } from '@angular/core';
-import { CarouselConfig } from 'ngx-bootstrap/carousel';
+import {Component} from '@angular/core';
+import {CarouselConfig} from 'ngx-bootstrap/carousel';
 
 @Component({
-  templateUrl: 'carousels.component.html',   providers: [
-    { provide: CarouselConfig, useValue: { interval: 1500, noPause: true } }
+  templateUrl: 'carousels.component.html', providers: [
+    {provide: CarouselConfig, useValue: {interval: 1500, noPause: true}}
   ]
 })
 export class CarouselsComponent {
 
-  myInterval: number = 6000;
+  myInterval = 6000;
   slides: any[] = [];
-  activeSlideIndex: number = 0;
-  noWrapSlides: boolean = false;
+  activeSlideIndex = 0;
+  noWrapSlides = false;
 
   constructor() {
     for (let i = 0; i < 4; i++) {

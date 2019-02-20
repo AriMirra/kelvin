@@ -1,14 +1,15 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   templateUrl: 'forms.component.html'
 })
 export class FormsComponent {
 
-  constructor() { }
+  constructor() {
+  }
 
-  isCollapsed: boolean = false;
-  iconCollapse: string = 'icon-arrow-up';
+  isCollapsed = false;
+  iconCollapse = 'icon-arrow-up';
 
   collapsed(event: any): void {
     // console.log(event);

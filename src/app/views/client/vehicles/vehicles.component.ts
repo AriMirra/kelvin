@@ -1,7 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {VehicleUpdate} from '../../../../shared/vehicles/VehicleUpdate';
 import {VehicleService} from '../../../services/vehicle.service';
-import {VehicleCredentials} from '../../../../shared/vehicles/VehicleCredentials';
 import {UserService} from '../../../services/user.service';
 import {Vehicle} from '../../../../shared/vehicles/Vehicle';
 import {User} from '../../../../shared/users/User';
@@ -32,15 +30,15 @@ export class ClientVehiclesComponent implements OnInit {
         this.client = client;
         this.devices = devices;
         this.vehicleService.getUserVehicles(client.id).subscribe(vehicles => {
-            this.vehicles = vehicles;
-            this.vehicles.map(v => {
-                const device = this.devices.find(d => d.id === v.deviceId);
-                return [v.id, this.client, device] as ([string, User, Device]);
-            }).forEach(([id, c, device]) => {
-                this.deviceIdMap.set(id, device);
-            });
+          this.vehicles = vehicles;
+          this.vehicles.map(v => {
+            const device = this.devices.find(d => d.id === v.deviceId);
+            return [v.id, this.client, device] as ([string, User, Device]);
+          }).forEach(([id, c, device]) => {
+            this.deviceIdMap.set(id, device);
+          });
         });
-    });
+      });
   }
 
   ngOnInit() {
@@ -61,7 +59,7 @@ export class ClientVehiclesComponent implements OnInit {
 
   vehicleSearchFilter(vehicle: Vehicle): boolean {
     return !![vehicle.model, vehicle.brand, vehicle.domain, vehicle.ownerId]
-        .map(e => e.toLowerCase())
-        .find(e => e.includes(this.vehicleSearch));
+      .map(e => e.toLowerCase())
+      .find(e => e.includes(this.vehicleSearch));
   }
 }

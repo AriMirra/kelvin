@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {UserService} from '../../../services/user.service';
 import {UserCredentials} from '../../../../shared/users/UserCredentials';
 import {User} from '../../../../shared/users/User';
@@ -31,9 +31,9 @@ export class UsersComponent implements OnInit {
   }
 
   load() {
-      this.userService.fetchUsers().subscribe(res => {
-          this.users = res;
-      });
+    this.userService.fetchUsers().subscribe(res => {
+      this.users = res;
+    });
   }
 
   ngOnInit() {
@@ -88,9 +88,9 @@ export class UsersComponent implements OnInit {
   }
 
   userSearchFilter(user: User): boolean {
-      return !![user.lastName, user.username, user.name]
-        .map(e => e.toLowerCase())
-        .find(e => e.includes(this.userSearch));
+    return !![user.lastName, user.username, user.name]
+      .map(e => e.toLowerCase())
+      .find(e => e.includes(this.userSearch));
   }
 
 }

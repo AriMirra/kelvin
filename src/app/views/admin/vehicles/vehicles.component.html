@@ -18,13 +18,16 @@
                     </div>
                 </form>
             </div>
-            <div class="card-body h-0" [ngStyle]="addingVehicle? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}"> <!-- [ngClass]="{'open': addingVehicle}"-->
+            <div class="card-body h-0"
+                 [ngStyle]="addingVehicle? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
+                <!-- [ngClass]="{'open': addingVehicle}"-->
                 <div class="container">
                     <div class="row">
                         <div class="col-12">
                             <form (submit)="submitVehicle()" class="form-horizontal">
                                 <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-vehicle-license-plate">Patente del Vehículo</label>
+                                    <label class="col-lg-4 col-form-label" for="new-vehicle-license-plate">Patente del
+                                        Vehículo</label>
                                     <div class="col-lg-8">
                                         <input type="text"
                                                id="new-vehicle-license-plate"
@@ -91,13 +94,15 @@
                                                 [(ngModel)]="newVehicle.ownerId"
                                         >
                                             <option [value]="''" selected>Seleccione un cliente</option>
-                                            <option *ngFor="let client of clients" [value]="client.id">{{client.getFullName()}}</option>
+                                            <option *ngFor="let client of clients"
+                                                    [value]="client.id">{{client.getFullName()}}</option>
                                         </select>
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-2 offset-10">
-                                        <button type="submit" class="btn btn-primary float-right w-100"><strong>Guardar</strong></button>
+                                        <button type="submit" class="btn btn-primary float-right w-100">
+                                            <strong>Guardar</strong></button>
                                     </div>
                                 </div>
                             </form>
@@ -166,18 +171,24 @@
                         <td>{{vehicle.brand}}</td>
                         <td>{{vehicle.model}}</td>
                         <td>
-                            <a class="badge badge-success" data-toggle="modal" *ngIf="vehicle.hasOwner()">{{getVehicleOwnerName(vehicle)}}</a>
-                            <a class="badge badge-warning"  *ngIf="!vehicle.hasOwner()">Sin Cliente Asociado</a>
+                            <a class="badge badge-success" data-toggle="modal"
+                               *ngIf="vehicle.hasOwner()">{{getVehicleOwnerName(vehicle)}}</a>
+                            <a class="badge badge-warning" *ngIf="!vehicle.hasOwner()">Sin Cliente Asociado</a>
                         </td>
                         <td>
-                            <a class="badge badge-success" data-toggle="modal" (click)="assignModal.show(); startDeviceAssign(vehicle)" *ngIf="vehicle.hasDevice()">{{getVehicleDeviceAlias(vehicle)}}</a>
-                            <a class="badge badge-warning" (click)="assignModal.show(); startDeviceAssign(vehicle)" *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
+                            <a class="badge badge-success" data-toggle="modal"
+                               (click)="assignModal.show(); startDeviceAssign(vehicle)"
+                               *ngIf="vehicle.hasDevice()">{{getVehicleDeviceAlias(vehicle)}}</a>
+                            <a class="badge badge-warning" (click)="assignModal.show(); startDeviceAssign(vehicle)"
+                               *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
                         </td>
                         <td>
-                            <a class="badge badge-primary" data-toggle="modal" (click)="largeModal.show(); startVehicleEdit(vehicle)">Editar</a>
+                            <a class="badge badge-primary" data-toggle="modal"
+                               (click)="largeModal.show(); startVehicleEdit(vehicle)">Editar</a>
                         </td>
                         <td>
-                            <a class="badge badge-danger" data-toggle="modal" (click)="dangerModal.show(); startVehicleDelete(vehicle.id)">Eliminar</a>
+                            <a class="badge badge-danger" data-toggle="modal"
+                               (click)="dangerModal.show(); startVehicleDelete(vehicle.id)">Eliminar</a>
                         </td>
                     </tr>
                     </tbody>
@@ -200,7 +211,8 @@
             <div class="modal-body">
                 <form class="form-horizontal">
                     <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="edit-vehicle-license-plate">Patente del Vehículo</label>
+                        <label class="col-lg-4 col-form-label" for="edit-vehicle-license-plate">Patente del
+                            Vehículo</label>
                         <div class="col-lg-8">
                             <input type="text"
                                    id="edit-vehicle-license-plate"
@@ -267,7 +279,8 @@
                                     [(ngModel)]="editingVehicle.ownerId"
                             >
                                 <option [value]="''" selected>Seleccione un cliente</option>
-                                <option *ngFor="let client of clients" [value]="client.id">{{client.getFullName()}}</option>
+                                <option *ngFor="let client of clients"
+                                        [value]="client.id">{{client.getFullName()}}</option>
                             </select>
                         </div>
                     </div>
@@ -303,7 +316,8 @@
                 <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo vehículo.</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar</button>
+                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
+                </button>
                 <button type="button" class="btn btn-danger" (click)="deleteVehicle()">Eliminar</button>
             </div>
         </div><!-- /.modal-content -->
@@ -347,7 +361,8 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="assignModal.hide(); cancelAssign()">Close</button>
+                <button type="button" class="btn btn-secondary" (click)="assignModal.hide(); cancelAssign()">Close
+                </button>
                 <button type="button" class="btn btn-primary" (click)="assignDevice()">Guardar Cambios</button>
             </div>
         </div><!-- /.modal-content -->

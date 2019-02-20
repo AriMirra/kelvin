@@ -59,7 +59,8 @@
                                 </div>
                                 <div class="form-group row">
                                     <div class="col-2 offset-10">
-                                        <button type="submit" class="btn btn-primary float-right w-100"><strong>Guardar</strong></button>
+                                        <button type="submit" class="btn btn-primary float-right w-100">
+                                            <strong>Guardar</strong></button>
                                     </div>
                                 </div>
                             </form>
@@ -125,7 +126,8 @@
                         <td>{{device.alias}}</td>
                         <td>{{device.mac}}</td>
                         <td>
-                            <a class="badge badge-success" data-toggle="modal" *ngIf="device.assigned">{{getDeviceVehicle(device).domain}}</a>
+                            <a class="badge badge-success" data-toggle="modal"
+                               *ngIf="device.assigned">{{getDeviceVehicle(device).domain}}</a>
                             <a class="badge badge-warning" *ngIf="!device.assigned">Sin vehículo asignado</a>
                         </td>
                         <td>

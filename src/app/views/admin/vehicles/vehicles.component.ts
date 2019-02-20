@@ -60,21 +60,21 @@ export class AdminVehiclesComponent implements OnInit {
     const futureDevices = this.deviceService.fetchDevices();
 
     forkJoin(futureClients, futureVehicles, futureDevices)
-        .subscribe(([clients, vehicles, devices]) => {
-            this.clients = clients;
-            this.vehicles = vehicles;
-            this.devices = devices;
+      .subscribe(([clients, vehicles, devices]) => {
+        this.clients = clients;
+        this.vehicles = vehicles;
+        this.devices = devices;
 
-            this.vehicles.map(v => {
-                const client = this.clients.find(c => c.id === v.ownerId);
-                const device = this.devices.find(d => d.id === v.deviceId);
-                return [v.id, client, device] as ([string, User, Device]);
-            }).forEach(([id, client, device]) => {
-                this.clientIdMap.set(id, client);
-                this.deviceIdMap.set(id, device);
-            });
-
+        this.vehicles.map(v => {
+          const client = this.clients.find(c => c.id === v.ownerId);
+          const device = this.devices.find(d => d.id === v.deviceId);
+          return [v.id, client, device] as ([string, User, Device]);
+        }).forEach(([id, client, device]) => {
+          this.clientIdMap.set(id, client);
+          this.deviceIdMap.set(id, device);
         });
+
+      });
   }
 
   getVehicleOwner(vehicle: Vehicle): User {
@@ -83,7 +83,9 @@ export class AdminVehiclesComponent implements OnInit {
 
   getVehicleOwnerName(vehicle: Vehicle): string {
     const owner = this.clientIdMap.get(vehicle.id);
-    if (owner && owner.name !== null) { return owner.name; }
+    if (owner && owner.name !== null) {
+      return owner.name;
+    }
     return '';
   }
 
@@ -93,7 +95,9 @@ export class AdminVehiclesComponent implements OnInit {
 
   getVehicleDeviceAlias(vehicle: Vehicle): string {
     const device = this.deviceIdMap.get(vehicle.id);
-    if (device && device.alias !== null) { return device.alias; }
+    if (device && device.alias !== null) {
+      return device.alias;
+    }
     return '';
   }
 
@@ -132,7 +136,7 @@ export class AdminVehiclesComponent implements OnInit {
           this.load();
         }
         this.showEditMsg = true;
-          setTimeout(() => this.showEditMsg = false, 1000);
+        setTimeout(() => this.showEditMsg = false, 1000);
       });
   }
 
@@ -184,16 +188,16 @@ export class AdminVehiclesComponent implements OnInit {
           setTimeout(() => this.showAssignMsg = false, 1000);
         });
     } else {
-    this.vehicleService
-      .addDevice(this.vehicleToAssign.id, this.deviceAssignId)
-      .subscribe(assigned => {
-        this.successfulAssign = assigned;
-        if (this.successfulAssign) {
+      this.vehicleService
+        .addDevice(this.vehicleToAssign.id, this.deviceAssignId)
+        .subscribe(assigned => {
+          this.successfulAssign = assigned;
+          if (this.successfulAssign) {
             this.load();
-        }
-        this.showAssignMsg = true;
-        setTimeout(() => this.showAssignMsg = false, 1000);
-      });
+          }
+          this.showAssignMsg = true;
+          setTimeout(() => this.showAssignMsg = false, 1000);
+        });
     }
   }
 
@@ -213,7 +217,7 @@ export class AdminVehiclesComponent implements OnInit {
 
   vehicleSearchFilter(vehicle: Vehicle): boolean {
     return !![vehicle.model, vehicle.brand, vehicle.domain, vehicle.ownerId]
-        .map(e => e.toLowerCase())
-        .find(e => e.includes(this.vehicleSearch));
+      .map(e => e.toLowerCase())
+      .find(e => e.includes(this.vehicleSearch));
   }
 }

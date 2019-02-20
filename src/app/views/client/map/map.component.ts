@@ -7,7 +7,6 @@ import {User} from '../../../../shared/users/User';
 import {Vehicle} from '../../../../shared/vehicles/Vehicle';
 import {UserService} from '../../../services/user.service';
 import {VehicleService} from '../../../services/vehicle.service';
-import {Observable} from 'rxjs';
 import {Point} from '../../../../shared/reports/Point';
 import {ReportParameters} from '../../../../shared/reports/ReportParameters';
 import {ReportService} from '../../../services/report.service';

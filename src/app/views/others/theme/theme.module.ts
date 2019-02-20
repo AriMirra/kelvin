@@ -1,12 +1,11 @@
 // Angular
-import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {NgModule} from '@angular/core';
 
-import { ColorsComponent } from './colors.component';
-import { TypographyComponent } from './typography.component';
-
+import {ColorsComponent} from './colors.component';
+import {TypographyComponent} from './typography.component';
 // Theme Routing
-import { ThemeRoutingModule } from './theme-routing.module';
+import {ThemeRoutingModule} from './theme-routing.module';
 
 @NgModule({
   imports: [
@@ -18,4 +17,5 @@ import { ThemeRoutingModule } from './theme-routing.module';
     TypographyComponent
   ]
 })
-export class ThemeModule { }
+export class ThemeModule {
+}

@@ -1,11 +1,11 @@
-import { Component, SecurityContext, ViewEncapsulation } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import { AlertConfig } from 'ngx-bootstrap/alert';
+import {Component, SecurityContext, ViewEncapsulation} from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
+import {AlertConfig} from 'ngx-bootstrap/alert';
 
 // such override allows to keep some initial values
 
 export function getAlertConfig(): AlertConfig {
-  return Object.assign(new AlertConfig(), { type: 'success' });
+  return Object.assign(new AlertConfig(), {type: 'success'});
 }
 
 @Component({
@@ -20,7 +20,7 @@ export function getAlertConfig(): AlertConfig {
   }
   `
   ],
-  providers: [{ provide: AlertConfig, useFactory: getAlertConfig }]
+  providers: [{provide: AlertConfig, useFactory: getAlertConfig}]
 })
 export class AlertsComponent {
 
@@ -30,6 +30,7 @@ export class AlertsComponent {
       msg: sanitizer.sanitize(SecurityContext.HTML, alert.msg)
     }));
   }
+
   dismissible = true;
   alerts: any = [
     {

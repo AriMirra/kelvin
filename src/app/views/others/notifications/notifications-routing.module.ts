@@ -1,9 +1,9 @@
-import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
-import { AlertsComponent } from './alerts.component';
-import { BadgesComponent } from './badges.component';
-import { ModalsComponent } from './modals.component';
+import {AlertsComponent} from './alerts.component';
+import {BadgesComponent} from './badges.component';
+import {ModalsComponent} from './modals.component';
 
 const routes: Routes = [
   {
@@ -41,4 +41,5 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule]
 })
-export class NotificationsRoutingModule {}
+export class NotificationsRoutingModule {
+}

@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   templateUrl: 'cards.component.html'
 })
 export class CardsComponent {
 
-  constructor() { }
+  constructor() {
+  }
 
 }

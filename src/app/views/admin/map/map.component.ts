@@ -260,7 +260,9 @@ export class AdminMapComponent implements OnInit {
   }
 
   isFieldValid(field: string) {
-    if (this.mapForm == null) { return false; }
+    if (this.mapForm == null) {
+      return false;
+    }
     return !this.mapForm.get(field).valid && this.mapForm.get(field).touched;
   }
 

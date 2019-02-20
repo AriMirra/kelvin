@@ -1,30 +1,30 @@
 export const clientNavItems = [
-    {
-        title: true,
-        name: 'Gestión de Recorridos'
-    },
-    {
-        name: 'Mapa',
-        url: '/client',
-        icon: 'icon-location-pin'
-    },
-    {
-        name: 'Rutas',
-        url: '/client/routes',
-        icon: 'icon-location-pin'
-    },
-    {
-        title: true,
-        name: 'Gestión de Vehículos'
-    },
-    {
-        name: 'Vehículos',
-        url: '/client/vehicles',
-        icon: 'icon-cursor'
-    },
-    {
-        name: 'Productos',
-        url: '/client/products',
-        icon: 'icon-basket-loaded'
-    }
+  {
+    title: true,
+    name: 'Gestión de Recorridos'
+  },
+  {
+    name: 'Mapa',
+    url: '/client',
+    icon: 'icon-location-pin'
+  },
+  {
+    name: 'Rutas',
+    url: '/client/routes',
+    icon: 'icon-location-pin'
+  },
+  {
+    title: true,
+    name: 'Gestión de Vehículos'
+  },
+  {
+    name: 'Vehículos',
+    url: '/client/vehicles',
+    icon: 'icon-cursor'
+  },
+  {
+    name: 'Productos',
+    url: '/client/products',
+    icon: 'icon-basket-loaded'
+  }
 ];

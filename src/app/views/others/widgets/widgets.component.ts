@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { getStyle } from '@coreui/coreui/dist/js/coreui-utilities';
-import { CustomTooltips } from '@coreui/coreui-plugin-chartjs-custom-tooltips';
+import {Component} from '@angular/core';
+import {getStyle} from '@coreui/coreui/dist/js/coreui-utilities';
+import {CustomTooltips} from '@coreui/coreui-plugin-chartjs-custom-tooltips';
 
 @Component({
   templateUrl: 'widgets.component.html'
@@ -230,7 +230,7 @@ export class WidgetsComponent {
         display: false,
       }]
     },
-    elements: { point: { radius: 0 } },
+    elements: {point: {radius: 0}},
     legend: {
       display: false
     }
@@ -360,7 +360,7 @@ export class WidgetsComponent {
         display: false,
       }]
     },
-    elements: { point: { radius: 0 } },
+    elements: {point: {radius: 0}},
     legend: {
       display: false
     }

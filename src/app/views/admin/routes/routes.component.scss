@@ -18,8 +18,10 @@
     border-radius: 6px;
     border: none;
     margin: 1px;
+
     .form-group {
       margin-bottom: 0;
+
       input.form-control {
         -webkit-border-radius: 6px;
         -moz-border-radius: 6px;
@@ -32,23 +34,29 @@
   .card-body {
     height: calc(100vh - 236px);
     overflow-y: scroll;
+
     table.table {
       margin-bottom: 40px;
+
       tbody tr {
         border-bottom: solid 1px #f9f9f9;
         border-top: solid 1px #f9f9f9;
+
         td {
           border: none;
+
           .badge, .badge:hover {
             color: white;
           }
         }
+
         &:hover {
           background-color: #f9f9f9;
           cursor: pointer;
         }
       }
     }
+
     ul {
       margin-bottom: 0;
     }

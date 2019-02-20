@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core';
-import {UserService} from '../../../services/user.service';
 import {Device} from '../../../../shared/devices/Device';
 import {DeviceCredentials} from '../../../../shared/devices/DeviceCredentials';
 import {DeviceUpdate} from '../../../../shared/devices/DeviceUpdate';
@@ -42,22 +41,22 @@ export class DevicesComponent implements OnInit {
   }
 
   load() {
-      const futureDevices = this.deviceService.fetchDevices();
-      const futureVehicles = this.vehicleService.fetchVehicles();
+    const futureDevices = this.deviceService.fetchDevices();
+    const futureVehicles = this.vehicleService.fetchVehicles();
 
-      forkJoin(futureDevices, futureVehicles)
-          .subscribe(([devices, vehicles]) => {
-              this.devices = devices;
+    forkJoin(futureDevices, futureVehicles)
+      .subscribe(([devices, vehicles]) => {
+        this.devices = devices;
 
-              this.devices.filter(d => d.assigned).map(d => {
-                  const id = d.id;
-                  const vehicle = vehicles.find(v => v.deviceId === id);
-                  return [id, vehicle] as ([string, Vehicle]);
-              }).forEach(([id, vehicle]) => {
-                  this.vehicleIdMap.set(id, vehicle);
-              });
+        this.devices.filter(d => d.assigned).map(d => {
+          const id = d.id;
+          const vehicle = vehicles.find(v => v.deviceId === id);
+          return [id, vehicle] as ([string, Vehicle]);
+        }).forEach(([id, vehicle]) => {
+          this.vehicleIdMap.set(id, vehicle);
+        });
 
-          });
+      });
   }
 
   ngOnInit() {
@@ -78,7 +77,7 @@ export class DevicesComponent implements OnInit {
       .addDevice(this.newDevice)
       .subscribe(submitted => {
         this.successfulAdd = submitted;
-        if  (this.successfulAdd) {
+        if (this.successfulAdd) {
           this.load();
         }
         this.showSubmitMsg = true;
@@ -142,8 +141,8 @@ export class DevicesComponent implements OnInit {
 
   deviceSearchFilter(device: Device): boolean {
     return !![device.alias, device.mac]
-        .map(e => e.toLowerCase())
-        .find(e => e.includes(this.deviceSearch));
+      .map(e => e.toLowerCase())
+      .find(e => e.includes(this.deviceSearch));
   }
 
 }

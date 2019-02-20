@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   templateUrl: 'dropdowns.component.html',
 })
 export class DropdownsComponent {
 
-  status: { isOpen: boolean } = { isOpen: false };
-  disabled: boolean = false;
-  isDropup: boolean = true;
-  autoClose: boolean = false;
+  status: { isOpen: boolean } = {isOpen: false};
+  disabled = false;
+  isDropup = true;
+  autoClose = false;
 
-  constructor() { }
+  constructor() {
+  }
 
   items: string[] = [
     'The first choice!',
@@ -21,9 +22,11 @@ export class DropdownsComponent {
   onHidden(): void {
     console.log('Dropdown is hidden');
   }
+
   onShown(): void {
     console.log('Dropdown is shown');
   }
+
   isOpenChange(): void {
     console.log('Dropdown state is changed');
   }

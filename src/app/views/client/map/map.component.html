@@ -25,7 +25,8 @@
                                                     [(ngModel)]="selectedVehicleId"
                                             >
                                                 <option [value]="''" selected>Seleccione un vehiculo</option>
-                                                <option *ngFor="let vehicle of getSelectedUserVehicles()" [value]="vehicle.id">{{vehicle.domain}}</option>
+                                                <option *ngFor="let vehicle of getSelectedUserVehicles()"
+                                                        [value]="vehicle.id">{{vehicle.domain}}</option>
                                             </select>
                                         </div>
                                     </div>
