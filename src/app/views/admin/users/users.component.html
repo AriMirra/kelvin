@@ -1,199 +1,199 @@
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header" (click)="toggleAddingUser()">
-                <form>
-                    <div class="form-group row">
-                        <label class="col-10 col-form-label">
-                            <strong>Agregar nuevo usuario</strong>
-                        </label>
-                        <div class="col-2">
-                            <button type="submit"
-                                    class="btn w-100"
-                                    [ngClass]="{'btn-primary': !addingUser, 'btn-danger': addingUser}"
-                            >
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header" (click)="toggleAddingUser()">
+        <form>
+          <div class="form-group row">
+            <label class="col-10 col-form-label">
+              <strong>Agregar nuevo usuario</strong>
+            </label>
+            <div class="col-2">
+              <button type="submit"
+                      class="btn w-100"
+                      [ngClass]="{'btn-primary': !addingUser, 'btn-danger': addingUser}"
+              >
+                <i class="fa fa-plus"></i>
+              </button>
             </div>
-            <div class="card-body h-0"
-                 [ngStyle]="addingUser? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <form (submit)="submitUser()" class="form-horizontal">
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-user-username">Nombre de
-                                        usuario</label>
-                                    <div class="col-lg-8">
-                                        <input type="text"
-                                               id="new-user-username"
-                                               name="new-user-username"
-                                               class="form-control"
-                                               placeholder="Ejemplo: juan.perez"
-                                               required
-                                               [(ngModel)]="newUser.username"
-                                        >
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-user-name">Nombre</label>
-                                    <div class="col-lg-8">
-                                        <input type="text"
-                                               id="new-user-name"
-                                               name="new-user-name"
-                                               class="form-control"
-                                               placeholder="Ejemplo: Juan"
-                                               required
-                                               [(ngModel)]="newUser.name"
-                                        >
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-user-lastName">Apellido</label>
-                                    <div class="col-lg-8">
-                                        <input type="text"
-                                               id="new-user-lastName"
-                                               name="new-user-lastName"
-                                               class="form-control"
-                                               placeholder="Ejemplo: Perez"
-                                               required
-                                               [(ngModel)]="newUser.lastName"
-                                        >
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-user-password">Contraseña</label>
-                                    <div class="col-lg-8">
-                                        <input type="password"
-                                               id="new-user-password"
-                                               name="new-user-password"
-                                               class="form-control"
-                                               placeholder="Ejemplo: hunter2"
-                                               required
-                                               [(ngModel)]="newUser.password"
-                                        >
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-user-type">Privilegios</label>
-                                    <div class="col-lg-8">
-                                        <select id="new-user-type"
-                                                name="new-user-type"
-                                                class="form-control"
-                                                required
-                                                [(ngModel)]="newUser.type"
-                                        >
-                                            <option [value]="'USER'" selected>Cliente</option>
-                                            <option [value]="'ADMIN'">Administrador</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-2 offset-10">
-                                        <button type="submit" class="btn btn-primary float-right w-100">
-                                            <strong>Guardar</strong></button>
-                                    </div>
-                                </div>
-                            </form>
-                            <div *ngIf="showSubmitMsg">
-                                <div class="alert alert-success" role="alert" *ngIf="successfulAdd">
-                                    Cliente agregado exitosamente.
-                                </div>
-                                <div class="alert alert-warning" role="alert" *ngIf="!successfulAdd">
-                                    Ha ocurrido un problema para agregar el usuario.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-body h-0"
+           [ngStyle]="addingUser? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <form (submit)="submitUser()" class="form-horizontal">
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-user-username">Nombre de
+                    usuario</label>
+                  <div class="col-lg-8">
+                    <input type="text"
+                           id="new-user-username"
+                           name="new-user-username"
+                           class="form-control"
+                           placeholder="Ejemplo: juan.perez"
+                           required
+                           [(ngModel)]="newUser.username"
+                    >
+                  </div>
                 </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-user-name">Nombre</label>
+                  <div class="col-lg-8">
+                    <input type="text"
+                           id="new-user-name"
+                           name="new-user-name"
+                           class="form-control"
+                           placeholder="Ejemplo: Juan"
+                           required
+                           [(ngModel)]="newUser.name"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-user-lastName">Apellido</label>
+                  <div class="col-lg-8">
+                    <input type="text"
+                           id="new-user-lastName"
+                           name="new-user-lastName"
+                           class="form-control"
+                           placeholder="Ejemplo: Perez"
+                           required
+                           [(ngModel)]="newUser.lastName"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-user-password">Contraseña</label>
+                  <div class="col-lg-8">
+                    <input type="password"
+                           id="new-user-password"
+                           name="new-user-password"
+                           class="form-control"
+                           placeholder="Ejemplo: hunter2"
+                           required
+                           [(ngModel)]="newUser.password"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-user-type">Privilegios</label>
+                  <div class="col-lg-8">
+                    <select id="new-user-type"
+                            name="new-user-type"
+                            class="form-control"
+                            required
+                            [(ngModel)]="newUser.type"
+                    >
+                      <option [value]="'USER'" selected>Cliente</option>
+                      <option [value]="'ADMIN'">Administrador</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-2 offset-10">
+                    <button type="submit" class="btn btn-primary float-right w-100">
+                      <strong>Guardar</strong></button>
+                  </div>
+                </div>
+              </form>
+              <div *ngIf="showSubmitMsg">
+                <div class="alert alert-success" role="alert" *ngIf="successfulAdd">
+                  Cliente agregado exitosamente.
+                </div>
+                <div class="alert alert-warning" role="alert" *ngIf="!successfulAdd">
+                  Ha ocurrido un problema para agregar el usuario.
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header not-clickable">
-                <form>
-                    <div class="form-group row">
-                        <label class="col-6 col-form-label">
-                            <strong>Todos los usuarios</strong>
-                            <!--<small *ngIf="userWithoutDevice && userWithoutClient">
-                              <i class="ml-2 mr-1 fa fa-warning"></i>
-                              tiene usuarios sin usuarios y clientes asignados
-                            </small>
-                            <small *ngIf="userWithoutDevice && !userWithoutClient">
-                              <i class="ml-2 mr-1 fa fa-warning"></i>
-                              tiene usuarios sin usuarios asignados
-                            </small>
-                            <small *ngIf="!userWithoutDevice && userWithoutClient">
-                              <i class="ml-2 mr-1 fa fa-warning"></i>
-                              tiene usuarios sin clientes asignados
-                            </small>-->
-                        </label>
-                        <div class="col-6">
-                            <input type="text"
-                                   id="search-user"
-                                   name="search-user"
-                                   class="form-control"
-                                   placeholder="Buscar usuario"
-                                   [(ngModel)]="userSearch"
-                            >
-                        </div>
-                    </div>
-                </form>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header not-clickable">
+        <form>
+          <div class="form-group row">
+            <label class="col-6 col-form-label">
+              <strong>Todos los usuarios</strong>
+              <!--<small *ngIf="userWithoutDevice && userWithoutClient">
+                <i class="ml-2 mr-1 fa fa-warning"></i>
+                tiene usuarios sin usuarios y clientes asignados
+              </small>
+              <small *ngIf="userWithoutDevice && !userWithoutClient">
+                <i class="ml-2 mr-1 fa fa-warning"></i>
+                tiene usuarios sin usuarios asignados
+              </small>
+              <small *ngIf="!userWithoutDevice && userWithoutClient">
+                <i class="ml-2 mr-1 fa fa-warning"></i>
+                tiene usuarios sin clientes asignados
+              </small>-->
+            </label>
+            <div class="col-6">
+              <input type="text"
+                     id="search-user"
+                     name="search-user"
+                     class="form-control"
+                     placeholder="Buscar usuario"
+                     [(ngModel)]="userSearch"
+              >
             </div>
-            <div class="card-body" [ngClass]="{'h-0': addingUser}">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Nombre de usuario</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Privilegios</th>
-                        <th>Eliminar</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let user of filteredUsers()">
-                        <td>{{user.username}}</td>
-                        <td>{{user.name}}</td>
-                        <td>{{user.lastName}}</td>
-                        <td>
-                            <a class="badge badge-warning" *ngIf="user.type === 'ADMIN'">ADMIN</a>
-                            <a class="badge badge-success" *ngIf="user.type === 'USER'">CLIENTE</a>
-                        </td>
-                        <td>
-                            <a class="badge badge-danger" data-toggle="modal"
-                               (click)="dangerModal.show(); startUserDelete(user.id)">Eliminar</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-body" [ngClass]="{'h-0': addingUser}">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Nombre de usuario</th>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Privilegios</th>
+            <th>Eliminar</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let user of filteredUsers()">
+            <td>{{user.username}}</td>
+            <td>{{user.name}}</td>
+            <td>{{user.lastName}}</td>
+            <td>
+              <a class="badge badge-warning" *ngIf="user.type === 'ADMIN'">ADMIN</a>
+              <a class="badge badge-success" *ngIf="user.type === 'USER'">CLIENTE</a>
+            </td>
+            <td>
+              <a class="badge badge-danger" data-toggle="modal"
+                 (click)="dangerModal.show(); startUserDelete(user.id)">Eliminar</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 
 <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-danger" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Eliminar usuario</h4>
-                <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo usuario.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
-                </button>
-                <button type="button" class="btn btn-danger" (click)="deleteUser()">Eliminar</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Eliminar usuario</h4>
+        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo usuario.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="deleteUser()">Eliminar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
