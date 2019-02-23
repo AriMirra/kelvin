@@ -1,231 +1,231 @@
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header" (click)="toggleAddingDevice()">
-                <form>
-                    <div class="form-group row">
-                        <label class="col-10 col-form-label">
-                            <strong>Agregar nuevo dispositivo</strong>
-                        </label>
-                        <div class="col-2">
-                            <button type="submit"
-                                    class="btn w-100"
-                                    [ngClass]="{'btn-primary': !addingDevice, 'btn-danger': addingDevice}"
-                            >
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header" (click)="toggleAddingDevice()">
+        <form>
+          <div class="form-group row">
+            <label class="col-10 col-form-label">
+              <strong>Agregar nuevo dispositivo</strong>
+            </label>
+            <div class="col-2">
+              <button type="submit"
+                      class="btn w-100"
+                      [ngClass]="{'btn-primary': !addingDevice, 'btn-danger': addingDevice}"
+              >
+                <i class="fa fa-plus"></i>
+              </button>
             </div>
-            <div class="card-body h-0"
-                 [ngStyle]="addingDevice? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <form (submit)="submitDevice()" class="form-horizontal">
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-device-alias">Alias del
-                                        dispositivo</label>
-                                    <div class="col-lg-8">
-                                        <input type="text"
-                                               id="new-device-alias"
-                                               name="new-device-alias"
-                                               class="form-control"
-                                               placeholder="Ejemplo: Jarvis"
-                                               required
-                                               [(ngModel)]="newDevice.alias"
-                                        >
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-device-mac">Mac</label>
-                                    <div class="col-lg-8">
-                                        <input type="text"
-                                               id="new-device-mac"
-                                               name="new-device-mac"
-                                               class="form-control"
-                                               placeholder="Ejemplo: 48-2C-6A-1E-59-3D"
-                                               required
-                                               [(ngModel)]="newDevice.mac"
-                                        >
-                                        <span class="help-block">
+          </div>
+        </form>
+      </div>
+      <div class="card-body h-0"
+           [ngStyle]="addingDevice? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <form (submit)="submitDevice()" class="form-horizontal">
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-device-alias">Alias del
+                    dispositivo</label>
+                  <div class="col-lg-8">
+                    <input type="text"
+                           id="new-device-alias"
+                           name="new-device-alias"
+                           class="form-control"
+                           placeholder="Ejemplo: Jarvis"
+                           required
+                           [(ngModel)]="newDevice.alias"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-device-mac">Mac</label>
+                  <div class="col-lg-8">
+                    <input type="text"
+                           id="new-device-mac"
+                           name="new-device-mac"
+                           class="form-control"
+                           placeholder="Ejemplo: 48-2C-6A-1E-59-3D"
+                           required
+                           [(ngModel)]="newDevice.mac"
+                    >
+                    <span class="help-block">
                                             <small>
                                                 <i class="ml-2 mr-1 fa fa-info-circle"></i>
                                                 la dirección mac de su dispositivo para identificarlo unívocamente
                                             </small>
                                         </span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-2 offset-10">
-                                        <button type="submit" class="btn btn-primary float-right w-100">
-                                            <strong>Guardar</strong></button>
-                                    </div>
-                                </div>
-                            </form>
-                            <div *ngIf="showSubmitMsg">
-                                <div class="alert alert-success" role="alert" *ngIf="successfulAdd">
-                                    Dispositivo agregado exitosamente.
-                                </div>
-                                <div class="alert alert-warning" role="alert" *ngIf="!successfulAdd">
-                                    Ha ocurrido un problema para agregar el dispositivo.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
+                <div class="form-group row">
+                  <div class="col-2 offset-10">
+                    <button type="submit" class="btn btn-primary float-right w-100">
+                      <strong>Guardar</strong></button>
+                  </div>
+                </div>
+              </form>
+              <div *ngIf="showSubmitMsg">
+                <div class="alert alert-success" role="alert" *ngIf="successfulAdd">
+                  Dispositivo agregado exitosamente.
+                </div>
+                <div class="alert alert-warning" role="alert" *ngIf="!successfulAdd">
+                  Ha ocurrido un problema para agregar el dispositivo.
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header not-clickable">
-                <form>
-                    <div class="form-group row">
-                        <label class="col-6 col-form-label">
-                            <strong>Todos los dispositivos</strong>
-                            <!--<small *ngIf="deviceWithoutDevice && deviceWithoutClient">
-                              <i class="ml-2 mr-1 fa fa-warning"></i>
-                              tiene dispositivos sin dispositivos y clientes asignados
-                            </small>
-                            <small *ngIf="deviceWithoutDevice && !deviceWithoutClient">
-                              <i class="ml-2 mr-1 fa fa-warning"></i>
-                              tiene dispositivos sin dispositivos asignados
-                            </small>
-                            <small *ngIf="!deviceWithoutDevice && deviceWithoutClient">
-                              <i class="ml-2 mr-1 fa fa-warning"></i>
-                              tiene dispositivos sin clientes asignados
-                            </small>-->
-                        </label>
-                        <div class="col-6">
-                            <input type="text"
-                                   id="search-device"
-                                   name="search-device"
-                                   class="form-control"
-                                   placeholder="Buscar dispositivo"
-                                   [(ngModel)]="deviceSearch"
-                            >
-                        </div>
-                    </div>
-                </form>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header not-clickable">
+        <form>
+          <div class="form-group row">
+            <label class="col-6 col-form-label">
+              <strong>Todos los dispositivos</strong>
+              <!--<small *ngIf="deviceWithoutDevice && deviceWithoutClient">
+                <i class="ml-2 mr-1 fa fa-warning"></i>
+                tiene dispositivos sin dispositivos y clientes asignados
+              </small>
+              <small *ngIf="deviceWithoutDevice && !deviceWithoutClient">
+                <i class="ml-2 mr-1 fa fa-warning"></i>
+                tiene dispositivos sin dispositivos asignados
+              </small>
+              <small *ngIf="!deviceWithoutDevice && deviceWithoutClient">
+                <i class="ml-2 mr-1 fa fa-warning"></i>
+                tiene dispositivos sin clientes asignados
+              </small>-->
+            </label>
+            <div class="col-6">
+              <input type="text"
+                     id="search-device"
+                     name="search-device"
+                     class="form-control"
+                     placeholder="Buscar dispositivo"
+                     [(ngModel)]="deviceSearch"
+              >
             </div>
-            <div class="card-body" [ngClass]="{'h-0': addingDevice}">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Alias</th>
-                        <th>Mac</th>
-                        <th>Vehículo asignado</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let device of filteredDevices()">
-                        <td>{{device.alias}}</td>
-                        <td>{{device.mac}}</td>
-                        <td>
-                            <a class="badge badge-success" data-toggle="modal"
-                               *ngIf="device.assigned">{{getDeviceVehicle(device).domain}}</a>
-                            <a class="badge badge-warning" *ngIf="!device.assigned">Sin vehículo asignado</a>
-                        </td>
-                        <td>
-                            <a class="badge badge-primary" data-toggle="modal"
-                               (click)="largeModal.show(); startDeviceEdit(device)">Editar</a>
-                        </td>
-                        <td>
-                            <a class="badge badge-danger" data-toggle="modal"
-                               (click)="dangerModal.show(); startDeviceDelete(device.id)">Eliminar</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-body" [ngClass]="{'h-0': addingDevice}">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Alias</th>
+            <th>Mac</th>
+            <th>Vehículo asignado</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let device of filteredDevices()">
+            <td>{{device.alias}}</td>
+            <td>{{device.mac}}</td>
+            <td>
+              <a class="badge badge-success" data-toggle="modal"
+                 *ngIf="device.assigned">{{getDeviceVehicle(device).domain}}</a>
+              <a class="badge badge-warning" *ngIf="!device.assigned">Sin vehículo asignado</a>
+            </td>
+            <td>
+              <a class="badge badge-primary" data-toggle="modal"
+                 (click)="largeModal.show(); startDeviceEdit(device)">Editar</a>
+            </td>
+            <td>
+              <a class="badge badge-danger" data-toggle="modal"
+                 (click)="dangerModal.show(); startDeviceDelete(device.id)">Eliminar</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 
 <div bsModal #largeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-primary" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Editar dispositivo</h4>
-                <button type="button" class="close" (click)="largeModal.hide(); cancelEdit()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-lg modal-primary" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Editar dispositivo</h4>
+        <button type="button" class="close" (click)="largeModal.hide(); cancelEdit()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-device-alias">Alias del dispositivo</label>
+            <div class="col-lg-8">
+              <input type="text"
+                     id="edit-device-alias"
+                     name="edit-device-alias"
+                     class="form-control"
+                     placeholder="Ejemplo: Jarvis"
+                     required
+                     [(ngModel)]="newDevice.alias"
+              >
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="edit-device-alias">Alias del dispositivo</label>
-                        <div class="col-lg-8">
-                            <input type="text"
-                                   id="edit-device-alias"
-                                   name="edit-device-alias"
-                                   class="form-control"
-                                   placeholder="Ejemplo: Jarvis"
-                                   required
-                                   [(ngModel)]="newDevice.alias"
-                            >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="edit-device-mac">Mac</label>
-                        <div class="col-lg-8">
-                            <input type="text"
-                                   id="edit-device-mac"
-                                   name="edit-device-mac"
-                                   class="form-control"
-                                   placeholder="Ejemplo: 48-2C-6A-1E-59-3D"
-                                   required
-                                   [(ngModel)]="newDevice.mac"
-                            >
-                            <span class="help-block">
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-device-mac">Mac</label>
+            <div class="col-lg-8">
+              <input type="text"
+                     id="edit-device-mac"
+                     name="edit-device-mac"
+                     class="form-control"
+                     placeholder="Ejemplo: 48-2C-6A-1E-59-3D"
+                     required
+                     [(ngModel)]="newDevice.mac"
+              >
+              <span class="help-block">
                     <small>
                         <i class="ml-2 mr-1 fa fa-info-circle"></i>
                         la dirección mac de su dispositivo para identificarlo unívocamente
                     </small>
               </span>
-                        </div>
-                    </div>
-                </form>
-                <div *ngIf="showEditMsg">
-                    <div class="alert alert-success" role="alert" *ngIf="successfulEdit">
-                        Dispositivo editado exitosamente.
-                    </div>
-                    <div class="alert alert-warning" role="alert" *ngIf="!successfulEdit">
-                        Ha ocurrido un problema para editar el dispositivo.
-                    </div>
-                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="largeModal.hide(); cancelEdit()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="editDevice()">Guardar Cambios</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+          </div>
+        </form>
+        <div *ngIf="showEditMsg">
+          <div class="alert alert-success" role="alert" *ngIf="successfulEdit">
+            Dispositivo editado exitosamente.
+          </div>
+          <div class="alert alert-warning" role="alert" *ngIf="!successfulEdit">
+            Ha ocurrido un problema para editar el dispositivo.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="largeModal.hide(); cancelEdit()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="editDevice()">Guardar Cambios</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-danger" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Eliminar dispositivo</h4>
-                <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo dispositivo.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
-                </button>
-                <button type="button" class="btn btn-danger" (click)="deleteDevice()">Eliminar</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Eliminar dispositivo</h4>
+        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo dispositivo.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="deleteDevice()">Eliminar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->

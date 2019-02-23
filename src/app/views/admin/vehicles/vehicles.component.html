@@ -1,370 +1,370 @@
 <div class="row">
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header" (click)="toggleAddingVehicle()">
-                <form>
-                    <div class="form-group row">
-                        <label class="col-10 col-form-label">
-                            <strong>Agregar nuevo vehículo</strong>
-                        </label>
-                        <div class="col-2">
-                            <button type="submit"
-                                    class="btn w-100"
-                                    [ngClass]="{'btn-primary': !addingVehicle, 'btn-danger': addingVehicle}"
-                            >
-                                <i class="fa fa-plus"></i>
-                            </button>
-                        </div>
-                    </div>
-                </form>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header" (click)="toggleAddingVehicle()">
+        <form>
+          <div class="form-group row">
+            <label class="col-10 col-form-label">
+              <strong>Agregar nuevo vehículo</strong>
+            </label>
+            <div class="col-2">
+              <button type="submit"
+                      class="btn w-100"
+                      [ngClass]="{'btn-primary': !addingVehicle, 'btn-danger': addingVehicle}"
+              >
+                <i class="fa fa-plus"></i>
+              </button>
             </div>
-            <div class="card-body h-0"
-                 [ngStyle]="addingVehicle? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
-                <!-- [ngClass]="{'open': addingVehicle}"-->
-                <div class="container">
-                    <div class="row">
-                        <div class="col-12">
-                            <form (submit)="submitVehicle()" class="form-horizontal">
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-vehicle-license-plate">Patente del
-                                        Vehículo</label>
-                                    <div class="col-lg-8">
-                                        <input type="text"
-                                               id="new-vehicle-license-plate"
-                                               name="new-vehicle-license-plate"
-                                               class="form-control"
-                                               placeholder="Ejemplo: DSL-190 o AB-918-DX"
-                                               required
-                                               [(ngModel)]="newVehicle.domain"
-                                        >
-                                        <span class="help-block">
+          </div>
+        </form>
+      </div>
+      <div class="card-body h-0"
+           [ngStyle]="addingVehicle? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
+        <!-- [ngClass]="{'open': addingVehicle}"-->
+        <div class="container">
+          <div class="row">
+            <div class="col-12">
+              <form (submit)="submitVehicle()" class="form-horizontal">
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-vehicle-license-plate">Patente del
+                    Vehículo</label>
+                  <div class="col-lg-8">
+                    <input type="text"
+                           id="new-vehicle-license-plate"
+                           name="new-vehicle-license-plate"
+                           class="form-control"
+                           placeholder="Ejemplo: DSL-190 o AB-918-DX"
+                           required
+                           [(ngModel)]="newVehicle.domain"
+                    >
+                    <span class="help-block">
                                             <small>
                                                 <i class="ml-2 mr-1 fa fa-info-circle"></i>
                                                 escriba la patente en las formas "AA-000-AA" o "AAA-000"
                                             </small>
                                         </span>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-vehicle-brand">Marca</label>
-                                    <div class="col-lg-8">
-                                        <input type="text"
-                                               id="new-vehicle-brand"
-                                               name="new-vehicle-brand"
-                                               class="form-control"
-                                               placeholder="Ejemplo: Peugeot"
-                                               required
-                                               [(ngModel)]="newVehicle.brand"
-                                        >
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-vehicle-model">Modelo</label>
-                                    <div class="col-lg-8">
-                                        <input type="text"
-                                               id="new-vehicle-model"
-                                               name="new-vehicle-model"
-                                               class="form-control"
-                                               placeholder="Ejemplo: Partner"
-                                               [(ngModel)]="newVehicle.model"
-                                        >
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-vehicle-wheels">Ruedas</label>
-                                    <div class="col-lg-8">
-                                        <input type="number"
-                                               id="new-vehicle-wheels"
-                                               name="new-vehicle-wheels"
-                                               class="form-control"
-                                               placeholder="2"
-                                               min="2"
-                                               max="10"
-                                               [(ngModel)]="newVehicle.wheels"
-                                        >
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="new-vehicle-client">Cliente</label>
-                                    <div class="col-lg-8">
-                                        <select id="new-vehicle-client"
-                                                name="new-vehicle-client"
-                                                class="form-control"
-                                                required
-                                                [(ngModel)]="newVehicle.ownerId"
-                                        >
-                                            <option [value]="''" selected>Seleccione un cliente</option>
-                                            <option *ngFor="let client of clients"
-                                                    [value]="client.id">{{client.getFullName()}}</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group row">
-                                    <div class="col-2 offset-10">
-                                        <button type="submit" class="btn btn-primary float-right w-100">
-                                            <strong>Guardar</strong></button>
-                                    </div>
-                                </div>
-                            </form>
-                            <div *ngIf="showSubmitMsg">
-                                <div class="alert alert-success" role="alert" *ngIf="successfulAdd">
-                                    Vehiculo agregado exitosamente.
-                                </div>
-                                <div class="alert alert-warning" role="alert" *ngIf="!successfulAdd">
-                                    Ha ocurrido un problema para agregar el vehículo.
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                  </div>
                 </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-vehicle-brand">Marca</label>
+                  <div class="col-lg-8">
+                    <input type="text"
+                           id="new-vehicle-brand"
+                           name="new-vehicle-brand"
+                           class="form-control"
+                           placeholder="Ejemplo: Peugeot"
+                           required
+                           [(ngModel)]="newVehicle.brand"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-vehicle-model">Modelo</label>
+                  <div class="col-lg-8">
+                    <input type="text"
+                           id="new-vehicle-model"
+                           name="new-vehicle-model"
+                           class="form-control"
+                           placeholder="Ejemplo: Partner"
+                           [(ngModel)]="newVehicle.model"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-vehicle-wheels">Ruedas</label>
+                  <div class="col-lg-8">
+                    <input type="number"
+                           id="new-vehicle-wheels"
+                           name="new-vehicle-wheels"
+                           class="form-control"
+                           placeholder="2"
+                           min="2"
+                           max="10"
+                           [(ngModel)]="newVehicle.wheels"
+                    >
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-lg-4 col-form-label" for="new-vehicle-client">Cliente</label>
+                  <div class="col-lg-8">
+                    <select id="new-vehicle-client"
+                            name="new-vehicle-client"
+                            class="form-control"
+                            required
+                            [(ngModel)]="newVehicle.ownerId"
+                    >
+                      <option [value]="''" selected>Seleccione un cliente</option>
+                      <option *ngFor="let client of clients"
+                              [value]="client.id">{{client.getFullName()}}</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <div class="col-2 offset-10">
+                    <button type="submit" class="btn btn-primary float-right w-100">
+                      <strong>Guardar</strong></button>
+                  </div>
+                </div>
+              </form>
+              <div *ngIf="showSubmitMsg">
+                <div class="alert alert-success" role="alert" *ngIf="successfulAdd">
+                  Vehiculo agregado exitosamente.
+                </div>
+                <div class="alert alert-warning" role="alert" *ngIf="!successfulAdd">
+                  Ha ocurrido un problema para agregar el vehículo.
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
-    <div class="col-12">
-        <div class="card">
-            <div class="card-header not-clickable">
-                <form>
-                    <div class="form-group row">
-                        <label class="col-6 col-form-label">
-                            <strong>Todos los vehículos</strong>
-                            <!--<small *ngIf="vehicleWithoutDevice && vehicleWithoutClient">
-                                <i class="ml-2 mr-1 fa fa-warning"></i>
-                                tiene vehículos sin dispositivos y clientes asignados
-                            </small>
-                            <small *ngIf="vehicleWithoutDevice && !vehicleWithoutClient">
-                                <i class="ml-2 mr-1 fa fa-warning"></i>
-                                tiene vehículos sin dispositivos asignados
-                            </small>
-                            <small *ngIf="!vehicleWithoutDevice && vehicleWithoutClient">
-                                <i class="ml-2 mr-1 fa fa-warning"></i>
-                                tiene vehículos sin clientes asignados
-                            </small>-->
-                        </label>
-                        <div class="col-6">
-                            <input type="text"
-                                   id="search-vehicle"
-                                   name="search-vehicle"
-                                   class="form-control"
-                                   placeholder="Buscar vehículo"
-                                   [(ngModel)]="vehicleSearch"
-                            >
-                        </div>
-                    </div>
-                </form>
+  </div>
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header not-clickable">
+        <form>
+          <div class="form-group row">
+            <label class="col-6 col-form-label">
+              <strong>Todos los vehículos</strong>
+              <!--<small *ngIf="vehicleWithoutDevice && vehicleWithoutClient">
+                  <i class="ml-2 mr-1 fa fa-warning"></i>
+                  tiene vehículos sin dispositivos y clientes asignados
+              </small>
+              <small *ngIf="vehicleWithoutDevice && !vehicleWithoutClient">
+                  <i class="ml-2 mr-1 fa fa-warning"></i>
+                  tiene vehículos sin dispositivos asignados
+              </small>
+              <small *ngIf="!vehicleWithoutDevice && vehicleWithoutClient">
+                  <i class="ml-2 mr-1 fa fa-warning"></i>
+                  tiene vehículos sin clientes asignados
+              </small>-->
+            </label>
+            <div class="col-6">
+              <input type="text"
+                     id="search-vehicle"
+                     name="search-vehicle"
+                     class="form-control"
+                     placeholder="Buscar vehículo"
+                     [(ngModel)]="vehicleSearch"
+              >
             </div>
-            <div class="card-body open" [ngClass]="{'h-0': addingVehicle}"> <!--[ngClass]="{'h-0': addingVehicle}"-->
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th>Patente</th>
-                        <th>Marca</th>
-                        <th>Modelo</th>
-                        <th>Cliente</th>
-                        <th>Dispositivo</th>
-                        <th>Editar</th>
-                        <th>Eliminar</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr *ngFor="let vehicle of filteredVehicles()">
-                        <td>{{vehicle.domain}}</td>
-                        <td>{{vehicle.brand}}</td>
-                        <td>{{vehicle.model}}</td>
-                        <td>
-                            <a class="badge badge-success" data-toggle="modal"
-                               *ngIf="vehicle.hasOwner()">{{getVehicleOwnerName(vehicle)}}</a>
-                            <a class="badge badge-warning" *ngIf="!vehicle.hasOwner()">Sin Cliente Asociado</a>
-                        </td>
-                        <td>
-                            <a class="badge badge-success" data-toggle="modal"
-                               (click)="assignModal.show(); startDeviceAssign(vehicle)"
-                               *ngIf="vehicle.hasDevice()">{{getVehicleDeviceAlias(vehicle)}}</a>
-                            <a class="badge badge-warning" (click)="assignModal.show(); startDeviceAssign(vehicle)"
-                               *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
-                        </td>
-                        <td>
-                            <a class="badge badge-primary" data-toggle="modal"
-                               (click)="largeModal.show(); startVehicleEdit(vehicle)">Editar</a>
-                        </td>
-                        <td>
-                            <a class="badge badge-danger" data-toggle="modal"
-                               (click)="dangerModal.show(); startVehicleDelete(vehicle.id)">Eliminar</a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-body open" [ngClass]="{'h-0': addingVehicle}"> <!--[ngClass]="{'h-0': addingVehicle}"-->
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Patente</th>
+            <th>Marca</th>
+            <th>Modelo</th>
+            <th>Cliente</th>
+            <th>Dispositivo</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let vehicle of filteredVehicles()">
+            <td>{{vehicle.domain}}</td>
+            <td>{{vehicle.brand}}</td>
+            <td>{{vehicle.model}}</td>
+            <td>
+              <a class="badge badge-success" data-toggle="modal"
+                 *ngIf="vehicle.hasOwner()">{{getVehicleOwnerName(vehicle)}}</a>
+              <a class="badge badge-warning" *ngIf="!vehicle.hasOwner()">Sin Cliente Asociado</a>
+            </td>
+            <td>
+              <a class="badge badge-success" data-toggle="modal"
+                 (click)="assignModal.show(); startDeviceAssign(vehicle)"
+                 *ngIf="vehicle.hasDevice()">{{getVehicleDeviceAlias(vehicle)}}</a>
+              <a class="badge badge-warning" (click)="assignModal.show(); startDeviceAssign(vehicle)"
+                 *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
+            </td>
+            <td>
+              <a class="badge badge-primary" data-toggle="modal"
+                 (click)="largeModal.show(); startVehicleEdit(vehicle)">Editar</a>
+            </td>
+            <td>
+              <a class="badge badge-danger" data-toggle="modal"
+                 (click)="dangerModal.show(); startVehicleDelete(vehicle.id)">Eliminar</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+  </div>
 </div>
 
 <div bsModal #largeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-primary" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Editar vehículo</h4>
-                <button type="button" class="close" (click)="largeModal.hide(); cancelEdit()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="edit-vehicle-license-plate">Patente del
-                            Vehículo</label>
-                        <div class="col-lg-8">
-                            <input type="text"
-                                   id="edit-vehicle-license-plate"
-                                   name="edit-vehicle-license-plate"
-                                   class="form-control"
-                                   placeholder="Ejemplo: DSL-190 o AB-918-DX"
-                                   required
-                                   [(ngModel)]="editingVehicle.domain"
-                            >
-                            <span class="help-block">
+  <div class="modal-dialog modal-lg modal-primary" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Editar vehículo</h4>
+        <button type="button" class="close" (click)="largeModal.hide(); cancelEdit()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-vehicle-license-plate">Patente del
+              Vehículo</label>
+            <div class="col-lg-8">
+              <input type="text"
+                     id="edit-vehicle-license-plate"
+                     name="edit-vehicle-license-plate"
+                     class="form-control"
+                     placeholder="Ejemplo: DSL-190 o AB-918-DX"
+                     required
+                     [(ngModel)]="editingVehicle.domain"
+              >
+              <span class="help-block">
                                             <small>
                                                 <i class="ml-2 mr-1 fa fa-info-circle"></i>
                                                 escriba la patente en las formas "AA-000-AA" o "AAA-000"
                                             </small>
                                         </span>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="edit-vehicle-brand">Marca</label>
-                        <div class="col-lg-8">
-                            <input type="text"
-                                   id="edit-vehicle-brand"
-                                   name="edit-vehicle-brand"
-                                   class="form-control"
-                                   placeholder="Ejemplo: Peugeot"
-                                   required
-                                   [(ngModel)]="editingVehicle.brand"
-                            >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="edit-vehicle-model">Modelo</label>
-                        <div class="col-lg-8">
-                            <input type="text"
-                                   id="edit-vehicle-model"
-                                   name="edit-vehicle-model"
-                                   class="form-control"
-                                   placeholder="Ejemplo: Partner"
-                                   [(ngModel)]="editingVehicle.model"
-                            >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="edit-vehicle-wheels">Ruedas</label>
-                        <div class="col-lg-8">
-                            <input type="number"
-                                   id="edit-vehicle-wheels"
-                                   name="edit-vehicle-wheels"
-                                   class="form-control"
-                                   placeholder="2"
-                                   min="2"
-                                   max="10"
-                                   [(ngModel)]="editingVehicle.wheels"
-                            >
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="edit-vehicle-client">Cliente</label>
-                        <div class="col-lg-8">
-                            <select id="edit-vehicle-client"
-                                    name="edit-vehicle-client"
-                                    class="form-control"
-                                    required
-                                    [(ngModel)]="editingVehicle.ownerId"
-                            >
-                                <option [value]="''" selected>Seleccione un cliente</option>
-                                <option *ngFor="let client of clients"
-                                        [value]="client.id">{{client.getFullName()}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-                <div *ngIf="showEditMsg">
-                    <div class="alert alert-success" role="alert" *ngIf="successfulEdit">
-                        Vehiculo editado exitosamente.
-                    </div>
-                    <div class="alert alert-warning" role="alert" *ngIf="!successfulEdit">
-                        Ha ocurrido un problema para editar el vehículo.
-                    </div>
-                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="largeModal.hide(); cancelEdit()">Close</button>
-                <button type="button" class="btn btn-primary" (click)="editVehicle()">Guardar Cambios</button>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-vehicle-brand">Marca</label>
+            <div class="col-lg-8">
+              <input type="text"
+                     id="edit-vehicle-brand"
+                     name="edit-vehicle-brand"
+                     class="form-control"
+                     placeholder="Ejemplo: Peugeot"
+                     required
+                     [(ngModel)]="editingVehicle.brand"
+              >
             </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-vehicle-model">Modelo</label>
+            <div class="col-lg-8">
+              <input type="text"
+                     id="edit-vehicle-model"
+                     name="edit-vehicle-model"
+                     class="form-control"
+                     placeholder="Ejemplo: Partner"
+                     [(ngModel)]="editingVehicle.model"
+              >
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-vehicle-wheels">Ruedas</label>
+            <div class="col-lg-8">
+              <input type="number"
+                     id="edit-vehicle-wheels"
+                     name="edit-vehicle-wheels"
+                     class="form-control"
+                     placeholder="2"
+                     min="2"
+                     max="10"
+                     [(ngModel)]="editingVehicle.wheels"
+              >
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-vehicle-client">Cliente</label>
+            <div class="col-lg-8">
+              <select id="edit-vehicle-client"
+                      name="edit-vehicle-client"
+                      class="form-control"
+                      required
+                      [(ngModel)]="editingVehicle.ownerId"
+              >
+                <option [value]="''" selected>Seleccione un cliente</option>
+                <option *ngFor="let client of clients"
+                        [value]="client.id">{{client.getFullName()}}</option>
+              </select>
+            </div>
+          </div>
+        </form>
+        <div *ngIf="showEditMsg">
+          <div class="alert alert-success" role="alert" *ngIf="successfulEdit">
+            Vehiculo editado exitosamente.
+          </div>
+          <div class="alert alert-warning" role="alert" *ngIf="!successfulEdit">
+            Ha ocurrido un problema para editar el vehículo.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="largeModal.hide(); cancelEdit()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="editVehicle()">Guardar Cambios</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-danger" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Eliminar vehículo</h4>
-                <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo vehículo.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
-                </button>
-                <button type="button" class="btn btn-danger" (click)="deleteVehicle()">Eliminar</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Eliminar vehículo</h4>
+        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo vehículo.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="deleteVehicle()">Eliminar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
 <div bsModal #assignModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-success" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Asignar dispositivo</h4>
-                <button type="button" class="close" (click)="assignModal.hide(); cancelAssign()" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+  <div class="modal-dialog modal-lg modal-success" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Asignar dispositivo</h4>
+        <button type="button" class="close" (click)="assignModal.hide(); cancelAssign()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-vehicle-device">Dispositivo asignado</label>
+            <div class="col-lg-8">
+              <select id="edit-vehicle-device"
+                      name="edit-vehicle-device"
+                      class="form-control"
+                      required
+                      [(ngModel)]="deviceAssignId"
+              >
+                <option [value]="null" selected>Sin dispositivo</option>
+                <option *ngFor="let device of devices" [value]="device.id">{{device.alias}}</option>
+              </select>
             </div>
-            <div class="modal-body">
-                <form class="form-horizontal">
-                    <div class="form-group row">
-                        <label class="col-lg-4 col-form-label" for="edit-vehicle-device">Dispositivo asignado</label>
-                        <div class="col-lg-8">
-                            <select id="edit-vehicle-device"
-                                    name="edit-vehicle-device"
-                                    class="form-control"
-                                    required
-                                    [(ngModel)]="deviceAssignId"
-                            >
-                                <option [value]="null" selected>Sin dispositivo</option>
-                                <option *ngFor="let device of devices" [value]="device.id">{{device.alias}}</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
-                <div *ngIf="showAssignMsg">
-                    <div class="alert alert-success" role="alert" *ngIf="successfulAssign">
-                        Dispositivo asignado editado exitosamente.
-                    </div>
-                    <div class="alert alert-warning" role="alert" *ngIf="!successfulAssign">
-                        Ha ocurrido un problema para editar el dispositivo asignado.
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" (click)="assignModal.hide(); cancelAssign()">Close
-                </button>
-                <button type="button" class="btn btn-primary" (click)="assignDevice()">Guardar Cambios</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+          </div>
+        </form>
+        <div *ngIf="showAssignMsg">
+          <div class="alert alert-success" role="alert" *ngIf="successfulAssign">
+            Dispositivo asignado editado exitosamente.
+          </div>
+          <div class="alert alert-warning" role="alert" *ngIf="!successfulAssign">
+            Ha ocurrido un problema para editar el dispositivo asignado.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="assignModal.hide(); cancelAssign()">Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="assignDevice()">Guardar Cambios</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
