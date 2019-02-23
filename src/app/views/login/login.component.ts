@@ -20,6 +20,10 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const userType: string = this.cookieService.get('UserType');
+    if (userType) {
+      userType === 'ADMIN' ? this.router.navigate(['/admin']) : this.router.navigate(['/client']);
+    }
     this.credentials = ClientCredentials.empty();
     this.errorOnLogin = false;
   }
