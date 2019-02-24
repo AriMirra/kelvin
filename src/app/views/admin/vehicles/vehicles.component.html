@@ -185,7 +185,7 @@
             </td>
             <td>
               <a class="badge badge-primary" data-toggle="modal"
-                 (click)="qrModal.show(); getQR(vehicle.id)">Código QR
+                 (click)="qrModal.show(); getQR(vehicle)">Código QR
               </a>
               <!--<a class="badge badge-primary" data-toggle="modal"-->
                  <!--(click)="testQrRequest(vehicle.id)">Código QR-->
@@ -380,7 +380,7 @@
 
 <div bsModal #qrModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
      aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-success" role="document">
+  <div *ngIf="qrModalDisplay" class="modal-dialog modal-lg modal-success" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Código QR</h4>
@@ -389,7 +389,12 @@
         </button>
       </div>
       <div class="modal-body">
-        <div>
+        <div class="qr-vehicle-info">
+          <p><strong>Patente:</strong> {{qrSelectedVehicle.domain}}</p>
+          <p><strong>Marca:</strong> {{qrSelectedVehicle.brand}}</p>
+          <p><strong>Modelo:</strong> {{qrSelectedVehicle.model}}</p>
+        </div>
+        <div class="qr-image-container">
           <img [src]="qr" alt="qr code" class="qr-image">
         </div>
       </div>

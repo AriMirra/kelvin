@@ -49,6 +49,8 @@ export class AdminVehiclesComponent implements OnInit {
 
   qr: any;
   qrLoading = false;
+  qrSelectedVehicle: Vehicle;
+  qrModalDisplay = false;
 
   constructor(private vehicleService: VehicleService,
               private clientService: UserService,
@@ -239,9 +241,11 @@ export class AdminVehiclesComponent implements OnInit {
     a.click();
   }
 
-  getQR(vehicleId: string) {
+  getQR(vehicle: Vehicle) {
+    this.qrModalDisplay = true;
     this.qrLoading = true;
-    this.qrService.getVehicleQr(vehicleId).subscribe(imageURL => {
+    this.qrSelectedVehicle = vehicle;
+    this.qrService.getVehicleQr(vehicle.id).subscribe(imageURL => {
       console.log(imageURL);
       this.qr = imageURL;
       this.qrLoading = false;
