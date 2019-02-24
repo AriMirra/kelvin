@@ -232,7 +232,11 @@ export class AdminVehiclesComponent implements OnInit {
   // QR
 
   downloadQR() {
-    //TODO
+    const a = document.createElement('a');
+    a.href = this.qr;
+    a.download = 'download';
+    document.body.appendChild(a);
+    a.click();
   }
 
   getQR(vehicleId: string) {
