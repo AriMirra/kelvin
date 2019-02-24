@@ -25,6 +25,8 @@ export class AdminMapComponent implements OnInit {
   currentRoute;
   map: any;
 
+  showFormErrorMsg: boolean;
+
   fromDate: string;
   fromTime: string;
 
@@ -34,6 +36,7 @@ export class AdminMapComponent implements OnInit {
   currentReport: Point[];
   currentReportLayer: any;
   currentLayerControl: any;
+  markerLayers: any = null;
 
   checking: Check = Check.BASIC;
 
@@ -110,10 +113,10 @@ export class AdminMapComponent implements OnInit {
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
-        display: false,
+        display: true,
         gridLines: {
-          drawOnChartArea: false,
-        },
+          drawOnChartArea: true,
+        }
       }],
       yAxes: [{
         ticks: {
@@ -156,9 +159,9 @@ export class AdminMapComponent implements OnInit {
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
-        display: false,
+        display: true,
         gridLines: {
-          drawOnChartArea: false,
+          drawOnChartArea: true,
         },
       }],
       yAxes: [{
@@ -365,21 +368,26 @@ export class AdminMapComponent implements OnInit {
   }
 
   getReport() {
-    const parameters = new ReportParameters(
-      this.selectedVehicleId,
-      this.parseDate(this.fromDate, this.fromTime),
-      this.parseDate(this.toDate, this.toTime)
-    );
-    this.reportService.getReport(parameters).subscribe(
-      report => {
-        this.currentReport = report;
-        this.drawRoute();
-        this.updateCharts();
-      },
-      e => {
-        console.log(e);
-      }
-    );
+    if ((this.newRoute.minTemperature > this.newRoute.maxTemperature) || (this.newRoute.minHumidity > this.newRoute.maxHumidity)) {
+      this.showFormErrorMsg = true;
+      setTimeout(() => this.showFormErrorMsg = false, 1000);
+    } else {
+      const parameters = new ReportParameters(
+          this.selectedVehicleId,
+          this.parseDate(this.fromDate, this.fromTime),
+          this.parseDate(this.toDate, this.toTime)
+      );
+      this.reportService.getReport(parameters).subscribe(
+          report => {
+            this.currentReport = report;
+            this.drawRoute();
+            this.updateCharts();
+          },
+          e => {
+            console.log(e);
+          }
+      );
+    }
   }
 
   // Map
@@ -398,8 +406,12 @@ export class AdminMapComponent implements OnInit {
     const markers = [];
     pointInfos.forEach(i => {
         markers.push(this.makeMarker(i.coordinates));
-        if (i.lighted && route.vampire) {
-          lightMarkers.push(this.makeMarkerLight(i.coordinates));
+        if (route.vampire) {
+          if (i.lighted) {
+            lightMarkers.push(this.makeMarkerLight(i.coordinates));
+          } else {
+            lightMarkers.push(this.makeMarker(i.coordinates));
+          }
         }
         if (route.checksTemperature()) {
           temperatureMarkers.push(this.makeMarkerWithRange(
@@ -442,6 +454,7 @@ export class AdminMapComponent implements OnInit {
     this.currentReportLayer = L.layerGroup(markers).addTo(map);
     if (extraLayers) {
       baseLayers['Basico'] = this.currentReportLayer.on('add', () => this.changeCheck(Check.BASIC));
+      this.markerLayers = baseLayers;
       this.currentLayerControl = L.control.layers(baseLayers).addTo(map);
     }
   }
@@ -508,6 +521,12 @@ export class AdminMapComponent implements OnInit {
     }
     if (this.currentReportLayer) {
       this.currentReportLayer.remove(map);
+    }
+    if (this.markerLayers) {
+      for (const layerName of Object.keys(this.markerLayers)) {
+        this.markerLayers[layerName].remove(map);
+      }
+      this.markerLayers = null;
     }
   }
 

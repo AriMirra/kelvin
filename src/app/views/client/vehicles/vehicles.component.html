@@ -19,7 +19,7 @@
           </div>
         </form>
       </div>
-      <div class="card-body open">
+      <div class="card-body full-height open">
         <table class="table">
           <thead>
           <tr>
@@ -36,7 +36,7 @@
             <td>{{vehicle.model}}</td>
             <td>
               <a class="badge badge-success"
-                 *ngIf="vehicle.hasDevice()">{{getVehicleDeviceAlias(vehicle)}}</a>
+                 *ngIf="vehicle.hasDevice()">Dispositivo Asignado</a>
               <a class="badge badge-warning" *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
             </td>
           </tr>

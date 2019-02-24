@@ -135,6 +135,6 @@ export class ProductsComponent implements OnInit {
   productSearchFilter(product: Product): boolean {
       return !![product.name]
           .map(e => e.toLowerCase())
-          .find(e => e.includes(this.productSearch));
+          .find(e => e.includes(this.productSearch.toLowerCase()));
   }
 }

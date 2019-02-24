@@ -1,3 +1,8 @@
+a.badge {
+  color: white!important;
+  text-transform: uppercase!important;
+}
+
 .card {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -65,6 +70,10 @@
     -o-transition: height .2s;
     transition: height .2s;
 
+    &.full-height {
+      height: calc(100vh - 234px);
+    }
+
     table.table {
       margin-bottom: 40px;
 
@@ -77,6 +86,7 @@
 
           .badge, .badge:hover {
             color: white;
+            text-transform: uppercase!important;
           }
         }
 

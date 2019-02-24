@@ -227,7 +227,7 @@ export class AdminVehiclesComponent implements OnInit {
   vehicleSearchFilter(vehicle: Vehicle): boolean {
     return !![vehicle.model, vehicle.brand, vehicle.domain, vehicle.ownerId]
       .map(e => e.toLowerCase())
-      .find(e => e.includes(this.vehicleSearch));
+      .find(e => e.includes(this.vehicleSearch.toLowerCase()));
   }
 
 

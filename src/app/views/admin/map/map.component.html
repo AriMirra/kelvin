@@ -5,9 +5,19 @@
         <div class="card-header not-clickable">
           <form>
             <div class="form-group row">
-              <label class="col-10 col-form-label">
+              <label class="col-6 col-form-label">
                 <strong>Generar recorrido</strong>
               </label>
+              <div class="col-6 mt-1 text-right" *ngIf="!showFormErrorMsg">
+                <a (click)="resetForm()" class="badge badge-warning mt-2">
+                  Reinciar búsqueda
+                </a>
+              </div>
+              <div class="col-6 mt-1 text-right" *ngIf="showFormErrorMsg">
+                <a class="badge badge-warning mt-2">
+                  Parámetros inválidos!
+                </a>
+              </div>
             </div>
           </form>
         </div>
@@ -170,10 +180,7 @@
         </div>
         <div class="card-footer">
           <div class="row">
-            <div class="col-6">
-              <button class="btn btn-danger w-100" (click)="resetForm()"><strong>Reset</strong></button>
-            </div>
-            <div class="col-6">
+            <div class="col-12">
               <button class="btn btn-primary w-100" (click)="getReport()"><strong>Buscar</strong></button>
             </div>
           </div>
@@ -181,10 +188,10 @@
       </div>
     </div>
     <div class="col-12 col-sm-6 col-md-8">
-      <div class="map-card">
+      <div class="map-card " [ngClass]="{'full-height': !(checkingTemp() || checkingHumidity() || checkingLight())}">
         <div id="map" style="height: 100%;"></div>
       </div>
-      <div class="card reference-card">
+      <div class="card reference-card" *ngIf="(checkingTemp() || checkingHumidity() || checkingLight())">
         <div class="card-header not-clickable reference-key">
           <form class="h-100">
             <div class="form-group row h-100">

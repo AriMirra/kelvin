@@ -150,7 +150,7 @@ export class DevicesComponent implements OnInit {
   deviceSearchFilter(device: Device): boolean {
     return !![device.alias, device.mac]
       .map(e => e.toLowerCase())
-      .find(e => e.includes(this.deviceSearch));
+      .find(e => e.includes(this.deviceSearch.toLowerCase()));
   }
 
   // QR
