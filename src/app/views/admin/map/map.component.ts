@@ -116,6 +116,11 @@ export class AdminMapComponent implements OnInit {
         display: true,
         gridLines: {
           drawOnChartArea: true,
+        },
+        offset: true,
+        ticks: {
+          autoSkipPadding: 24,
+          maxRotation: 0
         }
       }],
       yAxes: [{
@@ -163,6 +168,11 @@ export class AdminMapComponent implements OnInit {
         gridLines: {
           drawOnChartArea: true,
         },
+        offset: true,
+        ticks: {
+          autoSkipPadding: 24,
+          maxRotation: 0
+        }
       }],
       yAxes: [{
         ticks: {

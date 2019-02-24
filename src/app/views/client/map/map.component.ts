@@ -116,10 +116,15 @@ export class ClientMapComponent implements OnInit {
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
-        display: false,
+        display: true,
         gridLines: {
-          drawOnChartArea: false,
+          drawOnChartArea: true,
         },
+        offset: true,
+        ticks: {
+          autoSkipPadding: 24,
+          maxRotation: 0
+        }
       }],
       yAxes: [{
         ticks: {
@@ -162,10 +167,15 @@ export class ClientMapComponent implements OnInit {
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
-        display: false,
+        display: true,
         gridLines: {
-          drawOnChartArea: false,
+          drawOnChartArea: true,
         },
+        offset: true,
+        ticks: {
+          autoSkipPadding: 24,
+          maxRotation: 0
+        }
       }],
       yAxes: [{
         ticks: {
