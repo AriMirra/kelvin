@@ -25,6 +25,8 @@ export class AdminMapComponent implements OnInit {
   currentRoute;
   map: any;
 
+  showFormErrorMsg: boolean;
+
   fromDate: string;
   fromTime: string;
 
@@ -111,10 +113,10 @@ export class AdminMapComponent implements OnInit {
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
-        display: false,
+        display: true,
         gridLines: {
-          drawOnChartArea: false,
-        },
+          drawOnChartArea: true,
+        }
       }],
       yAxes: [{
         ticks: {
@@ -157,9 +159,9 @@ export class AdminMapComponent implements OnInit {
     maintainAspectRatio: false,
     scales: {
       xAxes: [{
-        display: false,
+        display: true,
         gridLines: {
-          drawOnChartArea: false,
+          drawOnChartArea: true,
         },
       }],
       yAxes: [{
@@ -366,21 +368,26 @@ export class AdminMapComponent implements OnInit {
   }
 
   getReport() {
-    const parameters = new ReportParameters(
-      this.selectedVehicleId,
-      this.parseDate(this.fromDate, this.fromTime),
-      this.parseDate(this.toDate, this.toTime)
-    );
-    this.reportService.getReport(parameters).subscribe(
-      report => {
-        this.currentReport = report;
-        this.drawRoute();
-        this.updateCharts();
-      },
-      e => {
-        console.log(e);
-      }
-    );
+    if ((this.newRoute.minTemperature > this.newRoute.maxTemperature) || (this.newRoute.minHumidity > this.newRoute.maxHumidity)) {
+      this.showFormErrorMsg = true;
+      setTimeout(() => this.showFormErrorMsg = false, 1000);
+    } else {
+      const parameters = new ReportParameters(
+          this.selectedVehicleId,
+          this.parseDate(this.fromDate, this.fromTime),
+          this.parseDate(this.toDate, this.toTime)
+      );
+      this.reportService.getReport(parameters).subscribe(
+          report => {
+            this.currentReport = report;
+            this.drawRoute();
+            this.updateCharts();
+          },
+          e => {
+            console.log(e);
+          }
+      );
+    }
   }
 
   // Map

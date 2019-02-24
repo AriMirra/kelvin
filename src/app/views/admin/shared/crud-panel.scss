@@ -1,3 +1,8 @@
+a.badge {
+  color: white!important;
+  text-transform: uppercase!important;
+}
+
 .card {
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
@@ -77,6 +82,7 @@
 
           .badge, .badge:hover {
             color: white;
+            text-transform: uppercase!important;
           }
         }
 

@@ -1,3 +1,9 @@
+a.badge, a.badge:hover {
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
 .reference-key {
   min-height: 59px;
 }
@@ -19,6 +25,10 @@
   -ms-transition: all .4s;
   -o-transition: all .4s;
   transition: all .4s;
+
+  &.full-height {
+    height: calc(100vh - 176px);
+  }
 
   #map {
     -webkit-border-radius: 6px;
