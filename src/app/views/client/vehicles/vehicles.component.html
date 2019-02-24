@@ -36,7 +36,7 @@
             <td>{{vehicle.model}}</td>
             <td>
               <a class="badge badge-success"
-                 *ngIf="vehicle.hasDevice()">{{getVehicleDevice(vehicle).alias}}</a>
+                 *ngIf="vehicle.hasDevice()">{{getVehicleDeviceAlias(vehicle)}}</a>
               <a class="badge badge-warning" *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
             </td>
           </tr>

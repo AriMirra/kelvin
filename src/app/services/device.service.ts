@@ -32,6 +32,24 @@ export class DeviceService {
       );
   }
 
+    /**
+     * Method that returns a list of all the devices.
+     *
+     * @returns {Observable<Device[]>}
+     */
+    fetchClientDevices(): Observable<Device[]> {
+        return this.http.get('/device/user')
+            .pipe(
+                map((response) => {
+                    return response.body.map(a => Object.assign(Device.empty(), a));
+                }),
+                catchError(err => {
+                    console.log(err);
+                    return Observable.of([]);
+                })
+            );
+    }
+
   /**
    * Method that adds a new device to the platform based on the given device credentials.
    * Returns true if device is correctly added.

@@ -12,6 +12,8 @@ import {ReportParameters} from '../../../../shared/reports/ReportParameters';
 import {ReportService} from '../../../services/report.service';
 import {PointInfo} from '../../../../shared/reports/PointInfo';
 import {Coordinate} from '../../../../shared/reports/Coordinate';
+import {Product} from '../../../../shared/products/Product';
+import {ProductService} from '../../../services/product.service';
 
 @Component({
   templateUrl: 'map.component.html',
@@ -34,6 +36,9 @@ export class ClientMapComponent implements OnInit {
   currentLayerControl: any;
 
   checking: Check = Check.BASIC;
+
+  routeProducts: Product[];
+  allProducts: Product[];
 
   user: User;
   vehicles: Vehicle[] = [];
@@ -223,10 +228,16 @@ export class ClientMapComponent implements OnInit {
   public mainChartLegend = false;
   public mainChartType = 'line';
 
-  constructor(private userService: UserService, private vehicleService: VehicleService, private reportService: ReportService) {
+  constructor(private userService: UserService,
+              private vehicleService: VehicleService,
+              private productService: ProductService,
+              private reportService: ReportService) {
     this.userService.getLoggedUser().subscribe(user => {
       this.vehicleService.getUserVehicles(user.id).subscribe(vehicles => {
         this.vehicles = vehicles;
+      });
+      this.productService.fetchClientProducts(user.id).subscribe(products => {
+        this.allProducts = products;
       });
     });
   }
@@ -324,6 +335,10 @@ export class ClientMapComponent implements OnInit {
     return this.vehicles;
   }
 
+  getSelectedUserProducts(): Product[] {
+    return this.allProducts;
+  }
+
   resetForm() {
     this.newRoute = Route.empty();
     this.selectedUserId = '';
@@ -332,6 +347,65 @@ export class ClientMapComponent implements OnInit {
     this.fromDate = '';
     this.toDate = '';
     this.toTime = '';
+  }
+
+  updateForm() {
+    this.newRoute.minTemperature = this.productsMinTemperature();
+    this.newRoute.maxTemperature = this.productsMaxTemperature();
+    this.newRoute.minHumidity = this.productsMinHumidity();
+    this.newRoute.maxHumidity = this.productsMaxHumidity();
+    this.productsContainsVampire();
+    console.log(this.routeProducts);
+  }
+
+  private productsContainsVampire() {
+    this.routeProducts.forEach(product => {
+      if (product.vampire) {
+        this.newRoute.vampire = true;
+        return;
+      }
+    });
+    this.newRoute.vampire = false;
+  }
+
+  private productsMinTemperature() {
+    let productsMinTemperature = 0;
+    this.routeProducts.forEach(product => {
+      if (product.minTemperature > productsMinTemperature) {
+        productsMinTemperature = product.minTemperature;
+      }
+    });
+    return productsMinTemperature;
+  }
+
+  private productsMaxTemperature() {
+    let productsMaxTemperature = 50;
+    this.routeProducts.forEach(product => {
+      if (product.maxTemperature < productsMaxTemperature) {
+        productsMaxTemperature = product.maxTemperature;
+      }
+    });
+    return productsMaxTemperature;
+  }
+
+  private productsMinHumidity() {
+    let productsMinHumidity = 0;
+    this.routeProducts.forEach(product => {
+      if (product.minHumidity > productsMinHumidity) {
+        productsMinHumidity = product.minHumidity;
+      }
+    });
+    return productsMinHumidity;
+  }
+
+  private productsMaxHumidity() {
+    let productsMaxHumidity = 100;
+    this.routeProducts.forEach(product => {
+      if (product.maxHumidity < productsMaxHumidity) {
+        productsMaxHumidity = product.maxHumidity;
+      }
+    });
+    return productsMaxHumidity;
   }
 
   getReport() {

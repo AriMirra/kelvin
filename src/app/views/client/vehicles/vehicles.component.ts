@@ -23,7 +23,7 @@ export class ClientVehiclesComponent implements OnInit {
 
   constructor(private vehicleService: VehicleService, private clientService: UserService, private deviceService: DeviceService) {
     const futureClient = this.clientService.getLoggedUser();
-    const futureDevices = this.deviceService.fetchDevices();
+    const futureDevices = this.deviceService.fetchClientDevices();
 
     forkJoin(futureClient, futureDevices)
       .subscribe(([client, devices]) => {
@@ -44,8 +44,12 @@ export class ClientVehiclesComponent implements OnInit {
   ngOnInit() {
   }
 
-  getVehicleDevice(vehicle: Vehicle): Device {
-    return this.deviceIdMap.get(vehicle.id);
+  getVehicleDeviceAlias(vehicle: Vehicle): string {
+    const device = this.deviceIdMap.get(vehicle.id);
+    if (device && device.alias !== null) {
+      return device.alias;
+    }
+    return '';
   }
 
   // Search

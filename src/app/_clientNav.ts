@@ -9,11 +9,6 @@ export const clientNavItems = [
     icon: 'icon-location-pin'
   },
   {
-    name: 'Rutas',
-    url: '/client/routes',
-    icon: 'icon-location-pin'
-  },
-  {
     title: true,
     name: 'Gestión de Vehículos'
   },

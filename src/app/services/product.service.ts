@@ -31,7 +31,26 @@ export class ProductService {
       );
   }
 
-  /**
+    /**
+     * Method that returns a list of a certain client's products.
+     *
+     * @param {string} userId
+     * @returns {Observable<Product[]>}
+     */
+    fetchClientProducts(userId: string): Observable<Product[]> {
+        return this.http.get('/product/user')
+            .pipe(
+                map((response) => {
+                    return response.body.map(a => Object.assign(Product.empty(), a));
+                }),
+                catchError(err => {
+                    console.log(err);
+                    return Observable.of([]);
+                })
+            );
+    }
+
+    /**
    * Method that adds a new product to the platform based on the given product credentials.
    * Returns true if product is correctly added.
    *
@@ -87,4 +106,22 @@ export class ProductService {
         })
       );
   }
+
+    /**
+     * Method that deletes a specific product based on the given product id.
+     * Returns true if product is correctly deleted.
+     *
+     * @param {string} productId
+     * @returns {Observable<boolean>}
+     */
+    deleteProduct(productId: string): Observable<boolean> {
+        return this.http.delete('/product/' + productId)
+            .pipe(
+                map(() => true),
+                catchError(err => {
+                    console.log(err);
+                    return Observable.of(false);
+                })
+            );
+    }
 }

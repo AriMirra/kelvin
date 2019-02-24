@@ -4,10 +4,10 @@
       <div class="card-header" (click)="toggleAddingProduct()">
         <form>
           <div class="form-group row">
-            <label class="col-12 col-sm-6 col-md-8 col-form-label">
+            <label class="col-10 col-form-label">
               <strong>Agregar nuevo producto</strong>
             </label>
-            <div class="col-12 col-sm-6 col-md-4">
+            <div class="col-2">
               <button type="submit"
                       class="btn w-100"
                       [ngClass]="{'btn-primary': !addingProduct, 'btn-danger': addingProduct}"
@@ -64,7 +64,7 @@
                                class="form-control mt-3"
                                placeholder="Máxima (ºC)"
                                required
-                               [(ngModel)]="newProduct.minTemperature"
+                               [(ngModel)]="newProduct.maxTemperature"
                         >
                       </div>
                     </div>
@@ -88,16 +88,16 @@
                         >
                       </div>
                       <div class="col-md-6">
-                        <input type="number"
-                               min="1"
-                               max="100"
-                               id="new-product-max-moisture"
-                               name="new-product-max-moisture"
-                               class="form-control mt-3"
-                               placeholder="Máxima (%)"
-                               required
-                               [(ngModel)]="newProduct.maxHumidity"
-                        >
+                          <input type="number"
+                                 min="0"
+                                 max="99"
+                                 id="new-product-max-moisture"
+                                 name="new-product-max-moisture"
+                                 class="form-control mt-3"
+                                 placeholder="Máxima (%)"
+                                 required
+                                 [(ngModel)]="newProduct.maxHumidity"
+                          >
                       </div>
                     </div>
                   </div>
@@ -140,10 +140,10 @@
       <div class="card-header not-clickable">
         <form>
           <div class="form-group row">
-            <label class="col-12 col-sm-6 col-md-8 col-form-label">
+            <label class="col-6 col-form-label">
               <strong>Todos los productos</strong>
             </label>
-            <div class="col-12 col-sm-6 col-md-4">
+            <div class="col-6">
               <input type="text"
                      id="search-product"
                      name="search-product"
@@ -160,17 +160,16 @@
           <thead>
           <tr>
             <th>Nombre</th>
-            <th>Temperatura Mínima (ºC)</th>
-            <th>Temperatura Máxima (ºC)</th>
-            <th>Humedad Mínima (%)</th>
-            <th>Humedad Máxima (%)</th>
+            <th>Mín. Temp (ºC)</th>
+            <th>Máx. Temp (ºC)</th>
+            <th>Mín. Humedad (%)</th>
+            <th>Máx. Humedad (%)</th>
             <th>Detección de Luz</th>
             <th>Editar</th>
             <th>Eliminar</th>
           </tr>
           </thead>
           <tbody>
-          <!--
           <tr *ngFor="let product of filteredProducts()">
               <td>{{product.name}}</td>
               <td>{{product.minTemperature}}</td>
@@ -188,7 +187,6 @@
                      (click)="dangerModal.show(); startProductDelete(product.id)">Eliminar</a>
               </td>
           </tr>
-          -->
           </tbody>
         </table>
       </div>
@@ -217,7 +215,7 @@
                      class="form-control"
                      placeholder="Nombre"
                      required
-                     [(ngModel)]="editProduct.name"
+                     [(ngModel)]="editingProduct.name"
               >
             </div>
           </div>
@@ -234,7 +232,7 @@
                          class="form-control"
                          placeholder="Mínima (ºC)"
                          required
-                         [(ngModel)]="editProduct.minTemperature"
+                         [(ngModel)]="editingProduct.minTemperature"
                   >
                 </div>
                 <div class="col-6">
@@ -246,14 +244,14 @@
                          class="form-control"
                          placeholder="Máxima (ºC)"
                          required
-                         [(ngModel)]="editProduct.minTemperature"
+                         [(ngModel)]="editingProduct.maxTemperature"
                   >
                 </div>
               </div>
             </div>
           </div>
           <div class="form-group row">
-            <label class="col-lg-4 col-form-label" for="edit-product-min-moisture">Temperatura</label>
+            <label class="col-lg-4 col-form-label" for="edit-product-min-moisture">Humedad</label>
             <div class="col-lg-8">
               <div class="row">
                 <div class="col-6">
@@ -265,7 +263,7 @@
                          class="form-control"
                          placeholder="Mínima (%)"
                          required
-                         [(ngModel)]="editProduct.minHumidity"
+                         [(ngModel)]="editingProduct.minHumidity"
                   >
                 </div>
                 <div class="col-6">
@@ -277,7 +275,7 @@
                          class="form-control"
                          placeholder="Máxima (%)"
                          required
-                         [(ngModel)]="editProduct.maxHumidity"
+                         [(ngModel)]="editingProduct.maxHumidity"
                   >
                 </div>
               </div>
@@ -290,7 +288,7 @@
                      id="edit-product-vampire"
                      name="edit-product-vampire"
                      class="form-control"
-                     [(ngModel)]="editProduct.vampire"
+                     [(ngModel)]="editingProduct.vampire"
               >
             </div>
           </div>

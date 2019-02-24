@@ -1,6 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductCredentials} from '../../../../shared/products/ProductCredentials';
 import {ProductService} from '../../../services/product.service';
+import {ProductUpdate} from '../../../../shared/products/ProductUpdate';
+import {Product} from '../../../../shared/products/Product';
+import {forkJoin} from 'rxjs';
+import {User} from '../../../../shared/users/User';
+import {Device} from '../../../../shared/devices/Device';
+import {UserService} from '../../../services/user.service';
 
 @Component({
   selector: 'app-products',
@@ -9,13 +15,11 @@ import {ProductService} from '../../../services/product.service';
 })
 export class ProductsComponent implements OnInit {
 
+  client: User;
+
   addingProduct: boolean;
 
-  // clients: User[] = [];
-  // vehicles: Vehicle[] = [];
-  // devices: Device[] = [];
-  // clientIdMap: Map<string, User> = new Map<string, User>();
-  // deviceIdMap: Map<string, Device> = new Map<string, Device>();
+  products: Product[];
 
   productSearch = '';
 
@@ -23,8 +27,8 @@ export class ProductsComponent implements OnInit {
   successfulAdd: boolean;
   showSubmitMsg = false;
 
-  // editingProduct: ProductUpdate = ProductUpdate.empty();
-  // editProductId: string;
+  editingProduct: ProductUpdate = ProductCredentials.empty();
+  editProductId: string;
   successfulEdit: boolean;
   showEditMsg = false;
 
@@ -32,32 +36,24 @@ export class ProductsComponent implements OnInit {
   successfulDelete: boolean;
   showDeleteMsg = false;
 
-  constructor(private productService: ProductService) {
-    /*const futureVehicles = this.vehicleService.fetchVehicles();
-    const futureClients = this.clientService.fetchUsers();
-    const futureDevices = this.deviceService.fetchDevices();
-
-    forkJoin(futureClients, futureVehicles, futureDevices)
-        .subscribe(([clients, vehicles, devices]) => {
-            this.clients = clients;
-            this.vehicles = vehicles;
-            this.devices = devices;
-
-            this.vehicles.map(v => {
-                const client = this.clients.find(c => c.id === v.ownerId);
-                const device = this.devices.find(d => d.id === v.deviceId);
-                return [v.id, client, device] as ([string, User, Device]);
-            }).forEach(([id, client, device]) => {
-                this.clientIdMap.set(id, client);
-                this.deviceIdMap.set(id, device);
-            });
-
-        });*/
-
+  constructor(private productService: ProductService, private userService: UserService) {
+    this.load();
     this.addingProduct = false;
   }
 
   ngOnInit() {
+  }
+
+  load() {
+    const futureClient = this.userService.getLoggedUser();
+
+    forkJoin(futureClient)
+        .subscribe(([client]) => {
+          this.client = client;
+          this.productService.fetchClientProducts(client.id).subscribe(products => {
+            this.products = products;
+          });
+        });
   }
 
   // Add
@@ -71,6 +67,9 @@ export class ProductsComponent implements OnInit {
       .addProduct(this.newProduct)
       .subscribe(submitted => {
         this.successfulAdd = submitted;
+        if (this.successfulAdd) {
+          this.load();
+        }
         this.showSubmitMsg = true;
         setTimeout(() => this.showSubmitMsg = false, 1000);
       });
@@ -78,25 +77,28 @@ export class ProductsComponent implements OnInit {
 
   // Edit
 
-  // startProductEdit(product: Product) {
-  //     this.editingProduct = ProductUpdate.for(product);
-  //     this.editProductId = product.id;
-  // }
+  startProductEdit(product: Product) {
+      this.editingProduct = ProductUpdate.for(product);
+      this.editProductId = product.id;
+  }
 
-  // editProduct() {
-  //     this.productService
-  //         .updateProduct(this.editProductId, this.editingProduct)
-  //         .subscribe(edited => {
-  //             this.successfulEdit = edited;
-  //             this.showEditMsg = true;
-  //             setTimeout(() => this.showEditMsg = false, 1000);
-  //         });
-  // }
+  editProduct() {
+      this.productService
+          .updateProduct(this.editProductId, this.editingProduct)
+          .subscribe(edited => {
+              this.successfulEdit = edited;
+              if (this.successfulEdit) {
+                this.load();
+              }
+              this.showEditMsg = true;
+              setTimeout(() => this.showEditMsg = false, 1000);
+          });
+  }
 
-  // cancelEdit() {
-  //     this.editingProduct = ProductUpdate.empty();
-  //     this.editProductId = undefined;
-  // }
+  cancelEdit() {
+      this.editingProduct = ProductUpdate.empty();
+      this.editProductId = undefined;
+  }
 
   // Delete
 
@@ -104,15 +106,18 @@ export class ProductsComponent implements OnInit {
     this.deleteProductId = id;
   }
 
-  // deleteProduct() {
-  //     this.productService
-  //         .deleteProduct(this.deleteProductId)
-  //         .subscribe(deleted => {
-  //             this.successfulDelete = deleted;
-  //             this.showDeleteMsg = true;
-  //             setTimeout(() => this.showDeleteMsg = false, 1000);
-  //         });
-  // }
+  deleteProduct() {
+      this.productService
+          .deleteProduct(this.deleteProductId)
+          .subscribe(deleted => {
+              this.successfulDelete = deleted;
+              if (this.successfulDelete) {
+                this.load();
+              }
+              this.showDeleteMsg = true;
+              setTimeout(() => this.showDeleteMsg = false, 1000);
+          });
+  }
 
   cancelDelete() {
     this.deleteProductId = undefined;
@@ -120,16 +125,16 @@ export class ProductsComponent implements OnInit {
 
   // Search
 
-  // filteredProducts(): Product[] {
-  //     if (this.productSearch === '') {
-  //         return this.product;
-  //     }
-  //     return this.product.filter(v => this.productSearchFilter(v));
-  // }
-  //
-  // productSearchFilter(product: Product): boolean {
-  //     return !![product.name]
-  //         .map(e => e.toLowerCase())
-  //         .find(e => e.includes(this.productSearch));
-  // }
+  filteredProducts(): Product[] {
+      if (this.productSearch === '') {
+          return this.products;
+      }
+      return this.products.filter(v => this.productSearchFilter(v));
+  }
+
+  productSearchFilter(product: Product): boolean {
+      return !![product.name]
+          .map(e => e.toLowerCase())
+          .find(e => e.includes(this.productSearch));
+  }
 }
