@@ -90,7 +90,7 @@ export class UsersComponent implements OnInit {
   userSearchFilter(user: User): boolean {
     return !![user.lastName, user.username, user.name]
       .map(e => e.toLowerCase())
-      .find(e => e.includes(this.userSearch));
+      .find(e => e.includes(this.userSearch.toLowerCase()));
   }
 
 }

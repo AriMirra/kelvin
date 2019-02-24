@@ -360,13 +360,7 @@ export class ClientMapComponent implements OnInit {
   }
 
   private productsContainsVampire() {
-    this.routeProducts.forEach(product => {
-      if (product.vampire) {
-        this.newRoute.vampire = true;
-        return;
-      }
-    });
-    this.newRoute.vampire = false;
+    this.newRoute.vampire = !this.routeProducts.every(product => !product.vampire);
   }
 
   private productsMinTemperature() {
