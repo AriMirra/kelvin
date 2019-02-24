@@ -8,6 +8,7 @@ import {User} from '../../../../shared/users/User';
 import {forkJoin} from 'rxjs';
 import {DeviceService} from '../../../services/device.service';
 import {Device} from '../../../../shared/devices/Device';
+import {QrService} from '../../../services/qr.service';
 
 @Component({
   selector: 'app-vehicles',
@@ -46,7 +47,13 @@ export class AdminVehiclesComponent implements OnInit {
   successfulAssign: boolean;
   showAssignMsg = false;
 
-  constructor(private vehicleService: VehicleService, private clientService: UserService, private deviceService: DeviceService) {
+  qr: any;
+  qrLoading = false;
+
+  constructor(private vehicleService: VehicleService,
+              private clientService: UserService,
+              private deviceService: DeviceService,
+              private qrService: QrService) {
     this.load();
     this.addingVehicle = false;
   }
@@ -219,5 +226,24 @@ export class AdminVehiclesComponent implements OnInit {
     return !![vehicle.model, vehicle.brand, vehicle.domain, vehicle.ownerId]
       .map(e => e.toLowerCase())
       .find(e => e.includes(this.vehicleSearch));
+  }
+
+
+  // QR
+
+  downloadQR() {
+    //TODO
+  }
+
+  getQR(vehicleId: string) {
+    this.qrLoading = true;
+    this.qrService.getVehicleQr(vehicleId).subscribe(imageURL => {
+      console.log(imageURL);
+      this.qr = imageURL;
+      this.qrLoading = false;
+    }, error => {
+      this.qrLoading = false;
+      console.log(error);
+    });
   }
 }
