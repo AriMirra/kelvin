@@ -161,6 +161,7 @@
             <th>Modelo</th>
             <th>Cliente</th>
             <th>Dispositivo</th>
+            <th>QR</th>
             <th>Editar</th>
             <th>Eliminar</th>
           </tr>
@@ -181,6 +182,11 @@
                  *ngIf="vehicle.hasDevice()">{{getVehicleDeviceAlias(vehicle)}}</a>
               <a class="badge badge-warning" (click)="assignModal.show(); startDeviceAssign(vehicle)"
                  *ngIf="!vehicle.hasDevice()">Sin Dispositivo</a>
+            </td>
+            <td>
+              <a class="badge badge-primary" data-toggle="modal"
+                 (click)="qrModal.show(); getQR(vehicle)">Código QR
+              </a>
             </td>
             <td>
               <a class="badge badge-primary" data-toggle="modal"
@@ -295,7 +301,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="largeModal.hide(); cancelEdit()">Close</button>
+        <button type="button" class="btn btn-secondary" (click)="largeModal.hide(); cancelEdit()">Cerrar</button>
         <button type="button" class="btn btn-primary" (click)="editVehicle()">Guardar Cambios</button>
       </div>
     </div><!-- /.modal-content -->
@@ -361,9 +367,38 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="assignModal.hide(); cancelAssign()">Close
+        <button type="button" class="btn btn-secondary" (click)="assignModal.hide(); cancelAssign()">Cerrar
         </button>
         <button type="button" class="btn btn-primary" (click)="assignDevice()">Guardar Cambios</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div bsModal #qrModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div *ngIf="qrModalDisplay" class="modal-dialog modal-lg modal-success" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Código QR</h4>
+        <button type="button" class="close" (click)="qrModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="qr-vehicle-info">
+          <p><strong>Patente:</strong> {{qrSelectedVehicle.domain}}</p>
+          <p><strong>Marca:</strong> {{qrSelectedVehicle.brand}}</p>
+          <p><strong>Modelo:</strong> {{qrSelectedVehicle.model}}</p>
+        </div>
+        <div class="qr-image-container">
+          <img [src]="qr" alt="qr code" class="qr-image">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="qrModal.hide()">Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="downloadQR()">Descargar</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

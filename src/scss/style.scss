@@ -14,3 +14,20 @@
 button {
   outline: none !important;
 }
+
+.qr-image {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .qr-image-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .qr-image {
+      width: 80%;
+    }
+  }
+}
+

@@ -117,6 +117,7 @@
             <th>Alias</th>
             <th>Mac</th>
             <th>Vehículo asignado</th>
+            <th>QR</th>
             <th>Editar</th>
             <th>Eliminar</th>
           </tr>
@@ -129,6 +130,11 @@
               <a class="badge badge-success" data-toggle="modal"
                  *ngIf="device.assigned">{{getDeviceVehicle(device).domain}}</a>
               <a class="badge badge-warning" *ngIf="!device.assigned">Sin vehículo asignado</a>
+            </td>
+            <td>
+              <a class="badge badge-primary" data-toggle="modal"
+                 (click)="qrModal.show(); getQR(device)">Código QR
+              </a>
             </td>
             <td>
               <a class="badge badge-primary" data-toggle="modal"
@@ -225,6 +231,34 @@
         <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
         </button>
         <button type="button" class="btn btn-danger" (click)="deleteDevice()">Eliminar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+<div bsModal #qrModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div *ngIf="qrModalDisplay" class="modal-dialog modal-lg modal-success" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Código QR</h4>
+        <button type="button" class="close" (click)="qrModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="qr-vehicle-info">
+          <p><strong>Alias:</strong> {{qrSelectedDevice.alias}}</p>
+        </div>
+        <div class="qr-image-container">
+          <img [src]="qr" alt="qr code" class="qr-image">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="qrModal.hide()">Cerrar
+        </button>
+        <button type="button" class="btn btn-primary" (click)="downloadQR()">Descargar</button>
       </div>
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->

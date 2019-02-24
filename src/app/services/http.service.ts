@@ -42,6 +42,12 @@ export class HttpService {
     return this._http.get((ignoreBaseUrl ? '' : this.baseUrl) + url, {headers: this.requestOptions(options), observe: 'response'});
   }
 
+  public getImage(url: string, options?: any, ignoreBaseUrl?: boolean): Observable<any> {
+    return this._http.get((ignoreBaseUrl ? '' : this.baseUrl) + url,
+      {headers: this.requestOptions(options),
+        responseType: 'blob'});
+  }
+
   public post(url: string, body: any, options?: any): Observable<HttpResponse<any>> {
     return (this._http.post(this.baseUrl + url, body, {headers: this.requestOptions(options), observe: 'response'}));
   }
