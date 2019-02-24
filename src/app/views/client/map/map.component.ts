@@ -405,8 +405,15 @@ export class ClientMapComponent implements OnInit {
     return productsMaxHumidity;
   }
 
+  formIsValid() {
+    const validVehicle = this.selectedVehicleId !== '';
+    const validTemperatures = this.newRoute.minTemperature < this.newRoute.maxTemperature;
+    const validHumidity = this.newRoute.minHumidity < this.newRoute.maxHumidity;
+    return validVehicle && validTemperatures && validHumidity;
+  }
+
   getReport() {
-    if ((this.newRoute.minTemperature > this.newRoute.maxTemperature) || (this.newRoute.minHumidity > this.newRoute.maxHumidity)) {
+    if (!this.formIsValid()) {
       this.showFormErrorMsg = true;
       setTimeout(() => this.showFormErrorMsg = false, 1000);
     } else {
