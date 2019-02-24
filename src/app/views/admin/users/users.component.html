@@ -20,92 +20,96 @@
       </div>
       <div class="card-body h-0"
            [ngStyle]="addingUser? {'height': 'calc(100vh - 319px)', 'padding': '1.25rem'}: {}">
-        <div class="container">
-          <div class="row">
+        <div class="container h-100">
+          <div class="row h-100">
             <div class="col-12">
-              <form (submit)="submitUser()" class="form-horizontal">
-                <div class="form-group row">
-                  <label class="col-lg-4 col-form-label" for="new-user-username">Nombre de
-                    usuario</label>
-                  <div class="col-lg-8">
-                    <input type="text"
-                           id="new-user-username"
-                           name="new-user-username"
-                           class="form-control"
-                           placeholder="Ejemplo: juan.perez"
-                           required
-                           [(ngModel)]="newUser.username"
-                    >
+              <form (submit)="submitUser()" class="form-horizontal h-100">
+                <div class="form-inputs">
+                  <div class="form-group row">
+                    <label class="col-lg-4 col-form-label" for="new-user-username">Nombre de
+                      usuario</label>
+                    <div class="col-lg-8">
+                      <input type="text"
+                             id="new-user-username"
+                             name="new-user-username"
+                             class="form-control"
+                             placeholder="Ejemplo: juan.perez"
+                             required
+                             [(ngModel)]="newUser.username"
+                      >
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-4 col-form-label" for="new-user-name">Nombre</label>
+                    <div class="col-lg-8">
+                      <input type="text"
+                             id="new-user-name"
+                             name="new-user-name"
+                             class="form-control"
+                             placeholder="Ejemplo: Juan"
+                             required
+                             [(ngModel)]="newUser.name"
+                      >
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-4 col-form-label" for="new-user-lastName">Apellido</label>
+                    <div class="col-lg-8">
+                      <input type="text"
+                             id="new-user-lastName"
+                             name="new-user-lastName"
+                             class="form-control"
+                             placeholder="Ejemplo: Perez"
+                             required
+                             [(ngModel)]="newUser.lastName"
+                      >
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-4 col-form-label" for="new-user-password">Contraseña</label>
+                    <div class="col-lg-8">
+                      <input type="password"
+                             id="new-user-password"
+                             name="new-user-password"
+                             class="form-control"
+                             placeholder="Ejemplo: hunter2"
+                             required
+                             [(ngModel)]="newUser.password"
+                      >
+                    </div>
+                  </div>
+                  <div class="form-group row">
+                    <label class="col-lg-4 col-form-label" for="new-user-type">Privilegios</label>
+                    <div class="col-lg-8">
+                      <select id="new-user-type"
+                              name="new-user-type"
+                              class="form-control"
+                              required
+                              [(ngModel)]="newUser.type"
+                      >
+                        <option [value]="'USER'" selected>Cliente</option>
+                        <option [value]="'ADMIN'">Administrador</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div *ngIf="showSubmitMsg">
+                    <div class="alert alert-success" role="alert" *ngIf="successfulAdd">
+                      Cliente agregado exitosamente.
+                    </div>
+                    <div class="alert alert-warning" role="alert" *ngIf="!successfulAdd">
+                      Ha ocurrido un problema para agregar el usuario.
+                    </div>
                   </div>
                 </div>
-                <div class="form-group row">
-                  <label class="col-lg-4 col-form-label" for="new-user-name">Nombre</label>
-                  <div class="col-lg-8">
-                    <input type="text"
-                           id="new-user-name"
-                           name="new-user-name"
-                           class="form-control"
-                           placeholder="Ejemplo: Juan"
-                           required
-                           [(ngModel)]="newUser.name"
-                    >
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-4 col-form-label" for="new-user-lastName">Apellido</label>
-                  <div class="col-lg-8">
-                    <input type="text"
-                           id="new-user-lastName"
-                           name="new-user-lastName"
-                           class="form-control"
-                           placeholder="Ejemplo: Perez"
-                           required
-                           [(ngModel)]="newUser.lastName"
-                    >
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-4 col-form-label" for="new-user-password">Contraseña</label>
-                  <div class="col-lg-8">
-                    <input type="password"
-                           id="new-user-password"
-                           name="new-user-password"
-                           class="form-control"
-                           placeholder="Ejemplo: hunter2"
-                           required
-                           [(ngModel)]="newUser.password"
-                    >
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <label class="col-lg-4 col-form-label" for="new-user-type">Privilegios</label>
-                  <div class="col-lg-8">
-                    <select id="new-user-type"
-                            name="new-user-type"
-                            class="form-control"
-                            required
-                            [(ngModel)]="newUser.type"
-                    >
-                      <option [value]="'USER'" selected>Cliente</option>
-                      <option [value]="'ADMIN'">Administrador</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="form-group row">
-                  <div class="col-2 offset-10">
-                    <button type="submit" class="btn btn-primary float-right w-100">
-                      <strong>Guardar</strong></button>
+                <div class="form-button">
+                  <div class="form-group row">
+                    <div class="col-2 offset-10">
+                      <button type="submit" class="btn btn-primary float-right w-100">
+                        <strong>Guardar</strong></button>
+                    </div>
                   </div>
                 </div>
               </form>
-              <div *ngIf="showSubmitMsg">
-                <div class="alert alert-success" role="alert" *ngIf="successfulAdd">
-                  Cliente agregado exitosamente.
-                </div>
-                <div class="alert alert-warning" role="alert" *ngIf="!successfulAdd">
-                  Ha ocurrido un problema para agregar el usuario.
-                </div>
-              </div>
             </div>
           </div>
         </div>

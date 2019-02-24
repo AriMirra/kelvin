@@ -70,6 +70,17 @@ a.badge {
     -o-transition: height .2s;
     transition: height .2s;
 
+    form {
+      display: flex;
+      justify-content: space-between;
+      flex-direction: column;
+    }
+
+    .form-button {
+      padding-top: 24px;
+      border-top: solid 1px;
+    }
+
     table.table {
       margin-bottom: 40px;
 
