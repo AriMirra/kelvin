@@ -17,11 +17,11 @@ export class QrService {
     return Observable.of(null);
   }
 
-  getVehicleQr(vehicleId: string): Observable<any> {
-    return this.getImage('/vehicle/qr/' + vehicleId);
+  private requestImage(url: string): Observable<any> {
+    return this.http.getImage(url);
   }
 
-  getImage(url: string): Observable<any> {
+  private getImage(url: string): Observable<any> {
     return this.requestImage(url)
       .pipe(
         switchMap(blob => {
@@ -31,8 +31,14 @@ export class QrService {
       );
   }
 
-  private requestImage(url: string): Observable<any> {
-    return this.http.getImage(url);
+
+
+  getVehicleQr(vehicleId: string): Observable<any> {
+    return this.getImage('/vehicle/qr/' + vehicleId);
+  }
+
+  getDeviceQr(deviceId: string): Observable<any> {
+    return this.getImage('/device/qr/' + deviceId);
   }
 }
 

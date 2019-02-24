@@ -246,7 +246,6 @@ export class AdminVehiclesComponent implements OnInit {
     this.qrLoading = true;
     this.qrSelectedVehicle = vehicle;
     this.qrService.getVehicleQr(vehicle.id).subscribe(imageURL => {
-      console.log(imageURL);
       this.qr = imageURL;
       this.qrLoading = false;
     }, error => {

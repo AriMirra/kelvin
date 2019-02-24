@@ -6,6 +6,7 @@ import {DeviceService} from '../../../services/device.service';
 import {Vehicle} from '../../../../shared/vehicles/Vehicle';
 import {VehicleService} from '../../../services/vehicle.service';
 import {forkJoin} from 'rxjs';
+import {QrService} from '../../../services/qr.service';
 
 @Component({
   selector: 'app-devices',
@@ -34,7 +35,14 @@ export class DevicesComponent implements OnInit {
   successfulDelete: boolean;
   showDeleteMsg = false;
 
-  constructor(private deviceService: DeviceService, private vehicleService: VehicleService) {
+  qr: any;
+  qrLoading = false;
+  qrSelectedDevice: Device;
+  qrModalDisplay = false;
+
+  constructor(private deviceService: DeviceService,
+              private vehicleService: VehicleService,
+              private qrService: QrService) {
     this.load();
 
     this.addingDevice = false;
@@ -145,4 +153,26 @@ export class DevicesComponent implements OnInit {
       .find(e => e.includes(this.deviceSearch));
   }
 
+  // QR
+
+  downloadQR() {
+    const a = document.createElement('a');
+    a.href = this.qr;
+    a.download = 'download';
+    document.body.appendChild(a);
+    a.click();
+  }
+
+  getQR(device: Device) {
+    this.qrModalDisplay = true;
+    this.qrLoading = true;
+    this.qrSelectedDevice = device;
+    this.qrService.getDeviceQr(device.id).subscribe(imageURL => {
+      this.qr = imageURL;
+      this.qrLoading = false;
+    }, error => {
+      this.qrLoading = false;
+      console.log(error);
+    });
+  }
 }
