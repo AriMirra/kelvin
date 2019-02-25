@@ -33,7 +33,7 @@ export class RouteService {
   }
 
   /**
-   * Method that returns a list of routes of the users.
+   * Method that returns a list of routes of the current user.
    *
    * @returns {Observable<Route[]>}
    */

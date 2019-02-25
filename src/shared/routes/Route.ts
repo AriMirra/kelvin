@@ -4,6 +4,9 @@
  * @param {string} id
  * @param {string} name
  * @param {string} productId
+ * @param {string} vehicleId
+ * @param {number[]} from
+ * @param {number[]} to
  * @param {number} minTemperature
  * @param {number} maxTemperature
  * @param {number} minHumidity

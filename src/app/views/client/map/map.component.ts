@@ -14,6 +14,8 @@ import {PointInfo} from '../../../../shared/reports/PointInfo';
 import {Coordinate} from '../../../../shared/reports/Coordinate';
 import {Product} from '../../../../shared/products/Product';
 import {ProductService} from '../../../services/product.service';
+import {RouteService} from '../../../services/route.service';
+import {RouteCredentials} from '../../../../shared/routes/RouteCredentials';
 
 @Component({
   templateUrl: 'map.component.html',
@@ -21,8 +23,6 @@ import {ProductService} from '../../../services/product.service';
 })
 export class ClientMapComponent implements OnInit {
 
-  newRoute: Route = Route.empty();
-  currentRoute;
   map: any;
 
   showFormErrorMsg: boolean;
@@ -45,9 +45,15 @@ export class ClientMapComponent implements OnInit {
 
   user: User;
   vehicles: Vehicle[] = [];
+  routes: Route[] = [];
+
+  newRoute: Route = Route.empty();
+  currentRoute;
 
   selectedUserId = '';
   selectedVehicleId = '';
+  selectedRouteId = '';
+  selectedProductId = '';
 
   lightIcon = L.icon({
     iconUrl: '/../../../../assets/img/markers/light.png',
@@ -244,6 +250,7 @@ export class ClientMapComponent implements OnInit {
   constructor(private userService: UserService,
               private vehicleService: VehicleService,
               private productService: ProductService,
+              private routeService: RouteService,
               private reportService: ReportService) {
     this.userService.getLoggedUser().subscribe(user => {
       this.vehicleService.getUserVehicles(user.id).subscribe(vehicles => {
@@ -251,6 +258,9 @@ export class ClientMapComponent implements OnInit {
       });
       this.productService.fetchClientProducts(user.id).subscribe(products => {
         this.allProducts = products;
+      });
+      this.routeService.getUserRoutes().subscribe(routes => {
+        this.routes = routes;
       });
     });
   }
@@ -352,23 +362,66 @@ export class ClientMapComponent implements OnInit {
     return this.allProducts;
   }
 
+  getSelectedUserRoutes() {
+    return this.routes;
+  }
+
+  saveFormAsRoute() {
+    const from = this.convertToIsoString(this.fromDate, this.fromTime);
+    const to = this.convertToIsoString(this.toDate, this.toTime);
+
+    const r = new RouteCredentials(
+      this.newRoute.name,
+      this.selectedProductId,
+      this.selectedVehicleId,
+      from,
+      to,
+      this.newRoute.minTemperature,
+      this.newRoute.maxTemperature,
+      this.newRoute.minHumidity,
+      this.newRoute.maxHumidity,
+      this.newRoute.vampire
+    );
+    this.routeService.addRoute(r).subscribe(
+      () => console.log('route added'),
+      () => console.log('error adding route')
+    );
+  }
+
   resetForm() {
     this.newRoute = Route.empty();
     this.selectedUserId = '';
     this.selectedVehicleId = '';
+    this.selectedProductId = '';
+    this.selectedRouteId = '';
     this.fromTime = '';
     this.fromDate = '';
     this.toDate = '';
     this.toTime = '';
   }
 
-  updateForm() {
+  updateRoute() {
+    const selectedRoute = this.getUserRouteFromId(this.selectedRouteId);
+    this.setTimeFromRoute(selectedRoute);
+    this.selectedVehicleId = selectedRoute.vehicleId;
+    const selectedProduct = this.getUserProductFromId(selectedRoute.productId);
+    this.selectedProductId = selectedProduct.id;
+    this.routeProducts = [selectedProduct];
     this.newRoute.minTemperature = this.productsMinTemperature();
     this.newRoute.maxTemperature = this.productsMaxTemperature();
     this.newRoute.minHumidity = this.productsMinHumidity();
     this.newRoute.maxHumidity = this.productsMaxHumidity();
     this.productsContainsVampire();
-    console.log(this.routeProducts);
+  }
+
+  updateProduct() {
+    const selectedProduct = this.getUserProductFromId(this.selectedProductId);
+    this.routeProducts = [selectedProduct];
+    this.newRoute.minTemperature = this.productsMinTemperature();
+    this.newRoute.maxTemperature = this.productsMaxTemperature();
+    this.newRoute.minHumidity = this.productsMinHumidity();
+    this.newRoute.maxHumidity = this.productsMaxHumidity();
+    this.productsContainsVampire();
   }
 
   private productsContainsVampire() {
@@ -417,9 +470,11 @@ export class ClientMapComponent implements OnInit {
 
   formIsValid() {
     const validVehicle = this.selectedVehicleId !== '';
+    const validRoute = this.selectedRouteId !== '';
+    const validProduct = this.selectedProductId !== '';
     const validTemperatures = this.newRoute.minTemperature < this.newRoute.maxTemperature;
     const validHumidity = this.newRoute.minHumidity < this.newRoute.maxHumidity;
-    return validVehicle && validTemperatures && validHumidity;
+    return validVehicle && validProduct && validRoute && validTemperatures && validHumidity;
   }
 
   getReport() {
@@ -607,6 +662,43 @@ export class ClientMapComponent implements OnInit {
 
   private isUndefined(val): boolean {
     return val === undefined || val === null;
+  }
+
+  private getUserProductFromId(productId: string): Product {
+    let selectedProduct = Product.empty();
+    this.allProducts.forEach(p => {
+      if (p.id === productId) { selectedProduct = p; }
+    });
+    return selectedProduct;
+  }
+
+  private getUserRouteFromId(routeId: string): Route {
+    let selectedRoute = Route.empty();
+    this.routes.forEach(r => {
+      if (r.id === routeId) { selectedRoute = r; }
+    });
+    return selectedRoute;
+  }
+
+  private setTimeFromRoute(route: Route) {
+    const fromDate = route.fromDate;
+    const fromMonth = fromDate.getMonth() + 1;
+    const fromDay = fromDate.getDate();
+    const toDate = route.toDate;
+    const toMonth = toDate.getMonth() + 1;
+    const toDay = toDate.getDate();
+    this.fromDate = `${fromDate.getFullYear()}-${this.normalizeNumberString(fromMonth)}-${this.normalizeNumberString(fromDay)}`;
+    this.fromTime = `${this.normalizeNumberString(fromDate.getHours())}:${this.normalizeNumberString(fromDate.getMinutes())}`;
+    this.toDate = `${toDate.getFullYear()}-${this.normalizeNumberString(toMonth)}-${this.normalizeNumberString(toDay)}`;
+    this.toTime = `${this.normalizeNumberString(toDate.getHours())}:${this.normalizeNumberString(toDate.getMinutes())}`;
+  }
+
+  private normalizeNumberString(num: number): string {
+    return num < 9 ? `0${num}` : num.toString();
+  }
+
+  private convertToIsoString(date: string, time: string) {
+    return `${date}T${time}:00Z`;
   }
 }
 
