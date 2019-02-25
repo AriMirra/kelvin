@@ -4,6 +4,7 @@ import {catchError, map} from 'rxjs/operators';
 import {HttpService} from './http.service';
 import {Route} from '../../shared/routes/Route';
 import {RouteCredentials} from '../../shared/routes/RouteCredentials';
+import {RouteUpdate} from '../../shared/routes/RouteUpdate';
 
 @Injectable({
   providedIn: 'root'
@@ -91,11 +92,11 @@ export class RouteService {
    * Method that updates a specific route based on the given route id and route update data.
    *
    * @param {string} routeId
-   * @param {RouteCredentials} routeCredentials
+   * @param {RouteUpdate} routeUpdate
    * @returns {Observable<boolean>}
    */
-  updateRoute(routeId: string, routeCredentials: RouteCredentials): Observable<boolean> {
-    const json = routeCredentials.asJson();
+  updateRoute(routeId: string, routeUpdate: RouteUpdate): Observable<boolean> {
+    const json = routeUpdate.asJson();
     return this.http.put('/route/' + routeId, json)
       .pipe(
         map(() => true),
@@ -105,4 +106,15 @@ export class RouteService {
         })
       );
   }
+
+    deleteRoute(routeId: string): Observable<boolean> {
+        return this.http.delete('/route/' + routeId)
+            .pipe(
+                map(() => true),
+                catchError(err => {
+                    console.log(err);
+                    return Observable.of(false);
+                })
+            );
+    }
 }

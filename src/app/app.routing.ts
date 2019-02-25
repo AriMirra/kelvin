@@ -7,7 +7,7 @@ import {P500Component} from './views/error/500.component';
 import {LoginComponent} from './views/login/login.component';
 import {AdminMapComponent} from './views/admin/map/map.component';
 import {ClientMapComponent} from './views/client/map/map.component';
-import {RoutesComponent} from './views/admin/routes/routes.component';
+import {RoutesComponent} from './views/client/routes/routes.component';
 import {AdminVehiclesComponent} from './views/admin/vehicles/vehicles.component';
 import {ClientVehiclesComponent} from './views/client/vehicles/vehicles.component';
 import {DevicesComponent} from './views/admin/devices/devices.component';
@@ -29,10 +29,6 @@ export const routes: Routes = [
       {
         path: '',
         component: AdminMapComponent
-      },
-      {
-        path: 'routes',
-        component: RoutesComponent
       },
       {
         path: 'users',
@@ -66,7 +62,11 @@ export const routes: Routes = [
       {
         path: 'products',
         component: ProductsComponent
-      }
+      },
+      {
+        path: 'routes',
+        component: RoutesComponent
+      },
     ]
   },
   {

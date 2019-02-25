@@ -20,7 +20,7 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import {ChartsModule} from 'ng2-charts/ng2-charts';
 import {CookieService} from 'ngx-cookie-service';
 import {AdminMapComponent} from './views/admin/map/map.component';
-import {RoutesComponent} from './views/admin/routes/routes.component';
+import {RoutesComponent} from './views/client/routes/routes.component';
 import {AdminVehiclesComponent} from './views/admin/vehicles/vehicles.component';
 import {ClientVehiclesComponent} from './views/client/vehicles/vehicles.component';
 import {DevicesComponent} from './views/admin/devices/devices.component';

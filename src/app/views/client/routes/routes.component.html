@@ -1,0 +1,282 @@
+<div class="row">
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header not-clickable">
+        <form>
+          <div class="form-group row">
+            <label class="col-6 col-form-label">
+              <strong>Todos los recorridos</strong>
+              <small><i class="ml-2 mr-1 fa fa-info-circle"></i> para agregar recorridos, genere uno en el mapa</small>
+            </label>
+            <div class="col-6">
+              <input type="text"
+                     id="search-route"
+                     name="search-route"
+                     class="form-control"
+                     placeholder="Buscar recorrido"
+                     [(ngModel)]="routeSearch"
+              >
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="card-body open">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Producto</th>
+            <th>Vehículo</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Mín. Temp (ºC)</th>
+            <th>Máx. Temp (ºC)</th>
+            <th>Mín. Humedad (%)</th>
+            <th>Máx. Humedad (%)</th>
+            <th>Detección de Luz</th>
+            <th>Editar</th>
+            <th>Eliminar</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let route of filteredRoutes()">
+              <td>{{route.name}}</td>
+              <td>{{route.productId ? getProductById(route.productId).name : 'N/A' }}</td>
+              <td>{{getVehicleById(route.vehicleId).domain}}</td>
+              <td>{{getRouteFromDateString(route)}}</td>
+              <td>{{getRouteToDateString(route)}}</td>
+              <td>{{getRouteValueString(route, 'minTemperature')}}</td>
+              <td>{{getRouteValueString(route, 'maxTemperature')}}</td>
+              <td>{{getRouteValueString(route, 'minHumidity')}}</td>
+              <td>{{getRouteValueString(route, 'maxHumidity')}}</td>
+              <td *ngIf="isRouteVampire(route)">SI</td>
+              <td *ngIf="!isRouteVampire(route)">NO</td>
+              <td>
+                  <a class="badge badge-primary" data-toggle="modal"
+                     (click)="largeModal.show(); startRouteEdit(route)">Editar</a>
+              </td>
+              <td>
+                  <a class="badge badge-danger" data-toggle="modal"
+                     (click)="dangerModal.show(); startRouteDelete(route.id)">Eliminar</a>
+              </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #largeModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-primary" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Editar recorrido</h4>
+        <button type="button" class="close" (click)="largeModal.hide(); cancelEdit()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-route-name">Nombre del Recorrido</label>
+            <div class="col-lg-8">
+              <input type="text"
+                     id="edit-route-name"
+                     name="edit-route-name"
+                     class="form-control"
+                     placeholder="Nombre"
+                     required
+                     [(ngModel)]="editingRoute.name"
+              >
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-route-vehicle">Vehículo</label>
+            <div class="col-lg-8">
+              <select id="edit-route-vehicle"
+                      name="edit-route-vehicle"
+                      class="form-control"
+                      [(ngModel)]="editingRoute.vehicleId"
+              >
+                <option [value]="''" selected>Seleccione un vehiculo</option>
+                <option *ngFor="let vehicle of vehicleIdMap.values()"
+                        [value]="vehicle.id">{{vehicle.domain}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label"
+                   for="edit-route-lower-time-limit">Desde</label>
+            <div class="col-lg-8">
+              <div class="row">
+                <div class="col-6 mb-3">
+                  <input type="date"
+                         id="edit-route-lower-date-limit"
+                         name="edit-route-lower-date-limit"
+                         class="form-control"
+                         [(ngModel)]="fromDate"
+                  >
+                </div>
+                <div class="col-6">
+                  <input type="time"
+                         id="edit-route-lower-time-limit"
+                         name="edit-route-lower-time-limit"
+                         class="form-control"
+                         [(ngModel)]="fromTime"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label"
+                   for="edit-route-upper-time-limit">Hasta</label>
+            <div class="col-lg-8">
+              <div class="row">
+                <div class="col-6 mb-3">
+                  <input type="date"
+                         id="edit-route-upper-date-limit"
+                         name="edit-route-upper-date-limit"
+                         class="form-control"
+                         [(ngModel)]="toDate"
+                  >
+                </div>
+                <div class="col-6">
+                  <input type="time"
+                         id="edit-route-upper-time-limit"
+                         name="edit-route-upper-time-limit"
+                         class="form-control"
+                         [(ngModel)]="toTime"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-route-product">Producto</label>
+            <div class="col-lg-8">
+              <select id="edit-route-product"
+                      name="edit-route-product"
+                      class="form-control"
+                      [(ngModel)]="editingRoute.productId"
+              >
+                <option [value]="''" selected>Seleccione un producto</option>
+                <option *ngFor="let product of productIdMap.values()"
+                        [value]="product.id">{{product.name}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-route-min-temperature">Temperatura</label>
+            <div class="col-lg-8">
+              <div class="row">
+                <div class="col-6">
+                  <input type="number"
+                         min="0"
+                         max="49"
+                         id="edit-route-min-temperature"
+                         name="edit-route-min-temperature"
+                         class="form-control"
+                         placeholder="Mínima (ºC)"
+                         required
+                         [(ngModel)]="editingRoute.minTemperature"
+                  >
+                </div>
+                <div class="col-6">
+                  <input type="number"
+                         min="1"
+                         max="50"
+                         id="edit-route-max-temperature"
+                         name="edit-route-max-temperature"
+                         class="form-control"
+                         placeholder="Máxima (ºC)"
+                         required
+                         [(ngModel)]="editingRoute.maxTemperature"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-route-min-moisture">Humedad</label>
+            <div class="col-lg-8">
+              <div class="row">
+                <div class="col-6">
+                  <input type="number"
+                         min="0"
+                         max="99"
+                         id="edit-route-min-moisture"
+                         name="edit-route-min-moisture"
+                         class="form-control"
+                         placeholder="Mínima (%)"
+                         required
+                         [(ngModel)]="editingRoute.minHumidity"
+                  >
+                </div>
+                <div class="col-6">
+                  <input type="number"
+                         min="1"
+                         max="100"
+                         id="edit-route-max-moisture"
+                         name="edit-route-max-moisture"
+                         class="form-control"
+                         placeholder="Máxima (%)"
+                         required
+                         [(ngModel)]="editingRoute.maxHumidity"
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-lg-4 col-form-label" for="edit-route-vampire">Detección de luz</label>
+            <div class="col-lg-8">
+              <input type="checkbox"
+                     id="edit-route-vampire"
+                     name="edit-route-vampire"
+                     class="form-control"
+                     [(ngModel)]="editingRoute.vampire"
+              >
+            </div>
+          </div>
+        </form>
+        <div *ngIf="showEditMsg">
+          <div class="alert alert-success" role="alert" *ngIf="successfulEdit">
+            Recorrido editado exitosamente.
+          </div>
+          <div class="alert alert-warning" role="alert" *ngIf="!successfulEdit">
+            Ha ocurrido un problema para editar el recorrido.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="largeModal.hide(); cancelEdit()">Close</button>
+        <button type="button" class="btn btn-primary" (click)="editRoute()">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div bsModal #dangerModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-danger" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Eliminar recorrido</h4>
+        <button type="button" class="close" (click)="dangerModal.hide()" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Esta operación no se puede deshacer. Tendrá que crear un nuevo recorrido.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
+        </button>
+        <button type="button" class="btn btn-danger" (click)="deleteRoute()">Eliminar</button>
+      </div>
+    </div>
+  </div>
+</div>

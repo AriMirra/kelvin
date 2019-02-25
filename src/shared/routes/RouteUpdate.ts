@@ -1,10 +1,27 @@
-/**
- * Model that represents the credentials of a route.
- */
-export class RouteCredentials {
+import {Route} from './Route';
 
-    public static empty(): RouteCredentials {
-        return new RouteCredentials('', '', '', '', '', 0, 0, 0, 0, false);
+/**
+ * Model that represents the update of a product's data.
+ */
+export class RouteUpdate {
+
+    public static empty(): RouteUpdate {
+        return new RouteUpdate('', '', '', '', '', 0, 0, 0, 0, false);
+    }
+
+    public static for(route: Route, from: string, to: string): RouteUpdate {
+        return new RouteUpdate(
+            route.name,
+            route.productId,
+            route.vehicleId,
+            from,
+            to,
+            route.minTemperature,
+            route.maxTemperature,
+            route.minHumidity,
+            route.maxHumidity,
+            route.vampire,
+        );
     }
 
     constructor(public name: string,
@@ -36,6 +53,18 @@ export class RouteCredentials {
 
     public asJsonString(): string {
         return JSON.stringify(this.asJson());
+    }
+
+    get fromDate(): Date {
+        return new Date(this.from);
+    }
+
+    get toDate(): Date {
+        return new Date(this.to);
+    }
+
+    private parseDate(dateArray: number[]): Date {
+        return new Date(dateArray[0], dateArray[1], dateArray[2] + 1, dateArray[3], dateArray[4], dateArray[5]);
     }
 
 }

@@ -27,7 +27,7 @@ export class ProductsComponent implements OnInit {
   successfulAdd: boolean;
   showSubmitMsg = false;
 
-  editingProduct: ProductUpdate = ProductCredentials.empty();
+  editingProduct: ProductUpdate = ProductUpdate.empty();
   editProductId: string;
   successfulEdit: boolean;
   showEditMsg = false;
