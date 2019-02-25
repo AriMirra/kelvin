@@ -17,9 +17,14 @@ import {Vehicle} from '../../../../shared/vehicles/Vehicle';
 })
 export class RoutesComponent implements OnInit {
     client: User;
-    routes: Route[];
+    routes: Route[] = [];
     productIdMap: Map<string, Product> = new Map<string, Product>();
+    products: Product[] = [];
     vehicleIdMap: Map<string, Vehicle> = new Map<string, Vehicle>();
+    vehicles: Vehicle[] = [];
+
+    vehiclesLoaded = false;
+    productsLoaded = false;
 
     routeSearch = '';
 
@@ -58,12 +63,15 @@ export class RoutesComponent implements OnInit {
                 this.client = client;
                 this.routes = routes;
                 this.vehicleService.getUserVehicles(this.client.id).subscribe(vehicles => {
-                    console.log(vehicles);
+                    this.vehicles = vehicles;
+                    this.vehiclesLoaded = true;
                     vehicles.forEach(vehicle => {
                         this.vehicleIdMap.set(vehicle.id, vehicle);
                     });
                 });
                 this.productService.fetchClientProducts(this.client.id).subscribe(products => {
+                    this.products = products;
+                    this.productsLoaded = true;
                     products.forEach(product => {
                         this.productIdMap.set(product.id, product);
                     });
@@ -124,7 +132,6 @@ export class RoutesComponent implements OnInit {
     }
 
     cancelEdit() {
-        console.log(this.fromTime);
         this.editingRoute = RouteUpdate.empty();
         this.editRouteId = undefined;
         this.fromDate = undefined;
@@ -159,6 +166,9 @@ export class RoutesComponent implements OnInit {
     // Search
 
     filteredRoutes(): Route[] {
+        if (!this.vehiclesLoaded || !this.productsLoaded) {
+            return [];
+        }
         if (this.routeSearch === '') {
             return this.routes;
         }

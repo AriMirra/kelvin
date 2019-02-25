@@ -101,7 +101,7 @@
                       [(ngModel)]="editingRoute.vehicleId"
               >
                 <option [value]="''" selected>Seleccione un vehiculo</option>
-                <option *ngFor="let vehicle of vehicleIdMap.values()"
+                <option *ngFor="let vehicle of vehicles"
                         [value]="vehicle.id">{{vehicle.domain}}</option>
               </select>
             </div>
@@ -163,7 +163,7 @@
                       [(ngModel)]="editingRoute.productId"
               >
                 <option [value]="''" selected>Seleccione un producto</option>
-                <option *ngFor="let product of productIdMap.values()"
+                <option *ngFor="let product of products"
                         [value]="product.id">{{product.name}}</option>
               </select>
             </div>

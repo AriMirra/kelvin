@@ -15,7 +15,7 @@ export const clientNavItems = [
   },
   {
     title: true,
-    name: 'Gestión de Vehículos'
+    name: 'Gestión de Información'
   },
   {
     name: 'Vehículos',
