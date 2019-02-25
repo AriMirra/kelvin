@@ -275,7 +275,7 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="dangerModal.hide(); cancelDelete()">Regresar
         </button>
-        <button type="button" class="btn btn-danger" (click)="deleteRoute()">Eliminar</button>
+        <button type="button" class="btn btn-danger" (click)="deleteRoute(); dangerModal.hide()">Eliminar</button>
       </div>
     </div>
   </div>
