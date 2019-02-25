@@ -44,7 +44,7 @@ export class PointInfo {
    * @returns {Date}
    */
   get dateTime(): Date {
-    return new Date(this.time[0], this.time[1], this.time[2] + 1, this.time[3], this.time[4], this.time[5]);
+    return new Date(Date.UTC(this.time[0], this.time[1] - 1, this.time[2], this.time[3], this.time[4], this.time[5]));
   }
 
 }

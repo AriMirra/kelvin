@@ -139,7 +139,7 @@ export class Route {
 
     private parseDate(dateArray: number[]): Date {
         console.log(dateArray);
-        return new Date(dateArray[0], dateArray[1], dateArray[2] + 1, dateArray[3], dateArray[4], 0);
+        return new Date(dateArray[0], dateArray[1] - 1, dateArray[2], dateArray[3], dateArray[4], 0);
     }
 
 }

@@ -304,7 +304,7 @@ export class AdminMapComponent implements OnInit {
         console.log(points[i].info.dateTime);
       }
       const pointInfo = points[i].info;
-      this.mainChartLabels.push(pointInfo.dateTime.toUTCString());
+      this.mainChartLabels.push(pointInfo.dateTime.toLocaleString());
       // temperature
       this.maxTemperature.push(route.maxTemperature);
       this.currentTemperature.push(pointInfo.temperature);
